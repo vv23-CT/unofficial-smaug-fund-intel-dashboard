@@ -1,6 +1,6 @@
-# SMAUG Vote Desk: data rules
+# Unofficial SMAUG Fund Intel Dashboard: data rules
 
-The page (`index.html`) reads everything from `data.json`. To update the desk, change `data.json` only.
+The page (`index.html`) reads everything from `data.json`. To update the dashboard, change `data.json` only.
 
 ## Rules
 - Facts only. No forecasts, calls, confidence levels or suggested allocations.
