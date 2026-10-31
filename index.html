@@ -25,7 +25,7 @@
 .app{transition:border-color .25s ease;color:var(--fg);font:15px/1.45 var(--sans);background:var(--panel);border:3px solid var(--house);border-radius:12px;overflow:clip}
 .app a{color:inherit}
 .app button{font:inherit;color:inherit}
-.tbar{height:28px;background:var(--house);color:var(--house-ink);display:flex;align-items:center;justify-content:flex-end;transition:background-color .25s ease;padding:0 6px 0 12px;font-size:12px;font-weight:700;letter-spacing:.04em}
+.tbar{height:28px;background:var(--house);color:var(--house-ink);display:flex;align-items:center;justify-content:space-between;gap:10px;transition:background-color .25s ease;padding:0 6px 0 12px;font-size:12px;font-weight:700;letter-spacing:.04em}
 .tbr{display:flex;align-items:center;gap:8px}
 .winb{display:flex;gap:4px}.winb i{width:16px;height:13px;background:#d4d0c8;border:1px solid #fff;border-right-color:#404040;border-bottom-color:#404040}
 .modebtn{font:700 12px/1 var(--sans);width:24px;height:20px;padding:0;cursor:pointer;background:#d4d0c8;color:#222;border:1px solid;border-color:#fff #404040 #404040 #fff}
@@ -151,15 +151,18 @@ body{background-color:var(--wall);background-image:radial-gradient(var(--speck) 
 .page{padding:14px 12px 30px;display:flex;justify-content:center}
 .page .app{width:100%;max-width:560px}
 [hidden]{display:none!important}
+.tname{font-size:12.5px;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tbar .tbr{flex:none}
+.sbar span:first-child{flex:2.2}
+@media (max-width:380px){.tname{font-size:11.5px;letter-spacing:0}.tbar{padding-left:10px}}
 </style>
 <script>try{var t=localStorage.getItem('sfi-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head><body><div class="page">
 <div class="app" id="app">
-<div class="tbar"><span class="tbr"><button class="modebtn" id="modebtn" type="button" aria-label="Switch to dark mode">☾</button><span class="winb" aria-hidden="true"><i></i><i></i><i></i></span></span></div>
+<div class="tbar"><span class="tname">Unofficial TMF Fund Intel Dashboard</span><span class="tbr"><button class="modebtn" id="modebtn" type="button" aria-label="Switch to dark mode">☾</button><span class="winb" aria-hidden="true"><i></i><i></i><i></i></span></span></div>
 <header class="hd">
-<span class="kick">Unofficial TMF Fund Intel Dashboard</span>
 <h1>What each room is backing</h1>
-<div class="sub"><span class="bell" id="bell">Bell —</span><span id="wk">Week 2</span><span class="upd">· Updated <time id="updTime">—</time></span></div>
+<div class="sub"><span class="bell" id="bell">Bell —</span><span id="wk">Week 2</span><span class="upd">Updated <time id="updTime">—</time></span></div>
 </header>
 <nav class="fsw" aria-label="Choose a fund">
 <div class="fsw-l">Choose a fund</div>
@@ -215,7 +218,7 @@ body{background-color:var(--wall);background-image:radial-gradient(var(--speck) 
 </section>
 </main>
 <p class="fine">Unofficial · not affiliated with The Mutual Fun · not financial advice</p>
-<div class="sbar"><span id="sbUpd">Updated —</span><span>5 funds</span><span id="sbBell">Bell —</span></div>
+<div class="sbar"><span id="sbUpd">Updated —</span><span id="sbBell">Bell —</span></div>
 </div>
 
 </div>
@@ -251,7 +254,7 @@ const BELL=Date.parse(D.bell_utc);
 const bellAt=fmtDay.format(new Date(BELL))+' '+fmtTime.format(new Date(BELL));
 const tick=()=>{const ms=BELL-Date.now();if(ms<=0){$('#bell').textContent='Bell rang · '+bellAt;$('#sbBell').textContent='Bell rang';return;}const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);
  $('#bell').textContent='Bell in '+(d?d+'d ':'')+h+'h'+(d?'':' '+m+'m')+' · '+bellAt;$('#sbBell').textContent='Bell in '+(d?d+'d ':'')+h+'h';};tick();setInterval(tick,30000);
-$('#wk').textContent='Week '+D.week;stamp($('#updTime'),D.updated_utc,(D.updates[0]||{}).date);$('#sbUpd').textContent='Updated '+(D.updated_utc?fmtDay.format(new Date(D.updated_utc))+', '+fmtTime.format(new Date(D.updated_utc)):(D.updates[0]||{}).date);
+$('#wk').textContent='Week '+D.week;stamp($('#updTime'),D.updated_utc,(D.updates[0]||{}).date);$('#sbUpd').textContent='Updated '+(D.updated_utc?new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric'}).format(new Date(D.updated_utc))+', '+fmtTime.format(new Date(D.updated_utc)):(D.updates[0]||{}).date);
 
 /* fund switcher */
 FUNDS.forEach(f=>{const b=el('button','fbtn');b.type='button';b.setAttribute('role','tab');b.dataset.f=f.id;const hc=HOUSE[f.id]||['#453629','#fff'];b.style.setProperty('--fh',hc[0]);b.style.setProperty('--fhi',hc[1]);const sw=el('i','sw');sw.setAttribute('aria-hidden','true');b.append(sw,el('span',null,f.name));
