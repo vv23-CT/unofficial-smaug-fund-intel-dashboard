@@ -153,21 +153,38 @@ body{background-color:var(--wall);background-image:radial-gradient(var(--speck) 
 [hidden]{display:none!important}
 .tname{font-size:12.5px;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .tbar .tbr{flex:none}
-.sbar span:first-child{flex:2.2}
+.sbar span{flex:1 1 0;min-width:0}
 @media (max-width:380px){.tname{font-size:11.5px;letter-spacing:0}.tbar{padding-left:10px}}
+
+/* window mode: the frame always fills the screen; only the middle scrolls */
+html,body{height:100%;overflow:hidden}
+@supports (height:100dvh){body{height:100dvh}}
+.page{height:100%;box-sizing:border-box;padding:10px max(10px,env(safe-area-inset-right,0px)) max(10px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px))}
+.page .app{height:100%;display:flex;flex-direction:column}
+.app>.tbar,.app>.fsw,.app>.sbar{flex:none}
+.fsw{position:static;box-shadow:0 6px 10px -10px rgba(0,0,0,.35)}
+.scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-color:var(--house) #d4d0c8}
+.scroll:focus-visible{outline:2px solid var(--house);outline-offset:-2px}
+.scroll::-webkit-scrollbar{width:16px}
+.scroll::-webkit-scrollbar-track{background:#d4d0c8;background-image:repeating-conic-gradient(#c0bcb4 0 25%,#d4d0c8 0 50%);background-size:2px 2px;border-left:1px solid #808080}
+.scroll::-webkit-scrollbar-thumb{background:#d4d0c8;border:1px solid;border-color:#fff #404040 #404040 #fff;box-shadow:inset -1px -1px 0 #808080,inset 1px 1px 0 #dfdfdf}
+.scroll::-webkit-scrollbar-button:single-button{display:block;height:16px;background:#d4d0c8;border:1px solid;border-color:#fff #404040 #404040 #fff}
+@media (min-width:700px){.page{padding:20px}}
+.vtabs{position:sticky;top:-12px;z-index:3;background:var(--panel);margin:0 -12px;padding:12px 12px 0}
 </style>
 <script>try{var t=localStorage.getItem('sfi-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head><body><div class="page">
 <div class="app" id="app">
 <div class="tbar"><span class="tname">Unofficial TMF Fund Intel Dashboard</span><span class="tbr"><button class="modebtn" id="modebtn" type="button" aria-label="Switch to dark mode">☾</button><span class="winb" aria-hidden="true"><i></i><i></i><i></i></span></span></div>
-<header class="hd">
-<h1>What each room is backing</h1>
-<div class="sub"><span class="bell" id="bell">Bell —</span><span id="wk">Week 2</span><span class="upd">Updated <time id="updTime">—</time></span></div>
-</header>
 <nav class="fsw" aria-label="Choose a fund">
 <div class="fsw-l">Choose a fund</div>
 <div class="fsw-row" role="tablist" id="fsw"></div>
 </nav>
+<div class="scroll" id="scroll" tabindex="0" aria-label="Dashboard content">
+<header class="hd">
+<h1>What each room is backing</h1>
+<div class="sub"><span id="wk">Week 2</span><span aria-hidden="true">·</span><span class="upd">Updated <time id="updTime">—</time></span></div>
+</header>
 <main class="body">
 <section class="fcard" id="fcard" aria-live="polite">
 <div class="fc-head"><div class="txt">
@@ -218,6 +235,7 @@ body{background-color:var(--wall);background-image:radial-gradient(var(--speck) 
 </section>
 </main>
 <p class="fine">Unofficial · not affiliated with The Mutual Fun · not financial advice</p>
+</div>
 <div class="sbar"><span id="sbUpd">Updated —</span><span id="sbBell">Bell —</span></div>
 </div>
 
@@ -251,10 +269,13 @@ let VIEW='week',G='',ALL=false;
 
 /* bell + status */
 const BELL=Date.parse(D.bell_utc);
-const bellAt=fmtDay.format(new Date(BELL))+' '+fmtTime.format(new Date(BELL));
-const tick=()=>{const ms=BELL-Date.now();if(ms<=0){$('#bell').textContent='Bell rang · '+bellAt;$('#sbBell').textContent='Bell rang';return;}const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);
- $('#bell').textContent='Bell in '+(d?d+'d ':'')+h+'h'+(d?'':' '+m+'m')+' · '+bellAt;$('#sbBell').textContent='Bell in '+(d?d+'d ':'')+h+'h';};tick();setInterval(tick,30000);
-$('#wk').textContent='Week '+D.week;stamp($('#updTime'),D.updated_utc,(D.updates[0]||{}).date);$('#sbUpd').textContent='Updated '+(D.updated_utc?new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric'}).format(new Date(D.updated_utc))+', '+fmtTime.format(new Date(D.updated_utc)):(D.updates[0]||{}).date);
+const bellD=new Date(BELL),bellWk=new Intl.DateTimeFormat(undefined,{weekday:'short'}).format(bellD),bellTm=fmtTime.format(bellD),bellFull=fmtDay.format(bellD)+' '+bellTm;
+/* status bar: the bell in the viewer's own time zone; a countdown only in the last day */
+const tick=()=>{const sb=$('#sbBell'),ms=BELL-Date.now();sb.title='Ballots close at the bell: '+bellFull;
+ if(ms<=0){sb.textContent='Bell rang '+bellWk+' '+bellTm;return;}
+ if(ms<864e5){const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);sb.textContent='Bell in '+(h?h+'h ':'')+m+'m';return;}
+ sb.textContent='Bell '+bellWk+' '+bellTm;};tick();setInterval(tick,30000);
+$('#wk').textContent='Week '+D.week;stamp($('#updTime'),D.updated_utc,(D.updates[0]||{}).date);$('#sbUpd').textContent='Updated '+(D.updated_utc?new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(D.updated_utc)):(D.updates[0]||{}).date);
 
 /* fund switcher */
 FUNDS.forEach(f=>{const b=el('button','fbtn');b.type='button';b.setAttribute('role','tab');b.dataset.f=f.id;const hc=HOUSE[f.id]||['#453629','#fff'];b.style.setProperty('--fh',hc[0]);b.style.setProperty('--fhi',hc[1]);const sw=el('i','sw');sw.setAttribute('aria-hidden','true');b.append(sw,el('span',null,f.name));
@@ -282,7 +303,7 @@ function select(id,dx){SEL=id;const f=FI[id];
  drawWeek();drawTok();drawGrid();}
 
 /* views */
-$$('.vtab').forEach(t=>t.addEventListener('click',()=>{VIEW=t.dataset.v;$$('.vtab').forEach(x=>x.setAttribute('aria-selected',String(x===t)));$$('.view').forEach(v=>v.hidden=v.dataset.view!==VIEW);}));
+$$('.vtab').forEach(t=>t.addEventListener('click',()=>{const sc=document.getElementById('scroll'),vt=document.querySelector('.vtabs');if(sc&&vt&&sc.scrollTop>vt.offsetTop-12)sc.scrollTop=vt.offsetTop-12;VIEW=t.dataset.v;$$('.vtab').forEach(x=>x.setAttribute('aria-selected',String(x===t)));$$('.view').forEach(v=>v.hidden=v.dataset.view!==VIEW);}));
 
 function drawWeek(){const f=FI[SEL],H=f.history||[],ol=$('#wkList');ol.replaceChildren();
  H.slice().reverse().forEach((s,ri)=>{const i=H.length-1-ri,prev=i?H[i-1]:null;const li=el('li');
