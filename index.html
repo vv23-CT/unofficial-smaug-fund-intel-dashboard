@@ -169,6 +169,24 @@ html,body{height:100%;overflow:hidden}
 .scroll::-webkit-scrollbar-track{background:#d4d0c8;background-image:repeating-conic-gradient(#c0bcb4 0 25%,#d4d0c8 0 50%);background-size:2px 2px;border-left:1px solid #808080}
 .scroll::-webkit-scrollbar-thumb{background:#d4d0c8;border:1px solid;border-color:#fff #404040 #404040 #fff;box-shadow:inset -1px -1px 0 #808080,inset 1px 1px 0 #dfdfdf}
 .scroll::-webkit-scrollbar-button:single-button{display:block;height:16px;background:#d4d0c8;border:1px solid;border-color:#fff #404040 #404040 #fff}
+
+/* compact fund card */
+.fcard{padding:12px 12px 10px;gap:8px}
+.fc-head{gap:8px}
+.fc-head .txt{gap:3px}
+.fc-name{font-size:26px}
+.fc-backs{font-size:16px}
+.fc-when{font-size:11.5px}
+.portrait{height:64px;margin-bottom:-2px}
+@media (max-width:360px){.portrait{height:56px}}
+.leg{font-size:12px;gap:2px 10px}
+.stats{gap:6px;border-top:0;padding-top:0}
+.stat{padding:5px 8px;border-radius:8px;background:var(--card2);border:1px solid var(--line);gap:0}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat>span{font-size:10.5px;letter-spacing:.02em}
+.stat b{font-size:16px;line-height:1.2;white-space:nowrap}
+.stat b span{font:inherit;color:inherit;letter-spacing:0}
+.stat em{font-size:12px;vertical-align:1px}
 @media (min-width:700px){.page{padding:20px}}
 .vtabs{position:sticky;top:-12px;z-index:3;background:var(--panel);margin:0 -12px;padding:12px 12px 0}
 </style>
@@ -189,14 +207,13 @@ html,body{height:100%;overflow:hidden}
 <section class="fcard" id="fcard" aria-live="polite">
 <div class="fc-head"><div class="txt">
 <span class="fc-name" id="fcName">—</span>
-<span class="fc-motto" id="fcMotto"></span>
 <div class="fc-backs" id="fcBacks">—</div>
 <span class="fc-when">Room as of <time id="fcWhen">—</time></span>
 </div><img class="portrait" id="fcPic" alt="" width="92" height="108"></div>
 <div class="stack" id="fcStack" role="img" aria-label="Room split"></div>
 <div class="leg" id="fcLeg"></div>
 <div class="stats">
-<div class="stat"><span>Chairs</span><b id="stChairs">—</b><em id="stFloor"></em></div>
+<div class="stat"><span>Chairs</span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></div>
 <div class="stat"><span>$TMF held</span><b id="stTmf">—</b></div>
 <div class="stat"><span>Backed</span><b id="stBacked">—</b></div>
 </div>
@@ -291,14 +308,14 @@ function select(id,dx){SEL=id;const f=FI[id];
  $$('.fbtn').forEach(b=>{const on=b.dataset.f===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
  const c=$('#fcard');if(dx){c.style.setProperty('--dx',dx+'px');c.classList.remove('slide');void c.offsetWidth;c.classList.add('slide');}
  const hc=HOUSE[id]||['#453629','#fff',''];document.documentElement.style.setProperty('--house',hc[0]);document.documentElement.style.setProperty('--house-ink',hc[1]);
- $('#fcName').textContent=f.name;$('#fcMotto').textContent=hc[2];stamp($('#fcWhen'),f.asof_utc,f.asof);
+ $('#fcName').textContent=f.name;stamp($('#fcWhen'),f.asof_utc,f.asof);
  const pic=$('#fcPic');if(PICS[id]){pic.src=PICS[id];pic.hidden=false;}else pic.hidden=true;
  const b=backed(f);const fb=$('#fcBacks');fb.classList.toggle('none',!b.length);fb.textContent=b.length?'Backs '+b.map(([k,v])=>k+' '+P(v)).join(' · '):'Backs nothing yet: all to WETH';
  const parts=[['$TMF held',f.tmf_held,'repeating-linear-gradient(45deg,var(--tmf) 0 6px,var(--tmfstripe) 6px 12px)']].concat(b.map(([k,v],i)=>[k,v,COL[i%COL.length]]),[['WETH',f.room_weth,'var(--weth)']]);
  const st=$('#fcStack'),lg=$('#fcLeg');st.replaceChildren();lg.replaceChildren();
  parts.forEach(([l,v,fill])=>{const d=el('div');d.style.width=(v*100)+'%';d.style.background=fill;st.append(d);const s=el('span');const i=el('i');i.style.background=fill;s.append(i,l+' ');s.append(el('b',null,P(v)));lg.append(s);});
  st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+P(v)).join(', '));
- $('#stChairs').textContent=f.chairs;$('#stFloor').textContent=f.chairs>=f.floor?'✓ over 25 floor':'needs '+f.floor;$('#stTmf').textContent=P(f.tmf_held);$('#stBacked').textContent=b.length+' of '+D.tokens.length;
+ $('#stChairs').textContent=f.chairs;$('#stFloor').textContent=f.chairs>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=f.chairs>=f.floor?'Over the 25-chair floor: the dials move at the bell':'Below the 25-chair floor';$('#stTmf').textContent=P(f.tmf_held);$('#stBacked').textContent=b.length+' of '+D.tokens.length;
  try{localStorage.setItem('tfi-fund',id)}catch(e){}try{history.replaceState(null,'','#'+id)}catch(e){}
  drawWeek();drawTok();drawGrid();}
 
