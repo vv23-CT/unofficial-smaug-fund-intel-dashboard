@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;width:1200px;height:630px;background:#cfa89e;background-image:radial-gradient(#c0958b 1.6px,transparent 1.8px);background-size:28px 28px;font-family:Inter,"DejaVu Sans",Arial,sans-serif;color:#2b2320}
+.s{position:absolute;left:30px;top:30px;width:1140px;height:570px;box-sizing:border-box;border:4px solid #453629;border-radius:16px;overflow:hidden;background:#fbf5ea}
+.t{height:48px;background:#453629;color:#fbf5ea;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-weight:700;font-size:20px;letter-spacing:.04em}
+.w{display:flex;gap:6px}.w i{width:30px;height:22px;background:#d4d0c8;border:2px solid #fff;border-right-color:#404040;border-bottom-color:#404040}
+.b{padding:26px 44px}.bs{display:flex;gap:8px}.bg{font-weight:700;font-size:19px;padding:5px 15px;border-radius:99px;background:#ead6cf;box-shadow:inset 0 0 0 2px #e0c6bc}
+h1{font:400 50px/1.05 Georgia,"DejaVu Serif",serif;margin:20px 0 6px}
+p{font-size:23px;margin:0;color:#57423c}
+.rows{position:absolute;left:44px;right:44px;top:262px}
+.r{display:grid;grid-template-columns:110px 1fr 380px;align-items:center;gap:16px;height:46px}
+.r b{font:400 24px Georgia,"DejaVu Serif",serif}
+.bar{display:flex;height:22px;border-radius:6px;overflow:hidden}
+.bar div{height:100%}.tmf{background:repeating-linear-gradient(45deg,#a35846 0 8px,#d79a88 8px 16px)}.weth{background:#4a6ea2}
+.l{font-size:17px;font-weight:600;color:#57423c;white-space:nowrap}
+.ft{position:absolute;left:44px;bottom:22px;font-size:19px;color:#57423c}
+</style></head><body><div class="s"><div class="t"><span>TMF_FUND_INTEL.EXE</span><span class="w"><i></i><i></i><i></i></span></div>
+<div class="b"><div class="bs"><span class="bg">Unofficial</span><span class="bg">5 funds</span><span class="bg">Week 2</span><span class="bg" style="background:#a8235f;color:#fff;box-shadow:none">No recommendations</span></div>
+<h1>Unofficial TMF Fund Intel Dashboard</h1><p>What each room would do if the bell rang now</p></div>
+<div class="rows" id="rows"></div>
+<div class="ft">Unofficial community research by @vv23_CT · not financial advice</div></div>
+<script>
+const C=['#c08a2e','#4f8a5b','#8a64b5','#2f8580'];
+const F=__FUNDS__;
+const R=document.getElementById('rows');
+F.forEach(f=>{const r=document.createElement('div');r.className='r';const b=document.createElement('b');b.textContent=f.name;
+ const bar=document.createElement('div');bar.className='bar';const add=(w,cls,bg)=>{const d=document.createElement('div');d.style.width=(w*100)+'%';if(cls)d.className=cls;if(bg)d.style.background=bg;bar.append(d)};
+ add(f.tmf_held,'tmf');const t=Object.entries(f.room_tokens).sort((a,b)=>b[1]-a[1]);t.forEach(([k,v],i)=>add(v,null,C[i%4]));add(f.room_weth,'weth');
+ const l=document.createElement('div');l.className='l';l.textContent=t.length?t.map(([k,v])=>k+' '+(v*100).toFixed(2).replace(/\.?0+$/,'')+'%').join(' · '):'All WETH so far';
+ r.append(b,bar,l);R.append(r);});
+</script></body></html>

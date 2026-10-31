@@ -1,17 +1,17 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Unofficial SMAUG Fund Intel Dashboard</title>
-<meta name="description" content="Unofficial, sourced facts for the SMAUG fund's weekly vote in The Mutual Fun: prices, news, pool fill times, room backing and dates. No recommendations.">
+<title>Unofficial TMF Fund Intel Dashboard</title>
+<meta name="description" content="Unofficial, sourced facts on The Mutual Fun's five funds: what each fund's room is backing this week, token prices, pool fill times and key dates. No recommendations.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Unofficial SMAUG Fund Intel Dashboard · Week 2">
-<meta property="og:description" content="Sourced facts for this week's SMAUG vote: ETH news, every token's price, fees and fill times, room backing and key dates. Unofficial. No recommendations.">
+<meta property="og:title" content="Unofficial TMF Fund Intel Dashboard · Week 2">
+<meta property="og:description" content="What each fund's room is backing this week (ARGON, BOGLE, SMAUG, MIDAS, VLADD), with sourced token facts and key dates. Unofficial. No recommendations.">
 <meta property="og:image" content="https://vv23-ct.github.io/unofficial-smaug-fund-intel-dashboard/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Unofficial SMAUG Fund Intel Dashboard · Week 2">
-<meta name="twitter:description" content="Sourced facts for this week's SMAUG vote. Unofficial. No recommendations.">
+<meta name="twitter:title" content="Unofficial TMF Fund Intel Dashboard · Week 2">
+<meta name="twitter:description" content="What each fund's room is backing this week. Unofficial. No recommendations.">
 <meta name="twitter:image" content="https://vv23-ct.github.io/unofficial-smaug-fund-intel-dashboard/og.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2324406e'/%3E%3Crect x='6' y='6' width='52' height='14' rx='3' fill='%234a6ea2'/%3E%3Ctext x='32' y='52' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='26' text-anchor='middle' fill='%23ffffff'%3ESI%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2324406e'/%3E%3Crect x='6' y='6' width='52' height='14' rx='3' fill='%234a6ea2'/%3E%3Ctext x='32' y='52' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='26' text-anchor='middle' fill='%23ffffff'%3ETI%3C/text%3E%3C/svg%3E">
 <style>
 :root{--wall:#cfa89e;--speck:#c0958b;--panel:#fbf5ea;--fg:#2b2320;--muted:#57423c;--line:#e6cfc6;--pale:#ead6cf;--frame:#453629;--dash:#c99a8e;
 --good:#416943;--good-t:#356039;--bad:#9e2f26;--weth:#4a6ea2;--weth-t:#3d5f8f;--tmf:#a35846;--tmf-t:#8e4a3b;--match:#1f5fb8;
@@ -122,31 +122,7 @@ ul.news li::marker{color:var(--muted)}
 dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16px;font-size:14px}dl.rules dt{font-weight:700}dl.rules dd{margin:0}
 @media (max-width:640px){.facts{grid-template-columns:1fr 1fr}dl.rules{grid-template-columns:1fr}dl.rules dd{margin-bottom:6px}}
 
-.lede{margin:0;font-size:15px;max-width:640px}
-.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.fact{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
-.fact .tl{font-size:12px;font-weight:600;color:var(--muted)}.fact .tv{font:400 26px/1.2 var(--serif)}
-.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:0}
-.src{font-size:13px;color:var(--muted)}
-ul.news{margin:6px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:9px;font-size:14px}
-ul.news li::marker{color:var(--muted)}
-.tprice{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16px;font-size:14px}dl.rules dt{font-weight:700}dl.rules dd{margin:0}
-@media (max-width:640px){.facts{grid-template-columns:1fr 1fr}dl.rules{grid-template-columns:1fr}dl.rules dd{margin-bottom:6px}}
 
-.lede{margin:0;font-size:15px;max-width:640px}
-.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.fact{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
-.fact .tl{font-size:12px;font-weight:600;color:var(--muted)}.fact .tv{font:400 26px/1.2 var(--serif)}
-.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:0}
-.src{font-size:13px;color:var(--muted)}
-ul.news{margin:6px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:9px;font-size:14px}
-ul.news li::marker{color:var(--muted)}
-.tprice{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16px;font-size:14px}dl.rules dt{font-weight:700}dl.rules dd{margin:0}
-@media (max-width:640px){.facts{grid-template-columns:1fr 1fr}dl.rules{grid-template-columns:1fr}dl.rules dd{margin-bottom:6px}}
 .kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:-8px}
 .statusbar{display:flex;gap:3px;padding:3px;background:#d4d0c8;border-top:2px solid var(--frame);font-size:12px;color:#222}
 .statusbar span{flex:1;padding:2px 8px;border:1px solid;border-color:#808080 #fff #fff #808080;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -162,128 +138,185 @@ dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16p
 --good:#7cbf80;--good-t:#86c98a;--bad:#f08a7b;--weth:#6d93cb;--weth-t:#8eb0e0;--tmf:#c26d58;--tmf-t:#e29a86;--tmfstripe:#7d4537;--pink:#c23d76;
 --card:#271d19;--card2:#2a201b;--hover:#2c221e;--edge:#4a3830;--bellrow:#4b1e31}
 :root[data-theme="light"]{color-scheme:light}:root[data-theme="dark"]{color-scheme:dark}
-</style><script>try{var t=localStorage.getItem('sfi-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
-</head><body><div class="wrap">
 
+.ftabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.ftab{font:inherit;cursor:pointer;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:8px 10px;color:var(--fg);display:flex;flex-direction:column;gap:1px;min-width:0}
+.ftab b{font:400 17px/1.15 var(--serif);letter-spacing:.02em}
+.ftab span{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ftab:hover{background:var(--hover)}
+.ftab[aria-selected="true"]{border:2px solid var(--fg);padding:7px 9px;background:var(--card2)}
+.ftab:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.ftab .on{color:var(--fg);font-weight:600}
+h2.fh{margin:0;font:400 26px/1.15 var(--serif)}
+h2.fh small{display:block;font:600 12px/1.4 var(--sans);color:var(--muted);letter-spacing:.02em;margin-top:3px}
+.legend b{color:var(--fg);font-weight:600}
+table.ftable{width:100%;border-collapse:collapse;font-size:14px}
+table.ftable th{font-size:12px;font-weight:600;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.ftable td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.ftable tr:last-child td{border-bottom:0}
+table.ftable td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+table.ftable tbody tr{cursor:pointer}table.ftable tbody tr:hover{background:var(--hover)}
+table.ftable tr.sel td{background:var(--card2)}table.ftable tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--fg)}
+.ftablewrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
+.tag.on{background:var(--fg);color:var(--panel)}
+:root{--c1:#c08a2e;--c2:#4f8a5b;--c3:#8a64b5;--c4:#2f8580;--c5:#b85a75;--c6:#6b7b8f}
+@media (max-width:640px){.ftabs{grid-template-columns:repeat(3,minmax(0,1fr))}.ftab b{font-size:16px}table.ftable{font-size:13px}table.ftable th,table.ftable td{padding:7px 6px}}
+</style>
+<script>try{var t=localStorage.getItem('sfi-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head><body><div class="wrap">
 <section class="sheet" id="top" aria-labelledby="h-top">
-<div class="titlebar"><span>SMAUG_FUND_INTEL.EXE</span><span class="tbright"><button class="modebtn" id="modebtn" type="button" aria-label="Switch to dark mode" title="Light / dark">☾</button><span class="winbtns" aria-hidden="true"><i></i><i></i><i></i></span></span></div>
+<div class="titlebar"><span>TMF_FUND_INTEL.EXE</span><span class="tbright"><button class="modebtn" id="modebtn" type="button" aria-label="Switch to dark mode" title="Light / dark">☾</button><span class="winbtns" aria-hidden="true"><i></i><i></i><i></i></span></span></div>
 <div class="sheet-body">
 <div class="badges">
-<span class="badge neutral">SMAUG · Week 2</span>
+<span class="badge neutral" id="weekbadge">Week 2</span>
 <span class="badge" style="--acc:var(--pink)" id="bell">Bell Fri Nov 6 · 3pm ET</span>
 </div>
-<div class="kicker">Unofficial SMAUG Fund Intel Dashboard</div>
-<h1 id="h-top">This week's SMAUG ballot</h1>
-<p class="lede">Sourced facts for the Week 2 vote, each with its date and source. Nothing here is a recommendation; make your own call.</p>
-<div>
-<div class="tl" style="font-size:13px;font-weight:700;margin-bottom:6px">The fund now</div>
-<div class="stack" id="stack" role="img" aria-label="Fund split"></div>
+<div class="kicker">Unofficial TMF Fund Intel Dashboard</div>
+<h1 id="h-top">What each room is backing</h1>
+<p class="lede">The room is every card cast so far in a fund this week. Below is what each fund's room would do if the bell rang now, as the ballot shows it, plus sourced facts on every token. Nothing here is a recommendation; make your own call.</p>
+<div class="ftabs" role="tablist" aria-label="Funds" id="ftabs"></div>
+<div role="tabpanel" id="fpanel" aria-live="polite">
+<h2 class="fh" id="fh"></h2>
+<div style="margin-top:10px">
+<div class="stack" id="stack" role="img" aria-label="Room split"></div>
 <div class="legend" id="legend" style="margin-top:8px"></div>
 </div>
-<div class="facts" id="facts"></div>
-<p class="src" id="ballotsrc"></p>
+<div class="facts" id="facts" style="margin-top:14px"></div>
+<p class="src" id="fundsrc" style="margin-top:10px"></p>
+</div>
+<div>
+<div class="tl" style="font-size:13px;font-weight:700;margin-bottom:6px">All five funds</div>
+<div class="ftablewrap"><table class="ftable" id="ftable"><thead><tr><th>Fund</th><th>Chairs</th><th>$TMF held</th><th>The room backs</th></tr></thead><tbody></tbody></table></div>
+</div>
 <div class="changed" id="changed"></div>
 <p class="fine">Unofficial community research by @vv23_CT, not affiliated with The Mutual Fun. Not financial advice. Bell: Fri Nov 6, 20:00 UTC (3:00pm ET).</p>
 </div>
-<div class="statusbar"><span id="sb-upd">Updated —</span><span id="sb-tok">— tokens</span><span id="sb-bell">Bell —</span></div>
+<div class="statusbar"><span id="sb-upd">Updated —</span><span id="sb-tok">— funds</span><span id="sb-bell">Bell —</span></div>
 </section>
 
 <div class="list" id="rows">
-<div class="row" id="news"><button class="rowbtn" aria-expanded="false" aria-controls="p-news" style="--acc:var(--purple)"><span class="dot"></span><b>ETH this week</b><span class="sum" id="s-news"></span><span class="chev" aria-hidden="true">▸</span></button>
+<div class="row" id="tokens"><button class="rowbtn" aria-expanded="false" aria-controls="p-tokens"><span class="dot"></span><b>Every token</b><span class="sum" id="s-tokens"></span><span class="chev" aria-hidden="true">▸</span></button>
+<div class="panel" id="p-tokens"><div class="muted" id="tokintro"></div><div class="chips"><button class="chip" data-g="" aria-pressed="true">All</button><button class="chip" data-g="Stock" aria-pressed="false">Stock tokens</button><button class="chip" data-g="Stable" aria-pressed="false">Stablecoin</button><button class="chip" data-g="Meme" aria-pressed="false">Memes</button></div><div id="tok"></div></div></div>
+<div class="row" id="news"><button class="rowbtn" aria-expanded="false" aria-controls="p-news"><span class="dot"></span><b>ETH this week</b><span class="sum" id="s-news"></span><span class="chev" aria-hidden="true">▸</span></button>
 <div class="panel" id="p-news"><ul class="news" id="newslist"></ul></div></div>
-<div class="row" id="tokens"><button class="rowbtn" aria-expanded="false" aria-controls="p-tokens" style="--acc:var(--match)"><span class="dot"></span><b>Every token</b><span class="sum" id="s-tokens"></span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-tokens"><div class="muted">Prices and news with dates and sources. Fees, fill times and room backing are from the SMAUG ballot page (<span class="bdate"></span>). Open “details” for the on-chain price.</div><div class="chips"><button class="chip" data-g="" aria-pressed="true">All</button><button class="chip" data-g="Stock" aria-pressed="false">Stock tokens</button><button class="chip" data-g="Stable" aria-pressed="false">Stablecoin</button><button class="chip" data-g="Meme" aria-pressed="false">Memes</button></div><div id="tok"></div></div></div>
-<div class="row" id="market"><button class="rowbtn" aria-expanded="false" aria-controls="p-market" style="--acc:var(--violet)"><span class="dot"></span><b>ETH and the Market</b><span class="sum" id="s-market"></span><span class="chev" aria-hidden="true">▸</span></button>
+<div class="row" id="market"><button class="rowbtn" aria-expanded="false" aria-controls="p-market"><span class="dot"></span><b>ETH and the Market</b><span class="sum" id="s-market"></span><span class="chev" aria-hidden="true">▸</span></button>
 <div class="panel" id="p-market"><div class="tiles" id="mktTiles"></div></div></div>
-<div class="row" id="events"><button class="rowbtn" aria-expanded="false" aria-controls="p-events" style="--acc:var(--amber)"><span class="dot"></span><b>Next 14 days</b><span class="sum" id="s-events"></span><span class="chev" aria-hidden="true">▸</span></button>
+<div class="row" id="events"><button class="rowbtn" aria-expanded="false" aria-controls="p-events"><span class="dot"></span><b>Next 14 days</b><span class="sum" id="s-events"></span><span class="chev" aria-hidden="true">▸</span></button>
 <div class="panel" id="p-events"><div id="ev"></div></div></div>
-<div class="row" id="rules"><button class="rowbtn" aria-expanded="false" aria-controls="p-rules" style="--acc:var(--teal)"><span class="dot"></span><b>How the vote works</b><span class="sum" id="s-rules"></span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-rules"><dl class="rules" id="ruleslist"></dl><p class="src" style="margin-top:10px">Source: the weekly vote prompt by Muz and the SMAUG ballot page.</p></div></div>
-<div class="row" id="glossary"><button class="rowbtn" aria-expanded="false" aria-controls="p-glossary" style="--acc:var(--cyan)"><span class="dot"></span><b>Glossary</b><span class="sum" id="s-glossary"></span><span class="chev" aria-hidden="true">▸</span></button>
+<div class="row" id="rules"><button class="rowbtn" aria-expanded="false" aria-controls="p-rules"><span class="dot"></span><b>How the vote works</b><span class="sum" id="s-rules"></span><span class="chev" aria-hidden="true">▸</span></button>
+<div class="panel" id="p-rules"><dl class="rules" id="ruleslist"></dl><p class="src" style="margin-top:10px">Source: the weekly vote prompt by Muz and the TMF ballot pages.</p></div></div>
+<div class="row" id="glossary"><button class="rowbtn" aria-expanded="false" aria-controls="p-glossary"><span class="dot"></span><b>Glossary</b><span class="sum" id="s-glossary"></span><span class="chev" aria-hidden="true">▸</span></button>
 <div class="panel" id="p-glossary"><dl class="gloss" id="gloss"></dl></div></div>
-<div class="row" id="about"><button class="rowbtn" aria-expanded="false" aria-controls="p-about" style="--acc:var(--tmf)"><span class="dot"></span><b>About</b><span class="sum" id="s-about">Vibe coded by vv23 on a Smauggy Night</span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-about"><p class="about-title">The Unofficial SMAUG Fund Intel Dashboard</p><p>Vibe coded by <a href="https://x.com/vv23_CT" target="_blank" rel="noopener">vv23</a> on a Smauggy Night.</p><p>Original prompt by Muz (<a href="https://x.com/viper_moons" target="_blank" rel="noopener">@viper_moons</a>).</p></div></div>
+<div class="row" id="about"><button class="rowbtn" aria-expanded="false" aria-controls="p-about"><span class="dot"></span><b>About</b><span class="sum" id="s-about">Vibe coded by vv23 on a Smauggy Night</span><span class="chev" aria-hidden="true">▸</span></button>
+<div class="panel" id="p-about"><p class="about-title">The Unofficial TMF Fund Intel Dashboard</p><p>Vibe coded by <a href="https://x.com/vv23_CT" target="_blank" rel="noopener">vv23</a> on a Smauggy Night.</p><p>Original prompt by Muz (<a href="https://x.com/viper_moons" target="_blank" rel="noopener">@viper_moons</a>).</p></div></div>
 </div>
-
 </div>
 <script>
+/* light / dark toggle (works even if data fails to load) */
+(()=>{const b=document.getElementById('modebtn'),root=document.documentElement,mq=window.matchMedia('(prefers-color-scheme: dark)');
+ const cur=()=>root.dataset.theme||(mq.matches?'dark':'light');
+ const show=()=>{const d=cur()==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode');};
+ b.addEventListener('click',()=>{const n=cur()==='dark'?'light':'dark';if(n===(mq.matches?'dark':'light')){delete root.dataset.theme;try{localStorage.removeItem('sfi-theme')}catch(e){}}else{root.dataset.theme=n;try{localStorage.setItem('sfi-theme',n)}catch(e){}}show();});
+ mq.addEventListener&&mq.addEventListener('change',show);show();})();
+
 function main(D){
 const $=s=>document.querySelector(s), el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
 const okUrl=u=>/^https:\/\//.test(u||'');
 const link=(txt,u)=>{if(!okUrl(u))return document.createTextNode(txt);const a=el('a',null,txt);a.href=u;a.target='_blank';a.rel='noopener';return a;};
 const nf=d=>new Intl.NumberFormat('en-US',{maximumFractionDigits:d,minimumFractionDigits:d});
-const F={usd:v=>'$'+nf(2).format(v),usd0:v=>'$'+nf(0).format(v),pct:v=>(v>0?'+':v<0?'−':'')+nf(1).format(Math.abs(v*100))+'%',pctu:v=>nf(2).format(v*100).replace(/\.00$/,'')+'%',usdM:v=>(v<0?'−':'+')+'$'+nf(1).format(Math.abs(v))+'M',usdB:v=>'$'+nf(1).format(v)+'B',int:v=>nf(0).format(v)};
+const F={usd:v=>'$'+nf(2).format(v),usd0:v=>'$'+nf(0).format(v),pct:v=>(v>0?'+':v<0?'−':'')+nf(1).format(Math.abs(v*100))+'%',pctu:v=>nf(2).format(v*100).replace(/\.?0+$/,'')+'%',usdM:v=>(v<0?'−':'+')+'$'+nf(1).format(Math.abs(v))+'M',usdB:v=>'$'+nf(1).format(v)+'B',int:v=>nf(0).format(v)};
 const M=id=>D.market.find(r=>r.id===id);
 const strong=(t,color)=>{const s=el('strong',null,t);if(color)s.style.color=color;return s;};
-const pill=(t,acc,neutral)=>{const p=el('span','pill'+(neutral?' neutral':''),t);if(acc)p.style.setProperty('--acc',acc);return p;};
+const pill=t=>el('span','pill neutral',t);
+const FUNDS=D.funds, FI=Object.fromEntries(FUNDS.map(f=>[f.id,f]));
+const TOKCOL=['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c6)'];
+const backedList=f=>Object.entries(f.room_tokens).sort((a,b)=>b[1]-a[1]);
 
+$('#weekbadge').textContent='Week '+D.week;
 const BELL=Date.parse(D.bell_utc);
-function tick(){const b=$('#bell');const ms=BELL-Date.now();if(ms<=0){b.textContent='Bell rang · Fri Nov 6, 3pm ET';return;}
- const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);b.textContent='Bell in '+(d?d+'d ':'')+h+'h '+(d?'':m+'m ')+'· Fri 3pm ET';}
+function tick(){const b=$('#bell');const ms=BELL-Date.now();const sbb=$('#sb-bell');if(ms<=0){b.textContent='Bell rang · Fri Nov 6, 3pm ET';sbb.textContent='Bell rang';return;}
+ const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);b.textContent='Bell in '+(d?d+'d ':'')+h+'h '+(d?'':m+'m ')+'· Fri 3pm ET';sbb.textContent='Bell in '+(d?d+'d ':'')+h+'h';}
 tick();setInterval(tick,30000);
 (()=>{const u=D.updates||[];if(!u.length)return;$('#sb-upd').textContent='Updated '+u[0].date;const c=$('#changed');const p=el('div');p.append(el('b',null,'What changed · '+u[0].date),u[0].text);c.append(p);
  if(u.length>1){const d=el('details');d.append(el('summary',null,'Earlier updates'));u.slice(1).forEach(x=>d.append(el('div',null,x.date+': '+x.text)));c.append(d);}})();
+$('#sb-tok').textContent=FUNDS.length+' funds · '+D.tokens.length+' tokens';
 
-/* the fund now (from the ballot) */
-const tmf=M('tmf_held'),weth=M('weth_now');
-[[tmf,'repeating-linear-gradient(45deg,var(--tmf) 0 7px,var(--tmfstripe) 7px 14px)','#a35846','$TMF held'],[weth,'var(--weth)','var(--weth)','WETH']].forEach(([r,fill,sw,lab])=>{
- const d=el('div');d.style.width=(r.value*100)+'%';d.style.background=fill;$('#stack').append(d);
- const s=el('span');const i=el('i');i.style.background=fill;s.append(i,lab+' '+F.pctu(r.value));$('#legend').append(s);});
-$('#stack').setAttribute('aria-label','$TMF held '+F.pctu(tmf.value)+', WETH '+F.pctu(weth.value));
-{const n=el('span',null,'Figures as shown on the ballot.');$('#legend').append(n);}
-const fact=(label,val,note,color)=>{const f=el('div','fact');f.append(el('div','tl',label));const v=el('div','tv',val);if(color)v.style.color=color;f.append(v);if(note)f.append(el('div','ts',note));$('#facts').append(f);};
-fact('Chairs voting',F.int(M('turnout').value),'25 needed for the dials to change');
-fact('Tokens the room backs',F.int(M('room_backed').value),'Every token shows \u201cvetoed so far\u201d');
-fact('ETH price',F.usd0(M('eth').value),F.pct(M('eth_1w').value)+' over 7 days · '+M('eth').asof);
-const bs=$('#ballotsrc');bs.append('Fund split, chairs and backing: ',link('SMAUG ballot page','https://themutual.fun/'),', screenshot '+M('turnout').asof+'. ETH: ',link('CoinMarketCap',M('eth').url),', '+M('eth').asof+'.');
+/* fund tabs */
+let SEL=(()=>{const h=location.hash.slice(1).toLowerCase();if(FI[h])return h;try{const s=localStorage.getItem('tfi-fund');if(FI[s])return s}catch(e){}return FI.smaug?'smaug':FUNDS[0].id;})();
+const roomShort=f=>{const b=backedList(f);return b.length?'Backs '+b.length+' token'+(b.length>1?'s':''):'All WETH';};
+FUNDS.forEach(f=>{const t=el('button','ftab');t.type='button';t.setAttribute('role','tab');t.id='tab-'+f.id;t.dataset.f=f.id;t.setAttribute('aria-controls','fpanel');
+ t.append(el('b',null,f.name));const s=el('span',backedList(f).length?'on':null,roomShort(f));t.append(s);t.append(el('span',null,f.chairs+' chairs'));
+ t.addEventListener('click',()=>select(f.id,true));$('#ftabs').append(t);});
+/* five-fund table */
+FUNDS.forEach(f=>{const tr=el('tr');tr.dataset.f=f.id;const b=backedList(f);
+ const td1=el('td');td1.append(strong(f.name));tr.append(td1);
+ tr.append(el('td','n',f.chairs+' of '+f.floor),el('td','n',F.pctu(f.tmf_held)));
+ tr.append(el('td',null,b.length?b.map(([k,v])=>k+' '+F.pctu(v)).join(' · '):'Nothing yet: all to WETH'));
+ tr.addEventListener('click',()=>select(f.id,true));$('#ftable tbody').append(tr);});
+
+function select(id,user){SEL=id;const f=FI[id];
+ document.querySelectorAll('.ftab').forEach(t=>{const on=t.dataset.f===id;t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;});
+ document.querySelectorAll('#ftable tbody tr').forEach(r=>r.classList.toggle('sel',r.dataset.f===id));
+ $('#fpanel').setAttribute('aria-labelledby','tab-'+id);
+ const fh=$('#fh');fh.replaceChildren(f.name+': the room, if the bell rang now');fh.append(el('small',null,'From the '+f.name+' ballot, Match the room view · '+f.asof));
+ const st=$('#stack'),lg=$('#legend');st.replaceChildren();lg.replaceChildren();
+ const parts=[['$TMF held',f.tmf_held,'repeating-linear-gradient(45deg,var(--tmf) 0 7px,var(--tmfstripe) 7px 14px)']];
+ backedList(f).forEach(([k,v],i)=>parts.push([k,v,TOKCOL[i%TOKCOL.length]]));
+ parts.push(['WETH',f.room_weth,'var(--weth)']);
+ parts.forEach(([lab,v,fill])=>{const d=el('div');d.style.width=(v*100)+'%';d.style.background=fill;st.append(d);
+  const s=el('span');const i=el('i');i.style.background=fill;s.append(i,lab+' ');s.append(el('b',null,F.pctu(v)));lg.append(s);});
+ st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+F.pctu(v)).join(', '));
+ const fx=$('#facts');fx.replaceChildren();
+ const fact=(label,val,note)=>{const c=el('div','fact');c.append(el('div','tl',label),el('div','tv',val));if(note)c.append(el('div','ts',note));fx.append(c);};
+ fact('Chairs voting',F.int(f.chairs),f.chairs>=f.floor?f.floor+' needed: the dials move at the bell':f.floor+' needed for the dials to change');
+ const nb=backedList(f).length;fact('Tokens the room backs',F.int(nb),nb?'Each has cards from at least half the weight cast':'Every token is vetoed so far or has no cards');
+ fact('$TMF held',F.pctu(f.tmf_held),'Kept by the fund, never sold');
+ const fs=$('#fundsrc');fs.replaceChildren('Room split, chairs and $TMF: ',link(f.name+' ballot page',f.url),', capture '+f.asof+'. The ballot\u2019s room bar rounds $TMF held to a whole percent, so the parts may not add to exactly 100%.');
+ if(user){try{localStorage.setItem('tfi-fund',id)}catch(e){}history.replaceState(null,'','#'+id);}
+ drawTok();sumTok();}
+$('#ftabs').addEventListener('keydown',e=>{const i=FUNDS.findIndex(f=>f.id===SEL);let n=null;if(e.key==='ArrowRight')n=(i+1)%FUNDS.length;if(e.key==='ArrowLeft')n=(i-1+FUNDS.length)%FUNDS.length;if(n!=null){e.preventDefault();select(FUNDS[n].id,true);document.getElementById('tab-'+FUNDS[n].id).focus();}});
 
 /* row summaries */
-$('#s-news').append('ETH ',strong(F.usd0(M('eth').value)),' · ',strong(F.pct(M('eth_1w').value),M('eth_1w').value<0?'var(--bad)':'var(--good-t)'),' 7d · ETF outflows 4 days through Oct 29 · ',strong(D.news.length+' items'));
-const slow=D.tokens.filter(r=>r.slow).length,backed=D.tokens.filter(r=>!/vetoed|Not shown/.test(r.backing)).length;
-$('#s-tokens').append(pill(D.tokens.length+' tokens',null,true),pill(slow+' slow to fill',null,true),pill(backed+' backed by the room',null,true));
+$('#s-news').append('ETH ',strong(F.usd0(M('eth').value)),' · ',strong(F.pct(M('eth_1w').value),M('eth_1w').value<0?'var(--bad)':'var(--good-t)'),' 7d · ',strong(D.news.length+' items'));
+function sumTok(){const f=FI[SEL];const s=$('#s-tokens');s.replaceChildren();const nb=backedList(f).length;const slow=Object.keys(f.fills).length;
+ s.append(pill(D.tokens.length+' tokens'),pill(f.name+': '+nb+' backed'),pill(slow+' slow to fill'));}
 $('#s-market').append('BTC ',strong(F.usd0(M('btc').value)),' · Nasdaq ',strong(F.pct(M('nasdaq').value),'var(--bad)'),' Oct 30 · Fear ',strong(F.int(M('fng').value)));
 (()=>{const today=new Date().toISOString().slice(0,10);const up=D.events.filter(e=>e.key&&e.date>=today&&!/Bell/.test(e.short)).slice(0,2);const s=$('#s-events');up.forEach((e,i)=>{if(i)s.append(' · ');s.append(/Jobs/.test(e.short)?strong(e.short,'var(--pink)'):e.short);});})();
 $('#s-rules').append(strong(D.rules.length+' rules'),': 25% cap, 50% backing, 25-chair floor, the dials');
-$('#s-glossary').append(strong(D.glossary.length+' terms'),': WETH, cards, backing, the dials and more');
+$('#s-glossary').append(strong(D.glossary.length+' terms'),': the room, WETH, backing, the dials and more');
 
-document.querySelectorAll('.bdate').forEach(e=>e.textContent=M('turnout').asof);
-$('#sb-tok').textContent=D.tokens.length+' tokens';
-function sb(){const ms=BELL-Date.now();const d=Math.floor(ms/864e5),hh=Math.floor(ms%864e5/36e5);$('#sb-bell').textContent=ms<=0?'Bell rang':'Bell in '+(d?d+'d ':'')+hh+'h';}sb();setInterval(sb,30000);
-/* light / dark toggle */
-(()=>{const b=$('#modebtn'),root=document.documentElement,mq=window.matchMedia('(prefers-color-scheme: dark)');
- const cur=()=>root.dataset.theme||(mq.matches?'dark':'light');
- const show=()=>{const d=cur()==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode');};
- b.addEventListener('click',()=>{const n=cur()==='dark'?'light':'dark';if(n===(mq.matches?'dark':'light')){delete root.dataset.theme;try{localStorage.removeItem('sfi-theme')}catch(e){}}else{root.dataset.theme=n;try{localStorage.setItem('sfi-theme',n)}catch(e){}}show();});
- mq.addEventListener&&mq.addEventListener('change',show);show();})();
 /* panels */
 D.news.forEach(n=>{const li=el('li');li.append(el('b',null,n.head+'. '),n.text+' ');const m=el('span','muted');m.append('(',link(n.source,n.url),')');li.append(m);$('#newslist').append(li);});
 const tile=(r,box)=>{const t=el('div','tile');t.append(el('div','tl',r.label));const v=el('div','tv',r.value==null?'—':(F[r.fmt]||F.int)(Number(r.value)));if(r.fmt==='pct'||r.fmt==='usdM')v.classList.add(r.value<0?'down':'up');t.append(v);const s=el('div','ts');s.append(r.asof+' · ');s.append(link(r.source,r.url));t.append(s);box.append(t);};
-['eth','eth_1w','eth_etf','btc','nasdaq','gold','fng','hack'].forEach(id=>tile(M(id),$('#mktTiles')));
+D.market.forEach(r=>tile(r,$('#mktTiles')));
 D.events.forEach(r=>{const e=el('div','ev'+(/Closing Bell/.test(r.event)?' bell':''));const w=el('div','when',r.when_et);w.append(el('span',null,r.when_utc+(/\d:\d/.test(r.when_utc)?' UTC':'')));const t=el('div','what',r.event);t.append(el('span','moves','Affects: '+r.tokens));const s=el('div','src');s.append(link(r.source,r.url));e.append(w,t,s);$('#ev').append(e);});
 D.rules.forEach(r=>$('#ruleslist').append(el('dt',null,r.rule),el('dd',null,r.text)));
 D.glossary.forEach(g=>$('#gloss').append(el('dt',null,g.term),el('dd',null,g.def)));
 
-/* token cards: facts only */
+/* token cards: shared facts + the selected fund's room and fill */
 let G='';
 const GROUPS=[['Stable','Stablecoin'],['Stock','Stock tokens'],['Meme','Memes']];
-function card(r){const c=el('article','tcard');
- const hd=el('div','thead');hd.append(el('span','tname',r.token));const tp=el('span','tprice',r.onchain);hd.append(tp);c.append(hd);
+function card(r){const f=FI[SEL];const c=el('article','tcard');
+ const hd=el('div','thead');hd.append(el('span','tname',r.token),el('span','tprice',r.onchain));c.append(hd);
  c.append(el('div','tline',r.price));
  if(r.news&&r.news!=='—')c.append(el('div','tline muted',r.news));
  const tg=el('div','tags');tg.append(el('span','tag',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'));
- tg.append(el('span','tag'+(r.slow?' warn':''),r.slow?r.fill.replace(' to a quarter',' to fill'):r.fill));
- tg.append(el('span','tag'+(/vetoed/.test(r.backing)?' warn':''),/vetoed/.test(r.backing)?'Room: no backing yet':'Room: '+r.backing));c.append(tg);
- const s=el('div','src');s.append('Source: ',link(r.source,r.url),' · fee, fill and backing: ballot, '+M('turnout').asof);c.append(s);return c;}
-function drawTok(){const box=$('#tok');box.replaceChildren();
+ const st=f.status[r.token],pct=f.room_tokens[r.token];
+ tg.append(el('span','tag'+(st==='backed'?' on':' warn'),f.name+' room: '+(st==='backed'?F.pctu(pct):st==='vetoed'?'vetoed so far':'no cards yet')));
+ const fl=f.fills[r.token];
+ tg.append(el('span','tag'+(fl?' warn':''),fl?'~'+fl.n+' Fridays to fill':(f.not_in_capture.includes(r.token)?'Fill: not in capture':'No slow-fill warning')));c.append(tg);
+ const s=el('div','src');s.append('Source: ',link(r.source,r.url),' · room and fill: '+f.name+' ballot, '+(fl?fl.asof:f.asof));c.append(s);return c;}
+function drawTok(){const box=$('#tok');box.replaceChildren();const f=FI[SEL];
+ $('#tokintro').textContent='Prices and news with dates and sources. Room status and fill times are for '+f.name+' (switch funds at the top). On-chain prices are the same on every fund\u2019s ballot.';
  GROUPS.forEach(([g,label])=>{if(G&&G!==g)return;const rs=D.tokens.filter(r=>r.group===g);if(!rs.length)return;const h=el('div','tgh',label+' ');h.append(el('span',null,'· '+rs.length));const grid=el('div','tgrid');rs.forEach(r=>grid.append(card(r)));box.append(h,grid);});}
-drawTok();
 document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{G=b.dataset.g;document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawTok();}));
+select(SEL,false);
 
-const KEY='svd-rows-v4';const st=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}})();
+const KEY='tfi-rows-v1';const st=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}})();
 const setRow=(row,open)=>{row.classList.toggle('open',open);row.querySelector('.rowbtn').setAttribute('aria-expanded',String(open));st[row.id]=open;try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
 document.querySelectorAll('.row').forEach(row=>{if(st[row.id])setRow(row,true);row.querySelector('.rowbtn').addEventListener('click',()=>setRow(row,!row.classList.contains('open')));});
 const h=location.hash.slice(1);const target=h&&document.getElementById(h);if(target&&target.classList.contains('row')){setRow(target,true);target.scrollIntoView();}
-
+window.addEventListener('hashchange',()=>{const x=location.hash.slice(1).toLowerCase();if(FI[x])select(x,false);});
 }
-fetch('data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(main).catch(e=>{const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.querySelector('.sheet-body').prepend(p);});
+fetch('data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.querySelector('.sheet-body').prepend(p);});
 </script></body></html>
