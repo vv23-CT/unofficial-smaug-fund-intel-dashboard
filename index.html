@@ -10,10 +10,10 @@
 <meta name="twitter:title" content="SMAUG Vote Desk · Week 2">
 <meta name="twitter:description" content="ETH looks down to flat. My card: USDG 25%, rest in WETH, no memes. Unofficial, not financial advice.">
 <meta name="twitter:image" content="https://vv23-ct.github.io/unofficial-smaug-vote-desk/og.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a246a'/%3E%3Crect x='6' y='6' width='52' height='14' rx='3' fill='%233a6ea5'/%3E%3Ctext x='32' y='52' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='26' text-anchor='middle' fill='%23ffffff'%3ETMF%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2324406e'/%3E%3Crect x='6' y='6' width='52' height='14' rx='3' fill='%234a6ea2'/%3E%3Ctext x='32' y='52' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='26' text-anchor='middle' fill='%23ffffff'%3ESV%3C/text%3E%3C/svg%3E">
 <style>
-:root{--bg:#f6f4ef;--panel:#ffffff;--fg:#1d1b22;--muted:#686473;--line:#e3dfd6;--grid:#ece8df;
---eth:#7b61ff;--btc:#f7931a;--mkt:#2f80ed;--gold:#c99212;--bad:#d93f45;--good:#14965a;--pink:#d63384;--teal:#0e9c9c;--tmf:#e2683c;
+:root{--bg:#f1ebdf;--panel:#fcf8ee;--fg:#2b2722;--muted:#6f6b64;--line:#e2d8c5;--grid:#ebe2d0;
+--eth:#7b61ff;--btc:#f7931a;--mkt:#2f80ed;--gold:#c99212;--bad:#c2453a;--good:#416943;--weth:#4a6ea2;--pink:#d63384;--teal:#0e9c9c;--tmf:#a35846;
 --serif:Georgia,"Times New Roman",serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--r:10px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15141a;--panel:#1f1d26;--fg:#efedf3;--muted:#a19cad;--line:#33303d;--grid:#2c2935}}
 :root[data-theme="dark"]{--bg:#15141a;--panel:#1f1d26;--fg:#efedf3;--muted:#a19cad;--line:#33303d;--grid:#2c2935}
@@ -26,8 +26,8 @@ h2::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--
 p{margin:0}
 .muted{color:var(--muted);font-size:13px}
 a{color:inherit}
-.hero{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--eth) 22%,var(--panel)),color-mix(in srgb,var(--teal) 18%,var(--panel)) 60%,color-mix(in srgb,var(--pink) 16%,var(--panel)))}
-.titlebar{display:flex;justify-content:space-between;align-items:center;padding:5px 10px;background:linear-gradient(90deg,#0a246a,#3a6ea5 55%,#a6caf0);color:#fff;font-size:12px;font-weight:700;letter-spacing:.03em}
+.hero{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:linear-gradient(135deg,var(--panel),color-mix(in srgb,var(--tmf) 9%,var(--panel)) 55%,color-mix(in srgb,var(--weth) 10%,var(--panel)))}
+.titlebar{display:flex;justify-content:space-between;align-items:center;padding:5px 10px;background:linear-gradient(90deg,#24406e,var(--weth) 55%,#9db6d6);color:#fff;font-size:12px;font-weight:700;letter-spacing:.03em}
 .winbtns{display:flex;gap:3px}.winbtns i{width:14px;height:12px;background:#d4d0c8;border:1px solid #fff;border-right-color:#404040;border-bottom-color:#404040}
 .herobody{padding:20px;display:flex;flex-direction:column;gap:10px}
 .badges{display:flex;flex-wrap:wrap;gap:6px}
@@ -125,7 +125,7 @@ footer{font-size:12px;color:var(--muted);text-align:center}
 <header class="hero">
 <div class="titlebar"><span>SMAUG_VOTE_DESK.EXE</span><span class="winbtns" aria-hidden="true"><i></i><i></i><i></i></span></div>
 <div class="herobody">
-<div class="badges"><span class="badge" style="--acc:var(--teal)">SMAUG</span><span class="badge" style="--acc:var(--eth)">Week 2</span><span class="badge" style="--acc:#b07d06">ETH: down to flat</span><span class="badge" style="--acc:var(--pink)" id="bell">Bell Fri Nov 6 · 3pm ET</span><span class="badge" style="--acc:#4b5563" id="updated">Updated —</span></div>
+<div class="badges"><span class="badge" style="--acc:#6f6b64">Unofficial</span><span class="badge" style="--acc:var(--teal)">SMAUG</span><span class="badge" style="--acc:var(--eth)">Week 2</span><span class="badge" style="--acc:#b07d06">ETH: down to flat</span><span class="badge" style="--acc:var(--pink)" id="bell">Bell Fri Nov 6 · 3pm ET</span><span class="badge" style="--acc:#4b5563" id="updated">Updated —</span></div>
 <h1>SMAUG Vote Desk</h1>
 <p class="lede">ETH looks <b>down to flat</b> for the next 1–2 weeks, so my card stays defensive: <b id="usdgPct">—</b> of the fund in USDG and <b id="wethPct">—</b> in WETH, with no memes this week. Right now the room backs no token at all, so USDG only lands if enough of us vote for it.</p>
 <div class="changed" id="changed"></div>
@@ -210,7 +210,7 @@ D.market.filter(r=>room.includes(r.id)).forEach(r=>tile(r,$('#roomTiles')));
 D.market.filter(r=>!room.includes(r.id)).forEach(r=>tile(r,$('#mktTiles')));
 D.ethcall.forEach(r=>{const li=el('li');li.append(el('b',null,r.reason+'. '),r.detail+' ');const s=el('span','muted');s.append('(',link(r.source,r.url),')');li.append(s);$('#reasons').append(li);});
 const alloc=D.card.filter(r=>r.kind==='alloc'),dial=n=>D.card.find(r=>r.item===n);
-const col=i=>i==='WETH'?'linear-gradient(90deg,#5b46d6,var(--eth))':i==='Memes'?'var(--gold)':/TMF/.test(i)?'repeating-linear-gradient(45deg,var(--tmf) 0 6px,color-mix(in srgb,var(--tmf) 70%,#fff) 6px 12px)':'linear-gradient(90deg,#0f8a4a,var(--good))';
+const col=i=>i==='WETH'?'var(--weth)':i==='Memes'?'var(--gold)':/TMF/.test(i)?'repeating-linear-gradient(45deg,var(--tmf) 0 6px,color-mix(in srgb,var(--tmf) 65%,#fff) 6px 12px)':'var(--good)';
 alloc.forEach(r=>{const b=el('div','bar');b.append(el('div',null,r.item));const tr=el('div','track'),f=el('div','fill');f.style.width=Math.min(100,Math.max(0,r.value))+'%';f.style.background=col(r.item);tr.append(f);b.append(tr,el('div',null,r.value+'%'));b.lastChild.style.textAlign='right';b.append(el('div','note',r.note.replace(/Untick.*$/,'')));$('#bars').append(b);});
 const u=alloc.find(r=>r.item==='USDG'),w=alloc.find(r=>r.item==='WETH');$('#usdgPct').textContent=u?u.value+'%':'—';$('#wethPct').textContent=w?w.value+'%':'—';
 $('#dialPT').textContent=dial('Profit take').value+'%';$('#dialER').textContent=dial('Expense ratio').value+'%';
