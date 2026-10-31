@@ -12,13 +12,13 @@
 <meta name="twitter:image" content="https://vv23-ct.github.io/unofficial-smaug-vote-desk/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2324406e'/%3E%3Crect x='6' y='6' width='52' height='14' rx='3' fill='%234a6ea2'/%3E%3Ctext x='32' y='52' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='26' text-anchor='middle' fill='%23ffffff'%3ESV%3C/text%3E%3C/svg%3E">
 <style>
-:root{--bg:#f1ebdf;--panel:#fcf8ee;--fg:#2b2722;--muted:#6f6b64;--line:#e2d8c5;--grid:#ebe2d0;
+:root{--bg:#cfa89e;--speck:#c0958b;--panel:#fbf5ea;--fg:#2b2320;--muted:#6b524b;--line:#e6cfc6;--grid:#ead6cf;--frame:#453629;--good-t:#356039;--bad-t:#9e2f26;--accent-t:#5a43d1;
 --eth:#7b61ff;--btc:#f7931a;--mkt:#2f80ed;--gold:#c99212;--bad:#c2453a;--good:#416943;--weth:#4a6ea2;--pink:#d63384;--teal:#0e9c9c;--tmf:#a35846;
 --serif:Georgia,"Times New Roman",serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--r:10px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15141a;--panel:#1f1d26;--fg:#efedf3;--muted:#a19cad;--line:#33303d;--grid:#2c2935}}
-:root[data-theme="dark"]{--bg:#15141a;--panel:#1f1d26;--fg:#efedf3;--muted:#a19cad;--line:#33303d;--grid:#2c2935}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a1f21;--speck:#33272a;--panel:#211a1c;--fg:#f1e9e6;--muted:#c9b0aa;--line:#45333a;--grid:#3d2b2f;--frame:#5d4a3a;--good-t:#8fcf95;--bad-t:#ff958b;--accent-t:#b3a6ff}}
+:root[data-theme="dark"]{--bg:#2a1f21;--speck:#33272a;--panel:#211a1c;--fg:#f1e9e6;--muted:#c9b0aa;--line:#45333a;--grid:#3d2b2f;--frame:#5d4a3a;--good-t:#8fcf95;--bad-t:#ff958b;--accent-t:#b3a6ff}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--sans)}
+body{margin:0;background-color:var(--bg);background-image:radial-gradient(var(--speck) 1.4px,transparent 1.6px),radial-gradient(var(--speck) 1.4px,transparent 1.6px);background-size:46px 46px,46px 46px;background-position:0 0,23px 29px;color:var(--fg);font:15px/1.5 var(--sans)}
 .wrap{max-width:1200px;margin:0 auto;padding:20px 16px 40px;display:flex;flex-direction:column;gap:22px}
 h1{font:400 clamp(24px,4vw,34px)/1.15 var(--serif);margin:0}
 h2{font-size:17px;font-weight:600;margin:0 0 6px;display:flex;align-items:center;gap:8px}
@@ -26,26 +26,27 @@ h2::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--
 p{margin:0}
 .muted{color:var(--muted);font-size:13px}
 a{color:inherit}
-.hero{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:linear-gradient(135deg,var(--panel),color-mix(in srgb,var(--tmf) 9%,var(--panel)) 55%,color-mix(in srgb,var(--weth) 10%,var(--panel)))}
-.titlebar{display:flex;justify-content:space-between;align-items:center;padding:5px 10px;background:linear-gradient(90deg,#24406e,var(--weth) 55%,#9db6d6);color:#fff;font-size:12px;font-weight:700;letter-spacing:.03em}
+.hero{border:2px solid var(--frame);border-radius:var(--r);overflow:hidden;background:var(--panel)}
+.titlebar{display:flex;justify-content:space-between;align-items:center;padding:5px 10px;background:var(--frame);color:#fff;font-size:12px;font-weight:700;letter-spacing:.03em}
 .winbtns{display:flex;gap:3px}.winbtns i{width:14px;height:12px;background:#d4d0c8;border:1px solid #fff;border-right-color:#404040;border-bottom-color:#404040}
 .herobody{padding:20px;display:flex;flex-direction:column;gap:10px}
 .badges{display:flex;flex-wrap:wrap;gap:6px}
 .changed{font-size:13px;padding:7px 10px;border-radius:8px;background:color-mix(in srgb,var(--panel) 70%,transparent);border:1px solid var(--line);max-width:60rem}
-.changed b{font-weight:700;margin-right:6px;color:var(--eth)}
+.changed b{font-weight:700;margin-right:6px;color:var(--accent-t)}
 .changed details{margin-top:4px}.changed summary{cursor:pointer;font-size:12px;color:var(--muted)}
+.badge.neutral{background:var(--grid);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line)}
 .badge{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;color:#fff;background:var(--acc)}
 .lede{max-width:60rem;font-size:16px}
 .lede b{font-weight:700;padding:0 6px;border-radius:6px;background:color-mix(in srgb,var(--good) 22%,transparent)}
 .card{background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--acc,var(--mkt));border-radius:var(--r);padding:20px;min-width:0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:16px;align-items:start}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,10.5rem),1fr));gap:10px}
-.tile{position:relative;overflow:hidden;padding:14px 14px 12px 18px;border-radius:var(--r);border:1px solid color-mix(in srgb,var(--acc) 35%,var(--line));background:linear-gradient(160deg,color-mix(in srgb,var(--acc) 16%,var(--panel)),var(--panel) 70%)}
+.tile{position:relative;overflow:hidden;padding:14px 14px 12px 18px;border-radius:var(--r);border:1px solid color-mix(in srgb,var(--acc) 35%,var(--line));background:var(--panel)}
 .tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--acc)}
 .tl{font-size:12px;font-weight:700;color:var(--muted)}
 .tv{font:400 28px/1.2 var(--serif);margin:4px 0;font-variant-numeric:tabular-nums}
 .ts{font-size:12px;color:var(--muted)}
-.up{color:var(--good)}.down{color:var(--bad)}
+.up{color:var(--good-t)}.down{color:var(--bad-t)}
 .call{display:inline-block;font:400 24px var(--serif);margin:6px 0 10px;padding:2px 12px;border-radius:var(--r);background:color-mix(in srgb,var(--gold) 18%,transparent);color:color-mix(in srgb,var(--gold) 75%,var(--fg))}
 ol{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:10px}
 ol li::marker{color:var(--eth);font-weight:700}
@@ -55,12 +56,12 @@ ol li::marker{color:var(--eth);font-weight:700}
 .fill{height:100%;border-radius:var(--r)}
 .note{grid-column:2/4;font-size:12px;font-weight:400;color:var(--muted);margin-top:-6px}
 .dials{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
-.dial{flex:1;min-width:8rem;padding:10px 14px;border-radius:var(--r);background:color-mix(in srgb,var(--acc) 14%,var(--panel));border:1px solid color-mix(in srgb,var(--acc) 35%,transparent)}
+.dial{flex:1;min-width:8rem;padding:10px 14px;border-radius:var(--r);background:var(--grid);border:1px solid var(--line);border-left:4px solid var(--acc)}
 .big{font:400 26px var(--serif)}
-.post{margin-top:12px;padding:12px 14px;border-radius:var(--r);border:1px dashed color-mix(in srgb,var(--good) 50%,var(--line));background:color-mix(in srgb,var(--good) 7%,var(--panel))}
+.post{margin-top:12px;padding:12px 14px;border-radius:var(--r);border:1px dashed #c99a8e;background:var(--grid)}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
 .chip{font:inherit;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
-.chip[aria-pressed="true"]{background:linear-gradient(90deg,var(--mkt),var(--eth));color:#fff;border-color:transparent}
+.chip[aria-pressed="true"]{background:var(--frame);color:#fff;border-color:transparent}
 .scroll{overflow:auto;max-height:38rem;border-radius:6px}
 table{border-collapse:collapse;width:100%;font-size:13px}
 th{position:sticky;top:0;text-align:left;white-space:nowrap;padding:8px;background:color-mix(in srgb,var(--acc,var(--mkt)) 14%,var(--panel));border-bottom:2px solid var(--acc,var(--mkt))}
@@ -68,10 +69,10 @@ td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
 tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--acc,var(--mkt)) 4%,transparent)}
 .tok td{min-width:7rem}.tok td:nth-child(-n+5){min-width:0;white-space:nowrap}
 .tok td:nth-child(6),.tok td:nth-child(7),.tok td:nth-child(8){min-width:12rem}
-.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;font-style:normal;color:#fff;background:#646a73}
-.pill.up{background:var(--good)}.pill.down{background:var(--bad)}.pill.match{background:var(--mkt)}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;font-style:normal;color:var(--fg);background:var(--grid);box-shadow:inset 0 0 0 1px var(--line)}
+.pill.up{background:var(--good);color:#fff;box-shadow:none}.pill.down{background:var(--bad);color:#fff;box-shadow:none}.pill.match{background:#1f5fb8;color:#fff;box-shadow:none}
 .pct{display:inline-block;min-width:2.6rem;text-align:center;padding:1px 6px;border-radius:6px;font-weight:700}
-.pct.on{background:color-mix(in srgb,var(--good) 22%,transparent);color:var(--good)}
+.pct.on{background:color-mix(in srgb,var(--good) 22%,transparent);color:var(--good-t)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin:4px 0 2px}
 .legend span{display:inline-flex;align-items:center;gap:5px}
 .tgroup{margin-top:14px}
@@ -80,25 +81,25 @@ tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--acc,var(--mkt)) 4
 .tgroup>summary::after{content:"▸";color:var(--muted);transition:transform .15s}.tgroup[open]>summary::after{transform:rotate(90deg)}
 .tgh .n,.tgroup>summary .n{font-weight:600;color:var(--muted)}
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,16.5rem),1fr));gap:8px}
-.tcard{display:flex;flex-direction:column;gap:5px;padding:10px 12px;border-radius:8px;border:1px solid color-mix(in srgb,var(--acc) 35%,var(--line));border-left:4px solid var(--acc);background:linear-gradient(170deg,color-mix(in srgb,var(--acc) 9%,var(--panel)),var(--panel) 65%)}
+.tcard{display:flex;flex-direction:column;gap:5px;padding:10px 12px;border-radius:8px;border:1px solid color-mix(in srgb,var(--acc) 35%,var(--line));border-left:4px solid var(--acc);background:var(--panel)}
 .tcard.pick{box-shadow:0 0 0 2px color-mix(in srgb,var(--good) 55%,transparent)}
 .thead{display:flex;align-items:center;gap:7px}
 .tname{font:700 16px/1 var(--sans)}
 .ttype{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .tpct{margin-left:auto;font:400 20px/1 var(--serif);font-variant-numeric:tabular-nums}
-.tpct.on{color:var(--good)}.tpct.off{color:var(--muted)}
+.tpct.on{color:var(--good-t)}.tpct.off{color:var(--muted)}
 .tconf{font-size:11px;color:var(--muted)}
 .tline{font-size:13px;line-height:1.35}
 .tags{display:flex;flex-wrap:wrap;gap:4px}
 .tag{font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--grid);color:var(--fg)}
-.tag.warn{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+.tag.warn{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad-t)}
 .tmore{font-size:12px;color:var(--muted)}
 .tmore summary{cursor:pointer;font-weight:600;color:var(--fg);opacity:.75;list-style:none}
 .tmore summary::-webkit-details-marker{display:none}
 .tmore summary::before{content:"+ ";}.tmore[open] summary::before{content:"− ";}
 .tmore div{margin-top:4px;line-height:1.4}.tmore b{color:var(--fg);font-weight:600}
 .nav{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:8px 0;margin:-8px 0 -10px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(6px);scrollbar-width:none}
-.nav a{flex:none;text-decoration:none;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+.nav a{box-shadow:0 1px 0 rgba(0,0,0,.08);flex:none;text-decoration:none;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
 .nav a:hover{border-color:var(--eth)}
 section,header{scroll-margin-top:52px}
 .evlist{display:flex;flex-direction:column}
@@ -118,21 +119,30 @@ section,header{scroll-margin-top:52px}
  .bar{grid-template-columns:4.6rem 1fr 3.2rem}
  .ev{grid-template-columns:6.2rem 1fr}.ev .src{grid-column:2}
 }
-footer{font-size:12px;color:var(--muted);text-align:center}
+.about p{margin:2px 0}.about-title{font:400 22px/1.3 var(--serif);margin-bottom:6px!important}
+.about a{color:var(--fg);font-weight:700}
+section.fold>h2:first-of-type{cursor:pointer;user-select:none;border-radius:6px}
+section.fold>h2:first-of-type::after{content:"▾";margin-left:auto;font-size:14px;color:var(--muted);transition:transform .15s}
+section.fold.collapsed>h2:first-of-type::after{content:"▸"}
+section.fold>h2:first-of-type:focus-visible{outline:2px solid var(--frame);outline-offset:3px}
+section.fold.collapsed>:not(h2:first-of-type){display:none}
+section.fold.collapsed{padding-bottom:14px}
+section.fold.collapsed>h2:first-of-type{margin-bottom:0}
+footer{font-size:12px;color:var(--fg);text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px;align-self:center}
 @media (prefers-reduced-motion:no-preference){.fill{animation:grow .6s ease-out;transform-origin:left}@keyframes grow{from{transform:scaleX(0)}}}
 </style></head><body><div class="wrap">
 
 <header class="hero">
 <div class="titlebar"><span>SMAUG_VOTE_DESK.EXE</span><span class="winbtns" aria-hidden="true"><i></i><i></i><i></i></span></div>
 <div class="herobody">
-<div class="badges"><span class="badge" style="--acc:#6f6b64">Unofficial</span><span class="badge" style="--acc:var(--teal)">SMAUG</span><span class="badge" style="--acc:var(--eth)">Week 2</span><span class="badge" style="--acc:#b07d06">ETH: down to flat</span><span class="badge" style="--acc:var(--pink)" id="bell">Bell Fri Nov 6 · 3pm ET</span><span class="badge" style="--acc:#4b5563" id="updated">Updated —</span></div>
+<div class="badges"><span class="badge neutral">Unofficial</span><span class="badge" style="--acc:#0a6b6b">SMAUG</span><span class="badge" style="--acc:#5a43d1">Week 2</span><span class="badge" style="--acc:#7f5b06">ETH: down to flat</span><span class="badge" style="--acc:#a8235f" id="bell">Bell Fri Nov 6 · 3pm ET</span><span class="badge neutral" id="updated">Updated —</span></div>
 <h1>SMAUG Vote Desk</h1>
 <p class="lede">ETH looks <b>down to flat</b> for the next 1–2 weeks, so my card stays defensive: <b id="usdgPct">—</b> of the fund in USDG and <b id="wethPct">—</b> in WETH, with no memes this week. Right now the room backs no token at all, so USDG only lands if enough of us vote for it.</p>
 <div class="changed" id="changed"></div>
 <p class="muted">Unofficial community research by @vv23_CT, not affiliated with The Mutual Fun. Not financial advice. Research pass Oct 30–31, 2026. The final card comes Friday afternoon after the 8:30am ET jobs report. Bell: Fri Nov 6, 20:00 UTC (3:00pm ET).</p>
 </div></header>
 
-<nav class="nav" aria-label="Sections"><a href="#card">My card</a><a href="#eth">ETH call</a><a href="#tokens">Tokens</a><a href="#room">Room</a><a href="#market">Market</a><a href="#events">Events</a></nav>
+<nav class="nav" aria-label="Sections"><a href="#card">My card</a><a href="#eth">ETH call</a><a href="#tokens">Tokens</a><a href="#room">Room</a><a href="#market">Market</a><a href="#events">Events</a><a href="#about">About</a></nav>
 <div class="grid">
 <section class="card" id="card" style="--acc:var(--good)">
 <h2>My card this week</h2>
@@ -162,8 +172,8 @@ footer{font-size:12px;color:var(--muted);text-align:center}
 <div id="tok"></div>
 </section>
 
-<section id="room"><h2 style="--acc:var(--teal)">Ballot room</h2><div class="tiles" id="roomTiles"></div></section>
-<section id="market"><h2 style="--acc:var(--eth)">ETH and the backdrop</h2><div class="tiles" id="mktTiles"></div></section>
+<section class="card" id="room" style="--acc:var(--teal)"><h2>Ballot Room</h2><div class="tiles" id="roomTiles"></div></section>
+<section class="card" id="market" style="--acc:var(--eth)"><h2>ETH and the Market</h2><div class="tiles" id="mktTiles"></div></section>
 
 
 
@@ -178,11 +188,27 @@ footer{font-size:12px;color:var(--muted);text-align:center}
 <div class="evlist" id="ev"></div>
 </section>
 
+<section class="card about" id="about" style="--acc:var(--tmf)">
+<h2>About</h2>
+<p class="about-title">The Unofficial SMAUG Voting Desk Dashboard</p>
+<p>Vibe coded by <a href="https://x.com/vv23_CT" target="_blank" rel="noopener">vv23</a> on a Smauggy Night.</p>
+<p>Original prompt by Muz (<a href="https://x.com/viper_moons" target="_blank" rel="noopener">@viper_moons</a>).</p>
+</section>
+
 <footer>Unofficial · community research, not financial advice · data as of Oct 31, 2026 · do your own research before you vote</footer>
 </div>
 <script id="data" type="application/json">{"market": [{"id": "eth", "label": "ETH price", "value": 2247.23, "fmt": "usd", "asof": "Oct 31, 00:51 UTC", "source": "MetaMask", "url": "https://metamask.com/price/ethereum"}, {"id": "eth_1w", "label": "ETH, last 7 days", "value": -0.0744, "fmt": "pct", "asof": "Fri Oct 30, 2026", "source": "Coinbase", "url": "https://www.coinbase.com/price/ethereum"}, {"id": "eth_etf", "label": "Spot ETH ETF flow, Oct 29", "value": -105.5, "fmt": "usdM", "asof": "Fri Oct 30, 2026", "source": "KuCoin News (SoSoValue data)", "url": "https://kucoin.com/news/flash/bitcoin-etfs-see-17m-inflows-ethereum-etfs-lose-105m-on-october-29"}, {"id": "btc", "label": "BTC price", "value": 77445.96, "fmt": "usd0", "asof": "Fri Oct 30, 2026", "source": "CNBC", "url": "https://www.cnbc.com/2026/10/30/bitcoin-ether-price-binance-security-scare-rattles-crypto-markets.html"}, {"id": "nasdaq", "label": "Nasdaq, Oct 30", "value": -0.0286, "fmt": "pct", "asof": "Fri Oct 30, 2026", "source": "Yahoo Finance", "url": "https://finance.yahoo.com/markets/live/stock-market-today-friday-october-30-dow-sp-500-nasdaq-amazon-intel-ai-sell-off-191429143.html"}, {"id": "gold", "label": "Gold (Dec futures)", "value": 3884.9, "fmt": "usd0", "asof": "Fri Oct 30, 2026", "source": "Yahoo Finance", "url": "https://finance.yahoo.com/personal-finance/investing/article/gold-price-today-friday-october-30-2026-gold-slips-below-4000-as-mid-east-concerns-mount-111451238.html"}, {"id": "hack", "label": "Binance hack", "value": 6.3, "fmt": "usdB", "asof": "Fri Oct 30, 2026", "source": "CNBC", "url": "https://www.cnbc.com/2026/10/30/binance-hack-stolen-crypto-recovery.html"}, {"id": "fng", "label": "Fear & Greed", "value": 36, "fmt": "int", "asof": "CMC index, Oct 31 00:00 UTC (Fear; 46 a week ago)", "source": "CoinMarketCap", "url": "https://coinmarketcap.com/charts/fear-and-greed-index/"}, {"id": "turnout", "label": "Chairs voting", "value": 32, "fmt": "int", "asof": "Ballot screenshot, Oct 30", "source": "SMAUG ballot page", "url": "https://themutual.fun/"}, {"id": "tmf_held", "label": "$TMF held", "value": 0.3762, "fmt": "pctu", "asof": "Ballot screenshot, Oct 30", "source": "SMAUG ballot page", "url": "https://themutual.fun/"}, {"id": "room_backed", "label": "Tokens the room backs", "value": 0, "fmt": "int", "asof": "Ballot screenshot, Oct 30", "source": "SMAUG ballot page", "url": "https://themutual.fun/"}], "ethcall": [{"rank": 1, "reason": "Funds are leaving", "detail": "Spot ETH ETFs had four straight days of outflows through Oct 29, and October outflows were the year's worst. Whales sold ~160,000 ETH this week while exchange balances rose ~100,000 ETH.", "source": "24/7 Wall St, Oct 29", "url": "https://247wallst.com/investing/cryptocurrency/2026/10/29/ethereum-analysis-exchanges-took-in-100000-eth-this-week-as-big-holders-sold-is-2000-next/"}, {"rank": 2, "reason": "Binance hack hit a leveraged market", "detail": "$6.3B stolen Oct 29, the largest crypto theft ever. About $3B frozen, withdrawals expected back within ~48 hours. Analysts say leverage was already too high before the hack.", "source": "CNBC / Forbes, Oct 30", "url": "https://www.forbes.com/sites/digital-assets/2026/10/30/bitcoin-falls-to-6-week-low-as-binance-hack-accelerates-losses/"}, {"rank": 3, "reason": "Macro is risk-off", "detail": "The Fed held at 3.75\u20134.00% with two dissents for a hike, and a December hike is now priced. The Nasdaq had its worst month since Mar 2025. US\u2013Iran strike risk is rising after the Nov 3 midterms. Glamsterdam's testnet was delayed, and mainnet likely slips to 2027.", "source": "Admiral Markets / Bankless", "url": "https://www.bankless.com/read/news/ethereum-devs-postpone-glamsterdam-on-hoodi-over-contract-security-risks.md"}, {"rank": 4, "reason": "What would flip it", "detail": "Record ETH staking keeps supply tight, and fear this deep often marks bounces. A clean Binance recovery plus a soft jobs report on Nov 6 could spark a relief rally.", "source": "Crypto Daily, Oct 27", "url": "https://cryptodaily.co.uk/2026/10/ethereum-etf-outflows-hit-886m-as-record-staking-tightens-eth-supply"}], "tokens": [{"token": "USDG", "group": "Stable", "last": "$1 peg (Paxos reserve report not checked)", "call": "Beat", "conf": "Medium", "catalyst": "Gains in ETH terms if ETH keeps falling", "risk": "Lags if ETH bounces; Paxos can freeze", "fee": 0.003, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 25, "source": "Paxos", "url": "https://paxos.com/usdg/"}, {"token": "SGOV", "group": "Stock", "last": "T-bills, yield ~Fed range 3.75\u20134.00% (not directly checked). On-chain 0.045246 WETH \u2248 $101.45", "call": "Out", "conf": "High", "catalyst": "Would gain in ETH terms if ETH falls, like USDG, plus a little yield", "risk": "Ruled out: ~48 Fridays to fill a quarter, and a 1% pool fee", "fee": 0.01, "fill": "~48 Fridays: too slow", "backing": "Not shown on ballot", "pct": 0, "source": "Admiral Markets (Fed)", "url": "https://admiralmarkets.com/analytics/traders-blog/fomc-october-2026-fed-holds-rates"}, {"token": "GLD", "group": "Stock", "last": "Gold $3,884.90, \u22123.6% Oct 30, 51-week low. On-chain 0.159948 WETH \u2248 $358.63", "call": "Match", "conf": "Low", "catalyst": "Iran escalation after Nov 3", "risk": "Hike odds and 5%+ 10-yr yields push gold down even in wartime", "fee": 0.01, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "Trading Economics", "url": "https://tradingeconomics.com/commodity/gold"}, {"token": "QQQ", "group": "Stock", "last": "Nasdaq-100 \u22123.5% Oct 30. On-chain 0.309548 WETH \u2248 $694.05", "call": "Match", "conf": "Low", "catalyst": "Jobs report Nov 6, midterms Nov 3", "risk": "AI-capex selloff still running", "fee": 0.003, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "investingLive", "url": "https://investinglive.com/stocks/nasdaq-suffers-worst-month-since-march-2025-as-technology-stocks-tumble/"}, {"token": "NVDA", "group": "Stock", "last": "$204.64, \u22124.2% Oct 30; \u221211.4% in Oct. On-chain 0.091686 WETH \u2248 $205.57 (+0.5% vs close, fine)", "call": "Lag", "conf": "Low", "catalyst": "Earnings ~Nov 17\u201318 (outside 14-day window; date unconfirmed)", "risk": "Hyperscaler spend fears hit chips hardest", "fee": 0.003, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "Trading Economics", "url": "https://tradingeconomics.com/united-states/stock-market"}, {"token": "TSLA", "group": "Stock", "last": "$399.82, \u22120.9% Oct 30; +12.9% in Oct. On-chain 0.17842 WETH \u2248 $400.04 (+0.1% vs close, fine)", "call": "Match", "conf": "Low", "catalyst": "Robotaxi city launches", "risk": "Already ran in October; high-beta", "fee": 0.003, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "Trading Economics", "url": "https://tradingeconomics.com/united-states/stock-market"}, {"token": "META", "group": "Stock", "last": "$614.87, \u22121.6% Oct 30; \u221215.3% in Oct. On-chain 0.274327 WETH \u2248 $615.08 (+0.0% vs close, fine)", "call": "Match", "conf": "Low", "catalyst": "None near-term (earnings done Oct 21)", "risk": "AI capex worries", "fee": 0.003, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "Trading Economics", "url": "https://tradingeconomics.com/united-states/stock-market"}, {"token": "GOOGL", "group": "Stock", "last": "$279.99, \u22121.4% Oct 30; \u221217.2% in Oct. On-chain 0.125544 WETH \u2248 $281.49 (+0.5% vs close, fine)", "call": "Match", "conf": "Low", "catalyst": "None near-term (earnings done Oct 28)", "risk": "AI capex worries; 1% pool", "fee": 0.01, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "Trading Economics", "url": "https://tradingeconomics.com/united-states/stock-market"}, {"token": "RDDT", "group": "Stock", "last": "~$90\u201392 Oct 30, \u221229%, worst day ever (52-week low). On-chain \u2248 $92.26 (within ~1%, OK)", "call": "Lag", "conf": "High", "catalyst": "Q4 guide $1.00\u20131.03B vs $1.05B expected; Google AI search cutting traffic; users could fall low double digits in Q4", "risk": "Broken chart; dead-cat bounces are jumpy, which the fund's 6-day reading punishes", "fee": 0.01, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "24/7 Wall St, Oct 30", "url": "https://247wallst.com/investing/2026/10/30/reddit-plunges-25-as-search-traffic-slump-and-soft-outlook-overshadow-earnings-beat-snap-falls-5-pinterest-drops-4-meta-dips/"}, {"token": "COIN", "group": "Stock", "last": "~$142.50\u2013143.54 Oct 30, \u221211% (closed $160.59 Oct 29). On-chain \u2248 $145.03 (+1\u20132%, OK; exact close not found)", "call": "Lag", "conf": "High", "catalyst": "Q3 revenue $1.16B missed; Barclays cut target to $120, Wells Fargo to $174", "risk": "Two-year low; moves with crypto at high beta, so no ETH hedge", "fee": 0.003, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "24/7 Wall St, Oct 30", "url": "https://247wallst.com/investing/2026/10/30/coinbase-tumbles-11-as-record-binance-hack-hits-crypto-and-trading-revenue-slides-strategy-sinks-12-robinhood-plunges-10-circle-drops-9/"}, {"token": "MSTR", "group": "Stock", "last": "~$125\u2013130.51 Oct 30, \u22128% to \u221212%. On-chain \u2248 $131.32 (within ~1% of last quote, OK)", "call": "Lag", "conf": "High", "catalyst": "STRC daily dividends start Nov 1", "risk": "Leveraged BTC; no ETH hedge", "fee": 0.01, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "24/7 Wall St, Oct 30", "url": "https://247wallst.com/investing/2026/10/30/coinbase-tumbles-11-as-record-binance-hack-hits-crypto-and-trading-revenue-slides-strategy-sinks-12-robinhood-plunges-10-circle-drops-9/"}, {"token": "PONS", "group": "Meme", "last": "$0.236191 (matches ballot). 24h +5.9%, 7d -0.4% (+5.1 pts vs ETH), 30d -55.3%. Mkt cap $158.6M, 24h vol $38.1M", "call": "Match", "conf": "Low", "catalyst": "Strongest community on X; ~102.7K holders. Contract 0x39dB\u20264571 confirmed (price matches ballot)", "risk": "Top 10 wallets hold 55.5% (some may be pools or treasury); launchpad activity cooling; meme beta if ETH falls", "fee": 0.003, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "CoinMarketCap holder data, Oct 31", "url": "https://coinmarketcap.com/currencies/pons/"}, {"token": "CASHCAT", "group": "Meme", "last": "$0.09349 (matches ballot). 24h +7.1%, 7d -3.6% (+1.9 pts vs ETH), 30d -43.9%. Mkt cap $93.5M, 24h vol $10.4M", "call": "Match", "conf": "Low", "catalyst": "~111K holders, 38 DEX markets, ~$37.5M 24h DEX volume (Bitquery). Contract 0x020b\u202618b4 confirmed", "risk": "X buzz falling; \u221244% over 30 days; top 10 wallets hold 37.1%", "fee": 0.003, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "CoinMarketCap / DEXrabbit, Oct 31", "url": "https://dexrabbit.bitquery.io/currency/bid:robinhood:0x020bfc650a365f8bb26819deaabf3e21291018b4"}, {"token": "VIRTUAL", "group": "Meme", "last": "$0.59507 (matches ballot). 24h +7.1%, 7d -7.2% (-1.7 pts vs ETH), 30d -26.2%. Mkt cap $392.2M, 24h vol $69.3M", "call": "Lag", "conf": "Medium", "catalyst": "None on Robinhood Chain this week; established AI-agent protocol elsewhere", "risk": "Bridged, so bridge risk; no local community; weakest support per X", "fee": 0.003, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "Grok X notes", "url": ""}, {"token": "APE", "group": "Meme", "last": "On-chain 5.33089e-05 WETH \u2248 $0.1195", "call": "Out", "conf": "High", "catalyst": "Bridged token; no Robinhood Chain catalyst found", "risk": "Ruled out: pool so thin it would take ~117 Fridays to fill a quarter of the fund", "fee": 0.01, "fill": "~117 Fridays: too slow", "backing": "0%, vetoed so far", "pct": 0, "source": "SMAUG ballot page", "url": "https://themutual.fun/"}, {"token": "AI", "group": "Meme", "last": "$0.06532 (matches ballot). 24h +12.3%, 7d +5.4% (+11.0 pts vs ETH), 30d -60.8%. Mkt cap $65.3M, 24h vol $6.5M", "call": "Lag", "conf": "Low", "catalyst": "NVDA-paired pools; whale buy alerts. NVDA earnings ~Nov 17\u201318", "risk": "X buzz falling, mood mixed-to-bearish; NVDA weak; \u221261% over 30 days", "fee": 0.01, "fill": "No slow-fill warning", "backing": "0%, vetoed so far", "pct": 0, "source": "@LongLaunches on X", "url": "https://x.com/LongLaunches/status/2116342449975033877"}, {"token": "STONKBROKER", "group": "Meme", "last": "On-chain 3.0844e-06 WETH \u2248 $0.0069", "call": "Out", "conf": "High", "catalyst": "NFT-linked community token; no catalyst found", "risk": "Ruled out: pool so thin it would take ~34 Fridays to fill a quarter of the fund", "fee": 0.01, "fill": "~34 Fridays: too slow", "backing": "0%, vetoed so far", "pct": 0, "source": "SMAUG ballot page", "url": "https://themutual.fun/"}, {"token": "MANCER", "group": "Meme", "last": "$0.001647 (matches ballot). 24h +11.2%, 7d +8.5% (+14.1 pts vs ETH), 30d -19.1%. Mkt cap $1.5M, 24h vol $1.9M", "call": "Match", "conf": "Low", "catalyst": "Books launch with Clutch Markets and iOS beta (~Oct 29\u201330); X buzz rising", "risk": "$1.5M cap; ~9 Fridays to fill; already +14 pts vs ETH this week, which is jumpy", "fee": 0.01, "fill": "~9 Fridays to a quarter", "backing": "0%, vetoed so far", "pct": 0, "source": "@MancerXYZ on X", "url": "https://x.com/MancerXYZ/status/2115998886523289898"}, {"token": "DERP", "group": "Meme", "last": "On-chain 9.3e-09 WETH \u2248 $0.0000209", "call": "Out", "conf": "High", "catalyst": "No catalyst found", "risk": "Ruled out: pool so thin it would take ~516 Fridays to fill a quarter of the fund", "fee": 0.01, "fill": "~516 Fridays: too slow", "backing": "0%, vetoed so far", "pct": 0, "source": "SMAUG ballot page", "url": "https://themutual.fun/"}], "events": [{"id": "e1", "date": "2026-10-31", "when_utc": "Sat Oct 31\u2013Sun Nov 1", "when_et": "Weekend", "event": "Binance aims to resume withdrawals", "tokens": "ETH, COIN, all memes", "source": "CNBC", "url": "https://www.cnbc.com/2026/10/30/bitcoin-ether-price-binance-security-scare-rattles-crypto-markets.html"}, {"id": "e2", "date": "2026-11-01", "when_utc": "Sun Nov 1", "when_et": "2am ET", "event": "US clocks fall back, so the bell moves to 3pm ET", "tokens": "Bell timing", "source": "themutual.fun", "url": "https://themutual.fun/"}, {"id": "e3", "date": "2026-11-01", "when_utc": "Sun Nov 1", "when_et": "\u2014", "event": "Strategy's STRC switches to daily dividends", "tokens": "MSTR", "source": "SEC 8-K", "url": "https://www.sec.gov/Archives/edgar/data/0001050446/000105044626000047/mstr-20261029x8kxex9912.htm"}, {"id": "e4", "date": "2026-11-03", "when_utc": "Tue Nov 3", "when_et": "All day", "event": "US midterm elections; reported US\u2013Iran strike risk after", "tokens": "ETH, GLD, QQQ, all stocks", "source": "Discovery Alert / Rabobank", "url": "https://discoveryalert.com/analysis/gold-price-outlook-us-iran-escalation-october-2026/"}, {"id": "e5", "date": "2026-11-03", "when_utc": "Tue Nov 3, 15:00", "when_et": "10:00am ET", "event": "JOLTS job openings", "tokens": "ETH, QQQ, SGOV", "source": "Capp Notes", "url": "https://cappnotes.substack.com/p/closing-look-friday-october-30-2026"}, {"id": "e6", "date": "2026-11-04", "when_utc": "Wed Nov 4, 13:15", "when_et": "8:15am ET", "event": "ADP payrolls", "tokens": "ETH, QQQ, SGOV", "source": "Capp Notes", "url": "https://cappnotes.substack.com/p/closing-look-friday-october-30-2026"}, {"id": "e7", "date": "2026-11-06", "when_utc": "Fri Nov 6, 13:30", "when_et": "8:30am ET", "event": "October jobs report, 6.5 hours before the bell", "tokens": "Everything", "source": "Capp Notes", "url": "https://cappnotes.substack.com/p/closing-look-friday-october-30-2026"}, {"id": "e8", "date": "2026-11-06", "when_utc": "Fri Nov 6, 20:00", "when_et": "3:00pm ET", "event": "Closing Bell: SMAUG Week 2 ballot closes", "tokens": "Your vote", "source": "themutual.fun", "url": "https://themutual.fun/"}, {"id": "e9", "date": "2026-11-12", "when_utc": "~Nov 12\u201313 (unconfirmed)", "when_et": "8:30am ET", "event": "October CPI (check the date on BLS)", "tokens": "ETH, SGOV, GLD, QQQ", "source": "Not verified", "url": "https://www.bls.gov/schedule/news_release/cpi.htm"}, {"id": "e10", "date": "2026-11-17", "when_utc": "~Nov 17\u201318 (sources differ)", "when_et": "After close", "event": "Nvidia earnings, just outside the 14-day window", "tokens": "NVDA, QQQ", "source": "Earnings Whispers", "url": "https://www.earningswhispers.com/stocks/Nvda"}], "card": [{"item": "$TMF (held)", "kind": "alloc", "value": 37.62, "note": "Kept by the fund, never sold"}, {"item": "USDG", "kind": "alloc", "value": 25, "note": "Max allowed; a dollar token gains when ETH falls. Fills fast."}, {"item": "WETH", "kind": "alloc", "value": 37.38, "note": "Neutral cash; also where any pick that fails 50% backing ends up"}, {"item": "Memes", "kind": "alloc", "value": 0, "note": "0%: memes usually fall harder than ETH, and PONS is concentrated (top 10 wallets hold 55.5%)"}, {"item": "Profit take", "kind": "dial", "value": 50, "note": "Untick \"Keep it at 0%\" to set it"}, {"item": "Expense ratio", "kind": "dial", "value": 0, "note": "A burn costs this fund only"}], "updates": [{"date": "Oct 31", "text": "Memes scored from Grok X notes, and PONS and CASHCAT checked on-chain: all stay at 0%. SGOV ruled out (too slow to fill). Card unchanged: USDG 25%, WETH 37.38%."}, {"date": "Oct 30", "text": "First research pass for the SMAUG Week 2 ballot."}]}</script>
 <script>
 const D=JSON.parse(document.getElementById('data').textContent);
+const FOLD=['card','eth','tokens','room','market','events','about'];const START_CLOSED={eth:true,tokens:true,room:true,market:true,events:true,about:true};
+const st=(()=>{try{return JSON.parse(localStorage.getItem('svd-folds-v2')||'{}')}catch(e){return {}}})();
+const save=()=>{try{localStorage.setItem('svd-folds-v2',JSON.stringify(st))}catch(e){}};
+const setFold=(s,c)=>{s.classList.toggle('collapsed',c);const h=s.querySelector(':scope>h2');if(h)h.setAttribute('aria-expanded',String(!c));st[s.id]=c;save();};
+FOLD.forEach(id=>{const s=document.getElementById(id);if(!s)return;const h=s.querySelector(':scope>h2');if(!h)return;
+ s.classList.add('fold');h.setAttribute('role','button');h.setAttribute('tabindex','0');h.setAttribute('aria-expanded','true');h.title='Click to collapse or expand';
+ if(st[id]===true||(st[id]===undefined&&START_CLOSED[id])){s.classList.add('collapsed');h.setAttribute('aria-expanded','false');}
+ const t=()=>setFold(s,!s.classList.contains('collapsed'));h.addEventListener('click',t);h.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t();}});});
+document.querySelectorAll('.nav a').forEach(a=>a.addEventListener('click',()=>{const s=document.getElementById(a.getAttribute('href').slice(1));if(s&&s.classList.contains('collapsed'))setFold(s,false);}));
 const BELL=Date.UTC(2026,10,6,20,0,0);
 function tick(){const b=document.getElementById('bell');if(!b)return;const ms=BELL-Date.now();
  if(ms<=0){b.textContent='Bell rang · Fri Nov 6, 3pm ET';return;}
@@ -217,7 +243,7 @@ $('#dialPT').textContent=dial('Profit take').value+'%';$('#dialER').textContent=
 const cls=c=>c==='Beat'?'up':c==='Lag'?'down':c==='Match'?'match':'';
 let G='';
 const ORDER={Beat:0,Match:1,Lag:2};
-const accOf=c=>c==='Beat'?'var(--good)':c==='Lag'?'var(--bad)':c==='Match'?'var(--mkt)':'#8a8f98';
+const accOf=c=>c==='Beat'?'var(--good)':c==='Lag'?'var(--bad)':c==='Match'?'var(--mkt)':'#b48a80';
 const GROUPS=[['pick','My picks',true],['Beat','Beat ETH',true],['Match','Match ETH',true],['Lag','Lag ETH',true],['Out','Out: can\'t fill or ruled out',false]];
 function card(r){const out=!(r.call in ORDER);const call=out?'Out':r.call;const c=el('article','tcard'+(Number(r.pct)>0?' pick':''));c.style.setProperty('--acc',accOf(call));
  const hd=el('div','thead');hd.append(el('span','tname',r.token),el('span','pill '+cls(call),call),el('span','tconf',String(r.conf).replace(' · Fomo pending','')));
