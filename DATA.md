@@ -18,6 +18,7 @@ The page (`index.html`) reads everything from `data.json`. To update the dashboa
   - `status`: `{TOKEN: "backed" | "vetoed" | "no_cards"}`. Backed: in the room's split. Vetoed: in the "Headed to WETH so far" list. No cards: in neither.
   - `fills`: `{TOKEN: {n, asof}}` for tokens with a "Slow to fill … about N Fridays" note
   - `not_in_capture`: tokens whose rows were collapsed in the capture (their fill is unknown)
+  - `history`: this week's captures, oldest first, for the "This week so far" timeline. Each: `asof, chairs, tmf_held, backs` (`backs` = `{TOKEN: fraction}`, same as `room_tokens`). Append one entry per new capture (the last entry matches the fund's current values); start a fresh list after each bell.
 - `market`: ETH and market tiles. Each row: `id, label, value, fmt, asof, source, url`.
 - `news`: ETH news items. Each: `head, text, source, url`.
 - `tokens`: one per listed token, shared by all funds. Each: `token, group (Stable|Stock|Meme), price, news, fee, onchain, onchain_asof, source, url`. On-chain prices are the same on every fund's ballot.

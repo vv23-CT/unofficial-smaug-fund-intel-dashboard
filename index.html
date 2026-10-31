@@ -161,6 +161,40 @@ table.ftable tr.sel td{background:var(--card2)}table.ftable tr.sel td:first-chil
 .tag.on{background:var(--fg);color:var(--panel)}
 :root{--c1:#c08a2e;--c2:#4f8a5b;--c3:#8a64b5;--c4:#2f8580;--c5:#b85a75;--c6:#6b7b8f}
 @media (max-width:640px){.ftabs{grid-template-columns:repeat(3,minmax(0,1fr))}.ftab b{font-size:16px}table.ftable{font-size:13px}table.ftable th,table.ftable td{padding:7px 6px}}
+
+.tl-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column}
+.tl-list li{display:grid;grid-template-columns:9.5rem 1fr;gap:4px 14px;padding:9px 0 9px 18px;border-left:2px solid var(--line);position:relative;font-size:14px}
+.tl-list li::before{content:"";position:absolute;left:-6px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--panel);border:2px solid var(--muted)}
+.tl-list li:last-child::before{background:var(--fg);border-color:var(--fg)}
+.tl-when{font-weight:700;font-size:13px}.tl-when span{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.tl-what{display:flex;flex-direction:column;gap:5px}
+.tl-chairs{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.tl-chairs .bar{position:relative;flex:1;max-width:220px;height:8px;border-radius:4px;background:var(--pale)}
+.tl-chairs .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--muted)}
+.tl-chairs .bar b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--fg)}
+.tl-chairs strong{color:var(--fg)}
+.tl-note{font-size:12.5px;color:var(--muted)}
+.change{font-weight:600;color:var(--fg)}
+.gridcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 22px}
+.gridcard h2{margin:0;font:400 24px/1.2 var(--serif)}
+.gridcard p.sub{margin:4px 0 12px;font-size:14px;color:var(--muted)}
+.tgwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+table.tg{width:100%;border-collapse:collapse;font-size:13px;min-width:520px}
+table.tg th{font-size:12px;font-weight:700;padding:7px 6px;text-align:center;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card)}
+table.tg th:first-child,table.tg td:first-child{text-align:left;padding-left:12px;position:sticky;left:0;background:var(--card);z-index:1}
+table.tg td{padding:5px 6px;text-align:center;border-bottom:1px solid var(--line)}
+table.tg tr.grp td{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding-top:10px;background:var(--card2)}
+table.tg tr.grp td:first-child{background:var(--card2)}
+.cell{display:inline-block;min-width:66px;padding:3px 6px;border-radius:6px;font-weight:600;font-variant-numeric:tabular-nums}
+.cell.b{background:var(--fg);color:var(--panel)}
+.cell.v{color:var(--muted);font-weight:400;font-size:12px;opacity:.8}
+.cell.n{color:var(--muted);font-weight:400}
+table.tg td.sel,table.tg th.sel{background:var(--card2)}
+.tglegend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.tglegend .cell{min-width:0}
+.sh{display:none}
+@media (max-width:640px){table.tg{min-width:0}table.tg th,table.tg td{padding:5px 1px}table.tg th:first-child,table.tg td:first-child{padding-left:8px}.cell{min-width:0;padding:2px 3px;font-size:11px}table.tg{font-size:11.5px}table.tg th{font-size:11px}table.tg td:first-child{max-width:78px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lg{display:none}.sh{display:inline}}
+@media (max-width:640px){.tl-list li{grid-template-columns:1fr}.gridcard{padding:14px 8px}.gridcard h2,.gridcard p.sub,.tglegend{padding:0 6px}table.tg{font-size:12px}.cell{min-width:52px}}
 </style>
 <script>try{var t=localStorage.getItem('sfi-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head><body><div class="wrap">
@@ -183,6 +217,7 @@ table.ftable tr.sel td{background:var(--card2)}table.ftable tr.sel td:first-chil
 </div>
 <div class="facts" id="facts" style="margin-top:14px"></div>
 <p class="src" id="fundsrc" style="margin-top:10px"></p>
+<div style="margin-top:16px"><div class="tl" style="font-size:13px;font-weight:700">This week so far</div><ol class="tl-list" id="tline"></ol><p class="tl-note" id="tlnote"></p></div>
 </div>
 <div>
 <div class="tl" style="font-size:13px;font-weight:700;margin-bottom:6px">All five funds</div>
@@ -192,6 +227,13 @@ table.ftable tr.sel td{background:var(--card2)}table.ftable tr.sel td:first-chil
 <p class="fine">Unofficial community research by @vv23_CT, not affiliated with The Mutual Fun. Not financial advice. Bell: Fri Nov 6, 20:00 UTC (3:00pm ET).</p>
 </div>
 <div class="statusbar"><span id="sb-upd">Updated —</span><span id="sb-tok">— funds</span><span id="sb-bell">Bell —</span></div>
+</section>
+
+<section class="gridcard" aria-labelledby="h-grid">
+<h2 id="h-grid">Every token, every fund</h2>
+<p class="sub">What each fund's room gives every token if the bell rang now. Highlighted = backed, with the room's share of the fund.</p>
+<div class="tgwrap"><table class="tg" id="tg"><thead><tr id="tghead"><th>Token</th></tr></thead><tbody></tbody></table></div>
+<div class="tglegend"><span><span class="cell b">7.87%</span> backed</span><span><span class="cell v"><span class="lg">vetoed</span><span class="sh">–</span></span> has cards, under half the weight</span><span><span class="cell n">·</span> no cards yet</span></div>
 </section>
 
 <div class="list" id="rows">
@@ -273,7 +315,7 @@ function select(id,user){SEL=id;const f=FI[id];
  fact('$TMF held',F.pctu(f.tmf_held),'Kept by the fund, never sold');
  const fs=$('#fundsrc');fs.replaceChildren('Room split, chairs and $TMF: ',link(f.name+' ballot page',f.url),', capture '+f.asof+'. The ballot\u2019s room bar rounds $TMF held to a whole percent, so the parts may not add to exactly 100%.');
  if(user){try{localStorage.setItem('tfi-fund',id)}catch(e){}history.replaceState(null,'','#'+id);}
- drawTok();sumTok();}
+ drawTok();sumTok();drawTL();markGrid();}
 $('#ftabs').addEventListener('keydown',e=>{const i=FUNDS.findIndex(f=>f.id===SEL);let n=null;if(e.key==='ArrowRight')n=(i+1)%FUNDS.length;if(e.key==='ArrowLeft')n=(i-1+FUNDS.length)%FUNDS.length;if(n!=null){e.preventDefault();select(FUNDS[n].id,true);document.getElementById('tab-'+FUNDS[n].id).focus();}});
 
 /* row summaries */
@@ -310,6 +352,28 @@ function drawTok(){const box=$('#tok');box.replaceChildren();const f=FI[SEL];
  $('#tokintro').textContent='Prices and news with dates and sources. Room status and fill times are for '+f.name+' (switch funds at the top). On-chain prices are the same on every fund\u2019s ballot.';
  GROUPS.forEach(([g,label])=>{if(G&&G!==g)return;const rs=D.tokens.filter(r=>r.group===g);if(!rs.length)return;const h=el('div','tgh',label+' ');h.append(el('span',null,'· '+rs.length));const grid=el('div','tgrid');rs.forEach(r=>grid.append(card(r)));box.append(h,grid);});}
 document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{G=b.dataset.g;document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawTok();}));
+
+/* token x fund grid */
+(()=>{const hd=$('#tghead');FUNDS.forEach(f=>{const th=el('th');th.append(el('span','lg',f.name),el('span','sh',f.name.slice(0,3)));th.title=f.name;th.dataset.f=f.id;hd.append(th);});
+ const tb=$('#tg tbody');GROUPS.forEach(([g,label])=>{const rs=D.tokens.filter(r=>r.group===g);if(!rs.length)return;
+  const gr=el('tr','grp');const gtd=el('td',null,label);gtd.colSpan=FUNDS.length+1;gr.append(gtd);tb.append(gr);
+  rs.forEach(r=>{const tr=el('tr');tr.append(el('td',null,r.token));FUNDS.forEach(f=>{const td=el('td');td.dataset.f=f.id;const s=f.status[r.token];
+   td.append(s==='backed'?el('span','cell b',F.pctu(f.room_tokens[r.token])):s==='vetoed'?(()=>{const c=el('span','cell v');c.append(el('span','lg','vetoed'),el('span','sh','–'));c.title='vetoed';return c;})():el('span','cell n','·'));tr.append(td);});tb.append(tr);});});})();
+function markGrid(){document.querySelectorAll('#tg [data-f]').forEach(c=>c.classList.toggle('sel',c.dataset.f===SEL));}
+/* timeline */
+function drawTL(){const f=FI[SEL];const ol=$('#tline');ol.replaceChildren();const H=f.history||[];
+ H.forEach((s,i)=>{const li=el('li');const w=el('div','tl-when',s.asof.split(',')[0]);w.append(el('span',null,(s.asof.split(', ')[1]||'')));li.append(w);
+  const wh=el('div','tl-what');const ch=el('div','tl-chairs');const bar=el('span','bar');const fill=el('i');fill.style.width=Math.min(100,s.chairs/ Math.max(80,...H.map(x=>x.chairs))*100)+'%';const floor=el('b');floor.style.left=(25/Math.max(80,...H.map(x=>x.chairs))*100)+'%';floor.title='25-chair floor';bar.append(fill,floor);
+  ch.append(strong(s.chairs+' chairs'),bar);wh.append(ch);
+  const bk=Object.entries(s.backs).sort((a,b)=>b[1]-a[1]);
+  const prev=i?H[i-1]:null;const line=el('div',null);
+  line.append(bk.length?'Room backs '+bk.map(([k,v])=>k+' '+F.pctu(v)).join(', '):'Room backs nothing: all to WETH');
+  if(prev){const pb=Object.keys(prev.backs),nb=bk.map(x=>x[0]);const add=nb.filter(k=>!pb.includes(k)),rem=pb.filter(k=>!nb.includes(k));
+   if(add.length)line.append(' · ',el('span','change','new: '+add.join(', ')));if(rem.length)line.append(' · ',el('span','change','dropped: '+rem.join(', ')));
+   const dc=s.chairs-prev.chairs;if(dc)ch.append(el('span','change',(dc>0?'+':'')+dc));}
+  wh.append(line);wh.append(el('div','tl-note','$TMF held '+F.pctu(s.tmf_held)));li.append(wh);ol.append(li);});
+ $('#tlnote').textContent=H.length<2?'One capture so far this week. Each new capture adds a point here.':'Each point is one ballot capture. The line marks the 25-chair floor.';}
+
 select(SEL,false);
 
 const KEY='tfi-rows-v1';const st=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}})();

@@ -60,7 +60,18 @@
      "asof": "Oct 31, 9:00am ET"
     }
    },
-   "not_in_capture": []
+   "not_in_capture": [],
+   "history": [
+    {
+     "asof": "Oct 31, 9:00am ET",
+     "chairs": 71,
+     "tmf_held": 0.3654,
+     "backs": {
+      "NVDA": 0.0787,
+      "GLD": 0.0553
+     }
+    }
+   ]
   },
   {
    "id": "bogle",
@@ -116,7 +127,15 @@
      "asof": "Oct 31, 9:01am ET"
     }
    },
-   "not_in_capture": []
+   "not_in_capture": [],
+   "history": [
+    {
+     "asof": "Oct 31, 9:01am ET",
+     "chairs": 41,
+     "tmf_held": 0.3124,
+     "backs": {}
+    }
+   ]
   },
   {
    "id": "smaug",
@@ -181,6 +200,32 @@
     "STONKBROKER",
     "APE",
     "DERP"
+   ],
+   "history": [
+    {
+     "asof": "Oct 30",
+     "chairs": 32,
+     "tmf_held": 0.3762,
+     "backs": {}
+    },
+    {
+     "asof": "Oct 31, earlier",
+     "chairs": 44,
+     "tmf_held": 0.3567,
+     "backs": {}
+    },
+    {
+     "asof": "Oct 31, 8:15am ET",
+     "chairs": 46,
+     "tmf_held": 0.3619,
+     "backs": {}
+    },
+    {
+     "asof": "Oct 31, 9:02am ET",
+     "chairs": 46,
+     "tmf_held": 0.358,
+     "backs": {}
+    }
    ]
   },
   {
@@ -234,6 +279,18 @@
     "STONKBROKER",
     "APE",
     "DERP"
+   ],
+   "history": [
+    {
+     "asof": "Oct 31, 9:02am ET",
+     "chairs": 53,
+     "tmf_held": 0.345,
+     "backs": {
+      "MSTR": 0.0599,
+      "TSLA": 0.0401,
+      "USDG": 0.1203
+     }
+    }
    ]
   },
   {
@@ -283,6 +340,14 @@
     "STONKBROKER",
     "APE",
     "DERP"
+   ],
+   "history": [
+    {
+     "asof": "Oct 31, 9:03am ET",
+     "chairs": 72,
+     "tmf_held": 0.4173,
+     "backs": {}
+    }
    ]
   }
  ],
@@ -833,9 +898,17 @@
   {
    "term": "No cards yet",
    "def": "No card in that fund gives the token anything so far, so the ballot doesn't list it as vetoed or backed."
+  },
+  {
+   "term": "This week so far",
+   "def": "A fund's timeline for the week: one point per ballot capture, showing chairs, what the room backs and $TMF held."
   }
  ],
  "updates": [
+  {
+   "date": "Oct 31",
+   "text": "Added a timeline for each fund (This week so far) and an Every token, every fund grid showing what each room gives all 19 tokens. SMAUG's timeline goes back to Oct 30; the other funds start with today's capture."
+  },
   {
    "date": "Oct 31",
    "text": "Now covers all five funds (ARGON, BOGLE, SMAUG, MIDAS, VLADD), renamed Unofficial TMF Fund Intel Dashboard. Each fund shows what its room would do if the bell rang now, from Match the room captures 9:00–9:03am ET. ARGON's room backs NVDA 7.87% and GLD 5.53%; MIDAS's backs USDG 12.03%, MSTR 5.99% and TSLA 4.01%; BOGLE, SMAUG and VLADD back nothing yet."
