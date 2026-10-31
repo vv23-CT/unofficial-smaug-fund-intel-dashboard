@@ -13,7 +13,7 @@
 <meta name="twitter:image" content="https://vv23-ct.github.io/unofficial-smaug-fund-intel-dashboard/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2324406e'/%3E%3Crect x='6' y='6' width='52' height='14' rx='3' fill='%234a6ea2'/%3E%3Ctext x='32' y='52' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='26' text-anchor='middle' fill='%23ffffff'%3ESI%3C/text%3E%3C/svg%3E">
 <style>
-:root{--wall:#cfa89e;--speck:#c0958b;--panel:#fbf5ea;--fg:#2b2320;--muted:#6b524b;--line:#e6cfc6;--pale:#ead6cf;--frame:#453629;--dash:#c99a8e;
+:root{--wall:#cfa89e;--speck:#c0958b;--panel:#fbf5ea;--fg:#2b2320;--muted:#57423c;--line:#e6cfc6;--pale:#ead6cf;--frame:#453629;--dash:#c99a8e;
 --good:#416943;--good-t:#356039;--bad:#9e2f26;--weth:#4a6ea2;--weth-t:#3d5f8f;--tmf:#a35846;--tmf-t:#8e4a3b;--match:#1f5fb8;
 --teal:#0a6b6b;--purple:#5a43d1;--gold:#7f5b06;--pink:#a8235f;--violet:#7b61ff;--amber:#c99212;--cyan:#0e7490;
 --serif:"Source Serif 4",Georgia,"Times New Roman",serif;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -45,14 +45,14 @@ h1{margin:0;font:400 38px/1.1 var(--serif)}
 .dial span{font-size:14px;font-weight:600}.dial b{font:400 26px var(--serif)}
 .why{margin:0;font-size:14px;line-height:1.55;padding:12px 14px;border-radius:10px;border:1px dashed var(--dash);background:var(--pale)}
 .changed{font-size:13px;padding:8px 12px;border-radius:8px;background:#fff8ef;border:1px solid var(--line)}
-.changed b{color:var(--purple);margin-right:6px}
+.changed b{color:var(--frame);margin-right:6px}
 .changed details{margin-top:4px}.changed summary{cursor:pointer;font-size:12px;color:var(--muted)}
-.fine{font-size:12px;color:var(--muted);margin:0}
+.fine{font-size:13px;color:var(--muted);margin:0}
 .list{background:var(--panel);border-radius:12px;border:1px solid var(--line);overflow:hidden}
 .row{border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}
 .rowbtn{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:12px 168px 1fr 18px;gap:12px;align-items:center;padding:14px 22px;cursor:pointer}
 .rowbtn:hover{background:#f6ebe0}.rowbtn:focus-visible{outline:2px solid var(--frame);outline-offset:-3px}
-.dot{width:10px;height:10px;border-radius:3px;background:var(--acc)}
+.dot{width:10px;height:10px;border-radius:2px;background:var(--frame);opacity:.55}
 .rowbtn b{font-size:15px}
 .sum{font-size:14px;color:var(--muted);line-height:1.6}
 .sum .pill{margin-right:5px;vertical-align:1px}
@@ -62,12 +62,12 @@ h1{margin:0;font:400 38px/1.1 var(--serif)}
 .muted{color:var(--muted);font-size:13px}
 .call{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:#f1e3c4;color:#5e4304}
 ol.reasons{margin:10px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:9px;font-size:14px}
-ol.reasons li::marker{color:var(--purple);font-weight:700}
+ol.reasons li::marker{color:var(--muted);font-weight:700}
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,10rem),1fr));gap:8px;margin-top:6px}
 .tile{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 .tl{font-size:12px;font-weight:600;color:var(--muted)}
 .tv{font:400 24px/1.2 var(--serif);margin:2px 0;font-variant-numeric:tabular-nums}
-.ts{font-size:11.5px;color:var(--muted)}
+.ts{font-size:12.5px;color:var(--muted)}
 .up{color:var(--good-t)}.down{color:var(--bad)}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 8px}
 .chip{font:inherit;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--fg);cursor:pointer}
@@ -85,7 +85,7 @@ details.tgroup>summary{cursor:pointer;font-size:13px;font-weight:700;margin:12px
 .tline{font-size:13px;line-height:1.35}
 .tags{display:flex;flex-wrap:wrap;gap:4px}
 .tag{font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--pale);color:var(--fg)}
-.tag.warn{background:#f3dad5;color:var(--bad)}
+.tag.warn{background:#fff;color:var(--fg);box-shadow:inset 0 0 0 1px var(--dash)}
 .tmore{font-size:12px;color:var(--muted)}.tmore summary{cursor:pointer;font-weight:600;color:var(--fg)}
 .tmore div{margin-top:4px;line-height:1.4}.tmore b{color:var(--fg)}
 .ev{display:grid;grid-template-columns:8rem 1fr auto;gap:2px 12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
@@ -114,9 +114,9 @@ footer{font-size:12px;text-align:center;background:var(--panel);border:1px solid
 .fact .tl{font-size:12px;font-weight:600;color:var(--muted)}.fact .tv{font:400 26px/1.2 var(--serif)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:0}
-.src{font-size:12px;color:var(--muted)}
+.src{font-size:13px;color:var(--muted)}
 ul.news{margin:6px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:9px;font-size:14px}
-ul.news li::marker{color:var(--purple)}
+ul.news li::marker{color:var(--muted)}
 .tprice{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16px;font-size:14px}dl.rules dt{font-weight:700}dl.rules dd{margin:0}
 @media (max-width:640px){.facts{grid-template-columns:1fr 1fr}dl.rules{grid-template-columns:1fr}dl.rules dd{margin-bottom:6px}}
@@ -127,9 +127,9 @@ dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16p
 .fact .tl{font-size:12px;font-weight:600;color:var(--muted)}.fact .tv{font:400 26px/1.2 var(--serif)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:0}
-.src{font-size:12px;color:var(--muted)}
+.src{font-size:13px;color:var(--muted)}
 ul.news{margin:6px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:9px;font-size:14px}
-ul.news li::marker{color:var(--purple)}
+ul.news li::marker{color:var(--muted)}
 .tprice{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16px;font-size:14px}dl.rules dt{font-weight:700}dl.rules dd{margin:0}
 @media (max-width:640px){.facts{grid-template-columns:1fr 1fr}dl.rules{grid-template-columns:1fr}dl.rules dd{margin-bottom:6px}}
@@ -140,12 +140,17 @@ dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16p
 .fact .tl{font-size:12px;font-weight:600;color:var(--muted)}.fact .tv{font:400 26px/1.2 var(--serif)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:0}
-.src{font-size:12px;color:var(--muted)}
+.src{font-size:13px;color:var(--muted)}
 ul.news{margin:6px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:9px;font-size:14px}
-ul.news li::marker{color:var(--purple)}
+ul.news li::marker{color:var(--muted)}
 .tprice{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16px;font-size:14px}dl.rules dt{font-weight:700}dl.rules dd{margin:0}
 @media (max-width:640px){.facts{grid-template-columns:1fr 1fr}dl.rules{grid-template-columns:1fr}dl.rules dd{margin-bottom:6px}}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:-8px}
+.statusbar{display:flex;gap:3px;padding:3px;background:#d4d0c8;border-top:2px solid var(--frame);font-size:12px;color:#222}
+.statusbar span{flex:1;padding:2px 8px;border:1px solid;border-color:#808080 #fff #fff #808080;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.statusbar span:first-child{flex:1.3}
+.sheet-body{padding-bottom:20px}
 </style></head><body><div class="wrap">
 
 <section class="sheet" id="top" aria-labelledby="h-top">
@@ -153,11 +158,11 @@ dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16p
 <div class="sheet-body">
 <div class="badges">
 <span class="badge neutral">Unofficial</span>
-<span class="badge" style="--acc:var(--teal)">SMAUG</span>
-<span class="badge" style="--acc:var(--purple)">Week 2</span>
+<span class="badge neutral">SMAUG</span>
+<span class="badge neutral">Week 2</span>
 <span class="badge" style="--acc:var(--pink)" id="bell">Bell Fri Nov 6 · 3pm ET</span>
-<span class="badge neutral" id="updated">Updated —</span>
 </div>
+<div class="kicker">Unofficial SMAUG Fund Intel Dashboard</div>
 <h1 id="h-top">This week's SMAUG ballot</h1>
 <p class="lede">Sourced facts for the Week 2 vote, each with its date and source. Nothing here is a recommendation; make your own call.</p>
 <div>
@@ -170,13 +175,14 @@ dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16p
 <div class="changed" id="changed"></div>
 <p class="fine">Unofficial community research by @vv23_CT, not affiliated with The Mutual Fun. Not financial advice. Bell: Fri Nov 6, 20:00 UTC (3:00pm ET).</p>
 </div>
+<div class="statusbar"><span id="sb-upd">Updated —</span><span id="sb-tok">— tokens</span><span id="sb-bell">Bell —</span></div>
 </section>
 
 <div class="list" id="rows">
 <div class="row" id="news"><button class="rowbtn" aria-expanded="false" aria-controls="p-news" style="--acc:var(--purple)"><span class="dot"></span><b>ETH this week</b><span class="sum" id="s-news"></span><span class="chev" aria-hidden="true">▸</span></button>
 <div class="panel" id="p-news"><ul class="news" id="newslist"></ul></div></div>
 <div class="row" id="tokens"><button class="rowbtn" aria-expanded="false" aria-controls="p-tokens" style="--acc:var(--match)"><span class="dot"></span><b>Every token</b><span class="sum" id="s-tokens"></span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-tokens"><div class="muted">Prices and news with dates and sources. Fees, fill times and room backing are from the SMAUG ballot page (Oct 30). Open “details” for the on-chain price.</div><div class="chips"><button class="chip" data-g="" aria-pressed="true">All</button><button class="chip" data-g="Stock" aria-pressed="false">Stock tokens</button><button class="chip" data-g="Stable" aria-pressed="false">Stablecoin</button><button class="chip" data-g="Meme" aria-pressed="false">Memes</button></div><div id="tok"></div></div></div>
+<div class="panel" id="p-tokens"><div class="muted">Prices and news with dates and sources. Fees, fill times and room backing are from the SMAUG ballot page (<span class="bdate"></span>). Open “details” for the on-chain price.</div><div class="chips"><button class="chip" data-g="" aria-pressed="true">All</button><button class="chip" data-g="Stock" aria-pressed="false">Stock tokens</button><button class="chip" data-g="Stable" aria-pressed="false">Stablecoin</button><button class="chip" data-g="Meme" aria-pressed="false">Memes</button></div><div id="tok"></div></div></div>
 <div class="row" id="market"><button class="rowbtn" aria-expanded="false" aria-controls="p-market" style="--acc:var(--violet)"><span class="dot"></span><b>ETH and the Market</b><span class="sum" id="s-market"></span><span class="chev" aria-hidden="true">▸</span></button>
 <div class="panel" id="p-market"><div class="tiles" id="mktTiles"></div></div></div>
 <div class="row" id="events"><button class="rowbtn" aria-expanded="false" aria-controls="p-events" style="--acc:var(--amber)"><span class="dot"></span><b>Next 14 days</b><span class="sum" id="s-events"></span><span class="chev" aria-hidden="true">▸</span></button>
@@ -189,7 +195,6 @@ dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16p
 <div class="panel" id="p-about"><p class="about-title">The Unofficial SMAUG Fund Intel Dashboard</p><p>Vibe coded by <a href="https://x.com/vv23_CT" target="_blank" rel="noopener">vv23</a> on a Smauggy Night.</p><p>Original prompt by Muz (<a href="https://x.com/viper_moons" target="_blank" rel="noopener">@viper_moons</a>).</p></div></div>
 </div>
 
-<footer>Unofficial · sourced facts, not financial advice · do your own research before you vote</footer>
 </div>
 <script>
 function main(D){
@@ -206,7 +211,7 @@ const BELL=Date.parse(D.bell_utc);
 function tick(){const b=$('#bell');const ms=BELL-Date.now();if(ms<=0){b.textContent='Bell rang · Fri Nov 6, 3pm ET';return;}
  const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);b.textContent='Bell in '+(d?d+'d ':'')+h+'h '+(d?'':m+'m ')+'· Fri 3pm ET';}
 tick();setInterval(tick,30000);
-(()=>{const u=D.updates||[];if(!u.length)return;$('#updated').textContent='Updated '+u[0].date;const c=$('#changed');const p=el('div');p.append(el('b',null,'What changed · '+u[0].date),u[0].text);c.append(p);
+(()=>{const u=D.updates||[];if(!u.length)return;$('#sb-upd').textContent='Updated '+u[0].date;const c=$('#changed');const p=el('div');p.append(el('b',null,'What changed · '+u[0].date),u[0].text);c.append(p);
  if(u.length>1){const d=el('details');d.append(el('summary',null,'Earlier updates'));u.slice(1).forEach(x=>d.append(el('div',null,x.date+': '+x.text)));c.append(d);}})();
 
 /* the fund now (from the ballot) */
@@ -217,20 +222,23 @@ const tmf=M('tmf_held'),weth=M('weth_now');
 $('#stack').setAttribute('aria-label','$TMF held '+F.pctu(tmf.value)+', WETH '+F.pctu(weth.value));
 {const n=el('span',null,'Figures as shown on the ballot.');$('#legend').append(n);}
 const fact=(label,val,note,color)=>{const f=el('div','fact');f.append(el('div','tl',label));const v=el('div','tv',val);if(color)v.style.color=color;f.append(v);if(note)f.append(el('div','ts',note));$('#facts').append(f);};
-fact('Chairs voting',F.int(M('turnout').value),'25 needed for the dials to change','var(--teal)');
-fact('Tokens the room backs',F.int(M('room_backed').value),'Every token shows \u201cvetoed so far\u201d','var(--bad)');
+fact('Chairs voting',F.int(M('turnout').value),'25 needed for the dials to change');
+fact('Tokens the room backs',F.int(M('room_backed').value),'Every token shows \u201cvetoed so far\u201d');
 fact('ETH price',F.usd0(M('eth').value),F.pct(M('eth_1w').value)+' over 7 days · '+M('eth').asof);
-const bs=$('#ballotsrc');bs.append('Fund split, chairs and backing: ',link('SMAUG ballot page','https://themutual.fun/'),', screenshot Oct 30. ETH: ',link('CoinMarketCap',M('eth').url),', '+M('eth').asof+'.');
+const bs=$('#ballotsrc');bs.append('Fund split, chairs and backing: ',link('SMAUG ballot page','https://themutual.fun/'),', screenshot '+M('turnout').asof+'. ETH: ',link('CoinMarketCap',M('eth').url),', '+M('eth').asof+'.');
 
 /* row summaries */
-$('#s-news').append('ETH ',strong(F.usd0(M('eth').value)),' · ',strong(F.pct(M('eth_1w').value),M('eth_1w').value<0?'var(--bad)':'var(--good-t)'),' 7d · ETF outflows 4 days through Oct 29 · ',strong(D.news.length+' items','var(--purple)'));
+$('#s-news').append('ETH ',strong(F.usd0(M('eth').value)),' · ',strong(F.pct(M('eth_1w').value),M('eth_1w').value<0?'var(--bad)':'var(--good-t)'),' 7d · ETF outflows 4 days through Oct 29 · ',strong(D.news.length+' items'));
 const slow=D.tokens.filter(r=>r.slow).length,backed=D.tokens.filter(r=>!/vetoed|Not shown/.test(r.backing)).length;
-$('#s-tokens').append(pill(D.tokens.length+' tokens','var(--match)'),pill(slow+' slow to fill','var(--bad)'),pill(backed+' backed by the room',null,true));
-$('#s-market').append('BTC ',strong(F.usd0(M('btc').value)),' · Nasdaq ',strong(F.pct(M('nasdaq').value),'var(--bad)'),' Oct 30 · Fear ',strong(F.int(M('fng').value),'var(--pink)'));
+$('#s-tokens').append(pill(D.tokens.length+' tokens',null,true),pill(slow+' slow to fill',null,true),pill(backed+' backed by the room',null,true));
+$('#s-market').append('BTC ',strong(F.usd0(M('btc').value)),' · Nasdaq ',strong(F.pct(M('nasdaq').value),'var(--bad)'),' Oct 30 · Fear ',strong(F.int(M('fng').value)));
 (()=>{const today=new Date().toISOString().slice(0,10);const up=D.events.filter(e=>e.key&&e.date>=today&&!/Bell/.test(e.short)).slice(0,2);const s=$('#s-events');up.forEach((e,i)=>{if(i)s.append(' · ');s.append(/Jobs/.test(e.short)?strong(e.short,'var(--pink)'):e.short);});})();
-$('#s-rules').append(strong(D.rules.length+' rules','var(--teal)'),': 25% cap, 50% backing, 25-chair floor, the dials');
-$('#s-glossary').append(strong(D.glossary.length+' terms','var(--cyan)'),': WETH, cards, backing, the dials and more');
+$('#s-rules').append(strong(D.rules.length+' rules'),': 25% cap, 50% backing, 25-chair floor, the dials');
+$('#s-glossary').append(strong(D.glossary.length+' terms'),': WETH, cards, backing, the dials and more');
 
+document.querySelectorAll('.bdate').forEach(e=>e.textContent=M('turnout').asof);
+$('#sb-tok').textContent=D.tokens.length+' tokens';
+function sb(){const ms=BELL-Date.now();const d=Math.floor(ms/864e5),hh=Math.floor(ms%864e5/36e5);$('#sb-bell').textContent=ms<=0?'Bell rang':'Bell in '+(d?d+'d ':'')+hh+'h';}sb();setInterval(sb,30000);
 /* panels */
 D.news.forEach(n=>{const li=el('li');li.append(el('b',null,n.head+'. '),n.text+' ');const m=el('span','muted');m.append('(',link(n.source,n.url),')');li.append(m);$('#newslist').append(li);});
 const tile=(r,box)=>{const t=el('div','tile');t.append(el('div','tl',r.label));const v=el('div','tv',r.value==null?'—':(F[r.fmt]||F.int)(Number(r.value)));if(r.fmt==='pct'||r.fmt==='usdM')v.classList.add(r.value<0?'down':'up');t.append(v);const s=el('div','ts');s.append(r.asof+' · ');s.append(link(r.source,r.url));t.append(s);box.append(t);};
@@ -249,7 +257,7 @@ function card(r){const c=el('article','tcard');
  const tg=el('div','tags');tg.append(el('span','tag',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'));
  tg.append(el('span','tag'+(r.slow?' warn':''),r.slow?r.fill.replace(' to a quarter',' to fill'):r.fill));
  tg.append(el('span','tag'+(/vetoed/.test(r.backing)?' warn':''),/vetoed/.test(r.backing)?'Room: no backing yet':'Room: '+r.backing));c.append(tg);
- const s=el('div','src');s.append('Source: ',link(r.source,r.url),' · fee, fill and backing: ballot, Oct 30');c.append(s);return c;}
+ const s=el('div','src');s.append('Source: ',link(r.source,r.url),' · fee, fill and backing: ballot, '+M('turnout').asof);c.append(s);return c;}
 function drawTok(){const box=$('#tok');box.replaceChildren();
  GROUPS.forEach(([g,label])=>{if(G&&G!==g)return;const rs=D.tokens.filter(r=>r.group===g);if(!rs.length)return;const h=el('div','tgh',label+' ');h.append(el('span',null,'· '+rs.length));const grid=el('div','tgrid');rs.forEach(r=>grid.append(card(r)));box.append(h,grid);});}
 drawTok();
