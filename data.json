@@ -2,6 +2,7 @@
  "version": 2,
  "week": 2,
  "bell_utc": "2026-11-06T20:00:00Z",
+ "updated_utc": "2026-10-31T13:03:00Z",
  "funds": [
   {
    "id": "argon",
@@ -69,9 +70,11 @@
      "backs": {
       "NVDA": 0.0787,
       "GLD": 0.0553
-     }
+     },
+     "asof_utc": "2026-10-31T13:00:00Z"
     }
-   ]
+   ],
+   "asof_utc": "2026-10-31T13:00:00Z"
   },
   {
    "id": "bogle",
@@ -133,9 +136,11 @@
      "asof": "Oct 31, 9:01am ET",
      "chairs": 41,
      "tmf_held": 0.3124,
-     "backs": {}
+     "backs": {},
+     "asof_utc": "2026-10-31T13:01:00Z"
     }
-   ]
+   ],
+   "asof_utc": "2026-10-31T13:01:00Z"
   },
   {
    "id": "smaug",
@@ -218,15 +223,18 @@
      "asof": "Oct 31, 8:15am ET",
      "chairs": 46,
      "tmf_held": 0.3619,
-     "backs": {}
+     "backs": {},
+     "asof_utc": "2026-10-31T12:15:00Z"
     },
     {
      "asof": "Oct 31, 9:02am ET",
      "chairs": 46,
      "tmf_held": 0.358,
-     "backs": {}
+     "backs": {},
+     "asof_utc": "2026-10-31T13:02:00Z"
     }
-   ]
+   ],
+   "asof_utc": "2026-10-31T13:02:00Z"
   },
   {
    "id": "midas",
@@ -289,9 +297,11 @@
       "MSTR": 0.0599,
       "TSLA": 0.0401,
       "USDG": 0.1203
-     }
+     },
+     "asof_utc": "2026-10-31T13:02:00Z"
     }
-   ]
+   ],
+   "asof_utc": "2026-10-31T13:02:00Z"
   },
   {
    "id": "vladd",
@@ -346,9 +356,11 @@
      "asof": "Oct 31, 9:03am ET",
      "chairs": 72,
      "tmf_held": 0.4173,
-     "backs": {}
+     "backs": {},
+     "asof_utc": "2026-10-31T13:03:00Z"
     }
-   ]
+   ],
+   "asof_utc": "2026-10-31T13:03:00Z"
   }
  ],
  "market": [
@@ -905,6 +917,10 @@
   }
  ],
  "updates": [
+  {
+   "date": "Oct 31",
+   "text": "New compact layout: a pinned fund selector, one summary card per fund, and four tabs (This week, Tokens, All funds, More) instead of one long page. Each fund now shows in its own color, and every time is shown in your own time zone."
+  },
   {
    "date": "Oct 31",
    "text": "Added a timeline for each fund (This week so far) and an Every token, every fund grid showing what each room gives all 19 tokens. SMAUG's timeline goes back to Oct 30; the other funds start with today's capture."

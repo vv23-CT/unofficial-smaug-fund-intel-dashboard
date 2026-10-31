@@ -13,374 +13,322 @@
 <meta name="twitter:image" content="https://vv23-ct.github.io/unofficial-smaug-fund-intel-dashboard/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2324406e'/%3E%3Crect x='6' y='6' width='52' height='14' rx='3' fill='%234a6ea2'/%3E%3Ctext x='32' y='52' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='26' text-anchor='middle' fill='%23ffffff'%3ETI%3C/text%3E%3C/svg%3E">
 <style>
-:root{--wall:#cfa89e;--speck:#c0958b;--panel:#fbf5ea;--fg:#2b2320;--muted:#57423c;--line:#e6cfc6;--pale:#ead6cf;--frame:#453629;--dash:#c99a8e;
---good:#416943;--good-t:#356039;--bad:#9e2f26;--weth:#4a6ea2;--weth-t:#3d5f8f;--tmf:#a35846;--tmf-t:#8e4a3b;--match:#1f5fb8;
---teal:#0a6b6b;--purple:#5a43d1;--gold:#7f5b06;--pink:#a8235f;--violet:#7b61ff;--amber:#c99212;--cyan:#0e7490;
---card:#fff;--card2:#fff8ef;--hover:#f6ebe0;--edge:#e0c6bc;--bellrow:#f6e2e8;--title:#fbf5ea;--tmfstripe:#c9917f;
+/* Compact one-column app: sticky fund switcher, one summary card, four view tabs. Win95 window as the frame. */
+:root{--house:#9C5248;--house-ink:#fff;--wall:color-mix(in srgb,var(--house) 34%,#F6EFE3);--speck:color-mix(in srgb,var(--house) 50%,#F6EFE3);--panel:#fbf5ea;--fg:#2b2320;--muted:#57423c;--line:#e6cfc6;--pale:#ead6cf;--frame:#453629;--dash:#c99a8e;
+--good-t:#356039;--bad:#9e2f26;--weth:#4a6ea2;--tmf:#a35846;--tmfstripe:#c9917f;--pink:#a8235f;
+--card:#fff;--card2:#fff8ef;--hover:#f6ebe0;--edge:#e0c6bc;--title:#fbf5ea;
+--c1:#c08a2e;--c2:#4f8a5b;--c3:#8a64b5;--c4:#2f8580;--c5:#b85a75;--c6:#6b7b8f;
 --serif:"Source Serif 4",Georgia,"Times New Roman",serif;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-*{box-sizing:border-box}
-body{margin:0;color:var(--fg);font:15px/1.5 var(--sans);background-color:var(--wall);background-image:radial-gradient(var(--speck) 1.4px,transparent 1.6px),radial-gradient(var(--speck) 1.4px,transparent 1.6px);background-size:46px 46px,46px 46px;background-position:0 0,23px 29px}
-a{color:inherit}
-.wrap{max-width:820px;margin:0 auto;padding:28px 16px 40px;display:flex;flex-direction:column;gap:14px}
-.sheet{border:3px solid var(--frame);border-radius:12px;overflow:hidden;background:var(--panel)}
-.titlebar{height:30px;background:var(--frame);color:var(--title);display:flex;align-items:center;justify-content:space-between;padding:0 6px 0 14px;font-size:12px;font-weight:700;letter-spacing:.04em}
-.winbtns{display:flex;gap:4px}.winbtns i{width:16px;height:13px;background:#d4d0c8;border:1px solid #fff;border-right-color:#404040;border-bottom-color:#404040}
-.sheet-body{padding:22px 30px 24px;display:flex;flex-direction:column;gap:16px}
-.badges{display:flex;flex-wrap:wrap;gap:6px}
-.badge{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;color:#fff;background:var(--acc)}
-.badge.neutral{background:var(--pale);color:var(--fg);box-shadow:inset 0 0 0 1px var(--edge)}
-h1{margin:0;font:400 38px/1.1 var(--serif)}
-.stack{display:flex;height:22px;border-radius:7px;overflow:hidden;background:var(--pale)}
-.stack div{height:100%}
-.ballot{display:flex;flex-direction:column;border-top:2px solid var(--fg)}
-.line{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:12px;padding:11px 0;border-bottom:1px dashed var(--dash)}
-.box{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700}
-.box.empty{width:16px;height:16px;border:2px solid var(--gold);margin-left:2px}
-.lname{font-size:16px;font-weight:600}
-.lname small{font-weight:400;color:var(--muted);font-size:14px;margin-left:4px}
-.lpct{font:400 26px var(--serif);text-align:right;font-variant-numeric:tabular-nums}
-.pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;color:#fff;background:var(--acc);vertical-align:2px;font-style:normal}
-.pill.neutral{background:var(--pale);color:var(--fg);box-shadow:inset 0 0 0 1px var(--edge)}
-.dials{display:flex;gap:12px;flex-wrap:wrap}
-.dial{flex:1;min-width:200px;border-radius:10px;padding:10px 16px;display:flex;align-items:baseline;justify-content:space-between}
-.dial span{font-size:14px;font-weight:600}.dial b{font:400 26px var(--serif)}
-.why{margin:0;font-size:14px;line-height:1.55;padding:12px 14px;border-radius:10px;border:1px dashed var(--dash);background:var(--pale)}
-.changed{font-size:13px;padding:8px 12px;border-radius:8px;background:var(--card2);border:1px solid var(--line)}
-.changed b{color:var(--fg);margin-right:6px}
-.changed details{margin-top:4px}.changed summary{cursor:pointer;font-size:12px;color:var(--muted)}
-.fine{font-size:13px;color:var(--muted);margin:0}
-.list{background:var(--panel);border-radius:12px;border:1px solid var(--line);overflow:hidden}
-.row{border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}
-.rowbtn{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:12px 168px 1fr 18px;gap:12px;align-items:center;padding:14px 22px;cursor:pointer}
-.rowbtn:hover{background:var(--hover)}.rowbtn:focus-visible{outline:2px solid var(--frame);outline-offset:-3px}
-.dot{width:10px;height:10px;border-radius:2px;background:var(--muted);opacity:.6}
-.rowbtn b{font-size:15px}
-.sum{font-size:14px;color:var(--muted);line-height:1.6}
-.sum .pill{margin-right:5px;vertical-align:1px}
-.sum strong{color:var(--fg)}
-.chev{color:var(--muted);transition:transform .15s}.row.open .chev{transform:rotate(90deg)}
-.panel{display:none;padding:4px 22px 20px 46px}.row.open .panel{display:block}
-.muted{color:var(--muted);font-size:13px}
-.call{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:#f1e3c4;color:#5e4304}
-ol.reasons{margin:10px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:9px;font-size:14px}
-ol.reasons li::marker{color:var(--muted);font-weight:700}
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,10rem),1fr));gap:8px;margin-top:6px}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-.tl{font-size:12px;font-weight:600;color:var(--muted)}
-.tv{font:400 24px/1.2 var(--serif);margin:2px 0;font-variant-numeric:tabular-nums}
-.ts{font-size:12.5px;color:var(--muted)}
-.up{color:var(--good-t)}.down{color:var(--bad)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 8px}
-.chip{font:inherit;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--fg);color:var(--panel);border-color:var(--fg)}
-.tgh{font-size:13px;font-weight:700;margin:12px 0 6px}.tgh span{color:var(--muted);font-weight:600}
-details.tgroup>summary{cursor:pointer;font-size:13px;font-weight:700;margin:12px 0 6px}
-.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr));gap:8px}
-.tcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:5px}
-.tcard.pick{border:2px solid var(--good)}
-.thead{display:flex;align-items:center;gap:7px}
-.tname{font-weight:700;font-size:15px}
-.tconf{font-size:11px;color:var(--muted)}
-.tpct{margin-left:auto;font:400 20px/1 var(--serif)}
-.tpct.on{color:var(--good-t)}.tpct.off{color:var(--muted)}
-.tline{font-size:13px;line-height:1.35}
-.tags{display:flex;flex-wrap:wrap;gap:4px}
-.tag{font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--pale);color:var(--fg)}
-.tag.warn{background:var(--card);color:var(--fg);box-shadow:inset 0 0 0 1px var(--dash)}
-.tmore{font-size:12px;color:var(--muted)}.tmore summary{cursor:pointer;font-weight:600;color:var(--fg)}
-.tmore div{margin-top:4px;line-height:1.4}.tmore b{color:var(--fg)}
-.ev{display:grid;grid-template-columns:8rem 1fr auto;gap:2px 12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
-.ev:last-child{border-bottom:0}
-.ev .when{font-weight:700}.ev .when span{display:block;font-weight:400;font-size:11.5px;color:var(--muted)}
-.ev .moves{display:block;font-size:11.5px;color:var(--muted)}.ev .src{font-size:11.5px;color:var(--muted)}
-.ev.bell{background:var(--bellrow);border-radius:6px;padding-inline:8px;margin-inline:-8px}.ev.bell .what{font-weight:700}
-dl.gloss{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16px;font-size:14px}
-dl.gloss dt{font-weight:700}dl.gloss dd{margin:0}
-.about-title{font:400 20px/1.3 var(--serif);margin:4px 0 6px}
-.about p{margin:2px 0;font-size:14px}.about a{font-weight:700}
-footer{font-size:12px;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px;align-self:center}
-@media (max-width:640px){
- .wrap{padding:12px 10px 28px}.sheet-body{padding:16px}h1{font-size:30px}
- .rowbtn{grid-template-columns:12px 1fr 18px;padding:13px 14px}.rowbtn .sum{grid-column:2/3}
- .panel{padding:4px 14px 18px}
- .lpct{font-size:22px}.dial{min-width:140px}
- dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:6px}
- .ev{grid-template-columns:6.2rem 1fr}.ev .src{grid-column:2}
-}
-@media (prefers-reduced-motion:no-preference){.stack div{animation:grow .6s ease-out;transform-origin:left}@keyframes grow{from{transform:scaleX(0)}}}
-
-.lede{margin:0;font-size:15px;max-width:640px}
-.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.fact{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
-.fact .tl{font-size:12px;font-weight:600;color:var(--muted)}.fact .tv{font:400 26px/1.2 var(--serif)}
-.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:0}
-.src{font-size:13px;color:var(--muted)}
-ul.news{margin:6px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:9px;font-size:14px}
-ul.news li::marker{color:var(--muted)}
-.tprice{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-dl.rules{margin:6px 0 0;display:grid;grid-template-columns:150px 1fr;gap:8px 16px;font-size:14px}dl.rules dt{font-weight:700}dl.rules dd{margin:0}
-@media (max-width:640px){.facts{grid-template-columns:1fr 1fr}dl.rules{grid-template-columns:1fr}dl.rules dd{margin-bottom:6px}}
-
-
-.kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:-8px}
-.statusbar{display:flex;gap:3px;padding:3px;background:#d4d0c8;border-top:2px solid var(--frame);font-size:12px;color:#222}
-.statusbar span{flex:1;padding:2px 8px;border:1px solid;border-color:#808080 #fff #fff #808080;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.statusbar span:first-child{flex:1.3}
-.sheet-body{padding-bottom:20px}
-.tbright{display:flex;align-items:center;gap:8px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--wall:color-mix(in srgb,var(--house) 26%,#1D1410);--speck:color-mix(in srgb,var(--house) 38%,#1D1410);--panel:#1d1613;--fg:#f0e5d8;--muted:#c2ab9d;--line:#3a2d27;--pale:#362923;--frame:#0e0a08;--dash:#5e483d;--good-t:#86c98a;--bad:#f08a7b;--weth:#6d93cb;--tmf:#c26d58;--tmfstripe:#7d4537;--pink:#c23d76;--card:#271d19;--card2:#2a201b;--hover:#2c221e;--edge:#4a3830;color-scheme:dark}}
+:root[data-theme="dark"]{--wall:color-mix(in srgb,var(--house) 26%,#1D1410);--speck:color-mix(in srgb,var(--house) 38%,#1D1410);--panel:#1d1613;--fg:#f0e5d8;--muted:#c2ab9d;--line:#3a2d27;--pale:#362923;--frame:#0e0a08;--dash:#5e483d;--good-t:#86c98a;--bad:#f08a7b;--weth:#6d93cb;--tmf:#c26d58;--tmfstripe:#7d4537;--pink:#c23d76;--card:#271d19;--card2:#2a201b;--hover:#2c221e;--edge:#4a3830;color-scheme:dark}
+.app *{box-sizing:border-box}
+.app{transition:border-color .25s ease;color:var(--fg);font:15px/1.45 var(--sans);background:var(--panel);border:3px solid var(--house);border-radius:12px;overflow:clip}
+.app a{color:inherit}
+.app button{font:inherit;color:inherit}
+.tbar{height:28px;background:var(--house);color:var(--house-ink);display:flex;align-items:center;justify-content:flex-end;transition:background-color .25s ease;padding:0 6px 0 12px;font-size:12px;font-weight:700;letter-spacing:.04em}
+.tbr{display:flex;align-items:center;gap:8px}
+.winb{display:flex;gap:4px}.winb i{width:16px;height:13px;background:#d4d0c8;border:1px solid #fff;border-right-color:#404040;border-bottom-color:#404040}
 .modebtn{font:700 12px/1 var(--sans);width:24px;height:20px;padding:0;cursor:pointer;background:#d4d0c8;color:#222;border:1px solid;border-color:#fff #404040 #404040 #fff}
-.modebtn:active{border-color:#404040 #fff #fff #404040}.modebtn:focus-visible{outline:2px solid var(--title);outline-offset:1px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--wall:#241b17;--speck:#33271f;--panel:#1d1613;--fg:#f0e5d8;--muted:#c2ab9d;--line:#3a2d27;--pale:#362923;--frame:#0e0a08;--dash:#5e483d;
---good:#7cbf80;--good-t:#86c98a;--bad:#f08a7b;--weth:#6d93cb;--weth-t:#8eb0e0;--tmf:#c26d58;--tmf-t:#e29a86;--tmfstripe:#7d4537;--pink:#c23d76;
---card:#271d19;--card2:#2a201b;--hover:#2c221e;--edge:#4a3830;--bellrow:#4b1e31}}
-:root[data-theme="dark"]{--wall:#241b17;--speck:#33271f;--panel:#1d1613;--fg:#f0e5d8;--muted:#c2ab9d;--line:#3a2d27;--pale:#362923;--frame:#0e0a08;--dash:#5e483d;
---good:#7cbf80;--good-t:#86c98a;--bad:#f08a7b;--weth:#6d93cb;--weth-t:#8eb0e0;--tmf:#c26d58;--tmf-t:#e29a86;--tmfstripe:#7d4537;--pink:#c23d76;
---card:#271d19;--card2:#2a201b;--hover:#2c221e;--edge:#4a3830;--bellrow:#4b1e31}
-:root[data-theme="light"]{color-scheme:light}:root[data-theme="dark"]{color-scheme:dark}
-
-.ftabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.ftab{font:inherit;cursor:pointer;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:8px 10px;color:var(--fg);display:flex;flex-direction:column;gap:1px;min-width:0}
-.ftab b{font:400 17px/1.15 var(--serif);letter-spacing:.02em}
-.ftab span{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ftab:hover{background:var(--hover)}
-.ftab[aria-selected="true"]{border:2px solid var(--fg);padding:7px 9px;background:var(--card2)}
-.ftab:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
-.ftab .on{color:var(--fg);font-weight:600}
-h2.fh{margin:0;font:400 26px/1.15 var(--serif)}
-h2.fh small{display:block;font:600 12px/1.4 var(--sans);color:var(--muted);letter-spacing:.02em;margin-top:3px}
-.legend b{color:var(--fg);font-weight:600}
-table.ftable{width:100%;border-collapse:collapse;font-size:14px}
-table.ftable th{font-size:12px;font-weight:600;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
-table.ftable td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
-table.ftable tr:last-child td{border-bottom:0}
-table.ftable td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
-table.ftable tbody tr{cursor:pointer}table.ftable tbody tr:hover{background:var(--hover)}
-table.ftable tr.sel td{background:var(--card2)}table.ftable tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--fg)}
-.ftablewrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
-.tag.on{background:var(--fg);color:var(--panel)}
-:root{--c1:#c08a2e;--c2:#4f8a5b;--c3:#8a64b5;--c4:#2f8580;--c5:#b85a75;--c6:#6b7b8f}
-@media (max-width:640px){.ftabs{grid-template-columns:repeat(3,minmax(0,1fr))}.ftab b{font-size:16px}table.ftable{font-size:13px}table.ftable th,table.ftable td{padding:7px 6px}}
-
-.tl-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column}
-.tl-list li{display:grid;grid-template-columns:9.5rem 1fr;gap:4px 14px;padding:9px 0 9px 18px;border-left:2px solid var(--line);position:relative;font-size:14px}
-.tl-list li::before{content:"";position:absolute;left:-6px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--panel);border:2px solid var(--muted)}
-.tl-list li:last-child::before{background:var(--fg);border-color:var(--fg)}
-.tl-when{font-weight:700;font-size:13px}.tl-when span{display:block;font-weight:400;color:var(--muted);font-size:12px}
-.tl-what{display:flex;flex-direction:column;gap:5px}
-.tl-chairs{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
-.tl-chairs .bar{position:relative;flex:1;max-width:220px;height:8px;border-radius:4px;background:var(--pale)}
-.tl-chairs .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--muted)}
-.tl-chairs .bar b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--fg)}
-.tl-chairs strong{color:var(--fg)}
-.tl-note{font-size:12.5px;color:var(--muted)}
-.change{font-weight:600;color:var(--fg)}
-.gridcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 22px}
-.gridcard h2{margin:0;font:400 24px/1.2 var(--serif)}
-.gridcard p.sub{margin:4px 0 12px;font-size:14px;color:var(--muted)}
-.tgwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card)}
-table.tg{width:100%;border-collapse:collapse;font-size:13px;min-width:520px}
-table.tg th{font-size:12px;font-weight:700;padding:7px 6px;text-align:center;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card)}
-table.tg th:first-child,table.tg td:first-child{text-align:left;padding-left:12px;position:sticky;left:0;background:var(--card);z-index:1}
-table.tg td{padding:5px 6px;text-align:center;border-bottom:1px solid var(--line)}
-table.tg tr.grp td{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding-top:10px;background:var(--card2)}
-table.tg tr.grp td:first-child{background:var(--card2)}
-.cell{display:inline-block;min-width:66px;padding:3px 6px;border-radius:6px;font-weight:600;font-variant-numeric:tabular-nums}
+.modebtn:focus-visible{outline:2px solid var(--title);outline-offset:1px}
+.hd{padding:12px 14px 8px;display:flex;flex-direction:column;gap:2px}
+.kick{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hd h1{margin:0;font:400 24px/1.15 var(--serif);text-wrap:balance}
+.hd .sub{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:12.5px;color:var(--muted)}
+.bell{font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--pink);color:#fff}
+/* sticky fund switcher */
+.fsw{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--panel);padding:8px 10px;border-bottom:1px solid var(--line);box-shadow:0 6px 10px -10px rgba(0,0,0,.35)}
+.fsw-l{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 2px 5px}
+.fsw-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;background:var(--pale);padding:3px;border-radius:12px}
+.fbtn{position:relative;cursor:pointer;border:0;background:transparent;border-radius:9px;padding:8px 2px 7px;font-weight:700;font-size:13px;letter-spacing:.02em;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0}
+.fbtn small{font-weight:500;font-size:10.5px;color:var(--muted);white-space:nowrap}
+.fbtn:hover{background:var(--hover)}
+.fbtn[aria-selected="true"]{background:var(--fh);color:var(--fhi)}
+.fbtn[aria-selected="true"] small{color:var(--fhi);opacity:.85}
+.fbtn .sw{display:block;width:16px;height:4px;border-radius:2px;background:var(--fh);margin-bottom:3px}
+.fbtn[aria-selected="true"] .sw{background:var(--fhi);opacity:.7}
+.fbtn:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.fbtn .pip{position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.75}
+/* fund card */
+.body{padding:12px 12px 14px;display:flex;flex-direction:column;gap:12px}
+.fcard{position:relative;background:var(--card);border:1px solid var(--line);border-top:5px solid var(--house);border-radius:14px;padding:14px;transition:border-color .25s ease;display:flex;flex-direction:column;gap:10px;touch-action:pan-y}
+.fc-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.fc-name{font:400 28px/1 var(--serif)}
+.fc-when{font-size:12px;color:var(--muted)}
+.fc-backs{font-size:17px;font-weight:600;line-height:1.3}
+.fc-backs.none{font-weight:500;color:var(--muted)}
+.stack{display:flex;height:16px;border-radius:6px;overflow:hidden;background:var(--pale)}
+.stack div{height:100%}
+.leg{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:12.5px;color:var(--muted)}
+.leg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
+.leg b{color:var(--fg);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);padding-top:10px}
+.stat{display:flex;flex-direction:column;gap:1px;padding:0 6px}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat span{font-size:11.5px;color:var(--muted)}
+.stat b{font:400 20px/1.15 var(--serif);font-variant-numeric:tabular-nums}
+.stat em{font-style:normal;font-size:11px;color:var(--good-t);font-weight:600}
+.swipehint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:-4px}
+/* view tabs */
+.vtabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.vtab{cursor:pointer;border:0;background:transparent;padding:9px 2px;font-size:13.5px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent}
+.vtab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--fg)}
+.vtab:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
+.view{display:flex;flex-direction:column;gap:10px}
+.note{font-size:12.5px;color:var(--muted);margin:0}
+/* week */
+.wk{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.wk li{display:grid;grid-template-columns:5.6rem 1fr auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.wk li:last-child{border-bottom:0}
+.wk .w{font-weight:700;font-size:12.5px;line-height:1.2}.wk .w small{display:block;font-weight:400;color:var(--muted)}
+.wk .b{min-width:0}
+.wk .c{font-variant-numeric:tabular-nums;font-weight:600;text-align:right;white-space:nowrap}
+.wk .c small{display:block;font-weight:600;font-size:11px;color:var(--good-t)}
+.chg{font-weight:700}
+/* tokens */
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{cursor:pointer;font-size:12px;font-weight:700;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:var(--card)}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--panel);border-color:var(--fg)}
+.tl{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+.trow{border-bottom:1px solid var(--line)}.trow:last-child{border-bottom:0}
+.tbtn{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:10px 12px;cursor:pointer}
+.tbtn:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
+.tbtn b{font-size:14px}
+.tbtn .px{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.st{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.st.b{background:var(--fg);color:var(--panel)}
+.st.v{color:var(--muted);font-weight:500;box-shadow:inset 0 0 0 1px var(--line)}
+.st.n{color:var(--muted);font-weight:500}
+.tdet{display:none;padding:0 12px 12px;font-size:13px;line-height:1.45}
+.trow.open .tdet{display:block}
+.tdet p{margin:0 0 5px}.tdet .m{color:var(--muted)}
+.tdet .src{font-size:12px;color:var(--muted)}
+/* all funds grid */
+.gwrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+table.g{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+table.g th{font-size:11px;font-weight:700;padding:7px 2px;border-bottom:1px solid var(--line);text-align:center}
+table.g th:first-child,table.g td:first-child{text-align:left;padding-left:10px}
+table.g td{padding:6px 2px;border-bottom:1px solid var(--line);text-align:center}
+table.g tr:last-child td{border-bottom:0}
+table.g .sel{background:var(--card2)}
+table.g tr.sum td{font-size:11.5px;color:var(--muted)}
+.cell{display:inline-block;padding:2px 5px;border-radius:6px;font-weight:700}
 .cell.b{background:var(--fg);color:var(--panel)}
-.cell.v{color:var(--muted);font-weight:400;font-size:12px;opacity:.8}
-.cell.n{color:var(--muted);font-weight:400}
-table.tg td.sel,table.tg th.sel{background:var(--card2)}
-.tglegend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);margin-top:10px}
-.tglegend .cell{min-width:0}
-.sh{display:none}
-@media (max-width:640px){table.tg{min-width:0}table.tg th,table.tg td{padding:5px 1px}table.tg th:first-child,table.tg td:first-child{padding-left:8px}.cell{min-width:0;padding:2px 3px;font-size:11px}table.tg{font-size:11.5px}table.tg th{font-size:11px}table.tg td:first-child{max-width:78px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lg{display:none}.sh{display:inline}}
-@media (max-width:640px){.tl-list li{grid-template-columns:1fr}.gridcard{padding:14px 8px}.gridcard h2,.gridcard p.sub,.tglegend{padding:0 6px}table.tg{font-size:12px}.cell{min-width:52px}}
+.cell.v,.cell.n{color:var(--muted);font-weight:400}
+.toggle{cursor:pointer;align-self:flex-start;font-size:12.5px;font-weight:700;background:none;border:0;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
+/* more */
+.acc{border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+.acc details{border-bottom:1px solid var(--line)}.acc details:last-child{border-bottom:0}
+.acc summary{cursor:pointer;padding:11px 12px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;gap:8px;list-style:none}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary span{font-weight:500;font-size:12.5px;color:var(--muted);text-align:right}
+.acc .in{padding:0 12px 12px;font-size:13.5px}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.tile{border:1px solid var(--line);border-radius:9px;padding:7px 9px}
+.tile .l{font-size:11.5px;color:var(--muted)}.tile .v{font:400 19px/1.2 var(--serif);font-variant-numeric:tabular-nums}.tile .s{font-size:11px;color:var(--muted)}
+.down{color:var(--bad)}.up{color:var(--good-t)}
+.evl{display:flex;flex-direction:column}
+.ev{display:grid;grid-template-columns:5.4rem 1fr;gap:6px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}.ev:last-child{border-bottom:0}
+.ev b{font-size:12.5px}.ev.key .what{font-weight:700}.ev small{display:block;color:var(--muted);font-size:11.5px}
+dl.dl{margin:0;display:flex;flex-direction:column;gap:7px}dl.dl dt{font-weight:700}dl.dl dd{margin:0;color:var(--fg)}
+.changed{font-size:13px;line-height:1.45}
+.fine{font-size:11.5px;color:var(--muted);margin:0;padding:0 12px 10px}
+.sbar{display:flex;gap:3px;padding:3px;background:#d4d0c8;border-top:2px solid var(--frame);font-size:11.5px;color:#222}
+.sbar span{flex:1;padding:2px 7px;border:1px solid;border-color:#808080 #fff #fff #808080;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (prefers-reduced-motion:no-preference){.fcard.slide{animation:sl .22s ease-out}@keyframes sl{from{opacity:.4;transform:translateX(var(--dx,0))}}}
+
+.fc-head{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
+.fc-head .txt{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fc-motto{font-size:12.5px;color:var(--muted);font-style:italic}
+.portrait{width:auto;height:84px;image-rendering:pixelated;image-rendering:crisp-edges;align-self:end;margin-bottom:-4px}
+@media (max-width:360px){.portrait{height:64px}}
+.when{font-size:12px;color:var(--muted)}
+.upd{display:inline-flex;gap:4px;align-items:center}
+body,.pv{transition:background-color .25s ease}
+table.g th[data-f]{box-shadow:inset 0 -3px 0 var(--fh)}
+
+html,body{margin:0}
+body{background-color:var(--wall);background-image:radial-gradient(var(--speck) 1.4px,transparent 1.6px),radial-gradient(var(--speck) 1.4px,transparent 1.6px);background-size:46px 46px,46px 46px;background-position:0 0,23px 29px;transition:background-color .25s ease}
+.page{padding:14px 12px 30px;display:flex;justify-content:center}
+.page .app{width:100%;max-width:560px}
+[hidden]{display:none!important}
 </style>
 <script>try{var t=localStorage.getItem('sfi-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
-</head><body><div class="wrap">
-<section class="sheet" id="top" aria-labelledby="h-top">
-<div class="titlebar"><span>TMF_FUND_INTEL.EXE</span><span class="tbright"><button class="modebtn" id="modebtn" type="button" aria-label="Switch to dark mode" title="Light / dark">☾</button><span class="winbtns" aria-hidden="true"><i></i><i></i><i></i></span></span></div>
-<div class="sheet-body">
-<div class="badges">
-<span class="badge neutral" id="weekbadge">Week 2</span>
-<span class="badge" style="--acc:var(--pink)" id="bell">Bell Fri Nov 6 · 3pm ET</span>
+</head><body><div class="page">
+<div class="app" id="app">
+<div class="tbar"><span class="tbr"><button class="modebtn" id="modebtn" type="button" aria-label="Switch to dark mode">☾</button><span class="winb" aria-hidden="true"><i></i><i></i><i></i></span></span></div>
+<header class="hd">
+<span class="kick">Unofficial TMF Fund Intel Dashboard</span>
+<h1>What each room is backing</h1>
+<div class="sub"><span class="bell" id="bell">Bell —</span><span id="wk">Week 2</span><span class="upd">· Updated <time id="updTime">—</time></span></div>
+</header>
+<nav class="fsw" aria-label="Choose a fund">
+<div class="fsw-l">Choose a fund</div>
+<div class="fsw-row" role="tablist" id="fsw"></div>
+</nav>
+<main class="body">
+<section class="fcard" id="fcard" aria-live="polite">
+<div class="fc-head"><div class="txt">
+<span class="fc-name" id="fcName">—</span>
+<span class="fc-motto" id="fcMotto"></span>
+<div class="fc-backs" id="fcBacks">—</div>
+<span class="fc-when">Room as of <time id="fcWhen">—</time></span>
+</div><img class="portrait" id="fcPic" alt="" width="92" height="108"></div>
+<div class="stack" id="fcStack" role="img" aria-label="Room split"></div>
+<div class="leg" id="fcLeg"></div>
+<div class="stats">
+<div class="stat"><span>Chairs</span><b id="stChairs">—</b><em id="stFloor"></em></div>
+<div class="stat"><span>$TMF held</span><b id="stTmf">—</b></div>
+<div class="stat"><span>Backed</span><b id="stBacked">—</b></div>
 </div>
-<div class="kicker">Unofficial TMF Fund Intel Dashboard</div>
-<h1 id="h-top">What each room is backing</h1>
-<p class="lede">The room is every card cast so far in a fund this week. Below is what each fund's room would do if the bell rang now, as the ballot shows it, plus sourced facts on every token. Nothing here is a recommendation; make your own call.</p>
-<div class="ftabs" role="tablist" aria-label="Funds" id="ftabs"></div>
-<div role="tabpanel" id="fpanel" aria-live="polite">
-<h2 class="fh" id="fh"></h2>
-<div style="margin-top:10px">
-<div class="stack" id="stack" role="img" aria-label="Room split"></div>
-<div class="legend" id="legend" style="margin-top:8px"></div>
-</div>
-<div class="facts" id="facts" style="margin-top:14px"></div>
-<p class="src" id="fundsrc" style="margin-top:10px"></p>
-<div style="margin-top:16px"><div class="tl" style="font-size:13px;font-weight:700">This week so far</div><ol class="tl-list" id="tline"></ol><p class="tl-note" id="tlnote"></p></div>
-</div>
-<div>
-<div class="tl" style="font-size:13px;font-weight:700;margin-bottom:6px">All five funds</div>
-<div class="ftablewrap"><table class="ftable" id="ftable"><thead><tr><th>Fund</th><th>Chairs</th><th>$TMF held</th><th>The room backs</th></tr></thead><tbody></tbody></table></div>
-</div>
-<div class="changed" id="changed"></div>
-<p class="fine">Unofficial community research by @vv23_CT, not affiliated with The Mutual Fun. Not financial advice. Bell: Fri Nov 6, 20:00 UTC (3:00pm ET).</p>
-</div>
-<div class="statusbar"><span id="sb-upd">Updated —</span><span id="sb-tok">— funds</span><span id="sb-bell">Bell —</span></div>
 </section>
-
-<section class="gridcard" aria-labelledby="h-grid">
-<h2 id="h-grid">Every token, every fund</h2>
-<p class="sub">What each fund's room gives every token if the bell rang now. Highlighted = backed, with the room's share of the fund.</p>
-<div class="tgwrap"><table class="tg" id="tg"><thead><tr id="tghead"><th>Token</th></tr></thead><tbody></tbody></table></div>
-<div class="tglegend"><span><span class="cell b">7.87%</span> backed</span><span><span class="cell v"><span class="lg">vetoed</span><span class="sh">–</span></span> has cards, under half the weight</span><span><span class="cell n">·</span> no cards yet</span></div>
+<div class="swipehint">Swipe the card or tap a fund above</div>
+<div class="vtabs" role="tablist" aria-label="Sections">
+<button class="vtab" role="tab" type="button" data-v="week" aria-selected="true">This week</button>
+<button class="vtab" role="tab" type="button" data-v="tokens" aria-selected="false">Tokens</button>
+<button class="vtab" role="tab" type="button" data-v="all" aria-selected="false">All funds</button>
+<button class="vtab" role="tab" type="button" data-v="more" aria-selected="false">More</button>
+</div>
+<section class="view" data-view="week">
+<ol class="wk" id="wkList"></ol>
+<p class="note" id="wkNote"></p>
 </section>
+<section class="view" data-view="tokens" hidden>
+<div class="chips" id="tchips"><button class="chip" type="button" data-g="" aria-pressed="true">All 19</button><button class="chip" type="button" data-g="Stock" aria-pressed="false">Stocks</button><button class="chip" type="button" data-g="Stable" aria-pressed="false">Stable</button><button class="chip" type="button" data-g="Meme" aria-pressed="false">Memes</button></div>
+<div class="tl" id="tokList"></div>
+<p class="note">Tap a token for its price, news and source. Backed tokens are listed first.</p>
+</section>
+<section class="view" data-view="all" hidden>
+<div class="gwrap"><table class="g" id="grid"><thead><tr id="gHead"><th>Token</th></tr></thead><tbody></tbody></table></div>
+<button class="toggle" type="button" id="gToggle">Show all 19 tokens</button>
+<p class="note"><span class="cell b">7.87%</span> backed · – vetoed (has cards, under half the weight) · · no cards yet. The top row shows chairs voting.</p>
+</section>
+<section class="view" data-view="more" hidden>
+<div class="acc">
+<details open><summary>What changed <span id="chgDate"></span></summary><div class="in changed" id="chg"></div></details>
+<details><summary>ETH and the market <span id="mktSum"></span></summary><div class="in"><div class="tiles" id="tiles"></div></div></details>
+<details><summary>ETH news <span id="newsSum"></span></summary><div class="in"><dl class="dl" id="news"></dl></div></details>
+<details><summary>Next 14 days <span id="evSum"></span></summary><div class="in"><div class="evl" id="evs"></div></div></details>
+<details><summary>How the vote works <span>10 rules</span></summary><div class="in"><dl class="dl" id="rules"></dl></div></details>
+<details><summary>Glossary</summary><div class="in"><dl class="dl" id="gloss"></dl></div></details>
+<details><summary>About</summary><div class="in"><p style="margin:0 0 4px">Vibe coded by <a href="https://x.com/vv23_CT" target="_blank" rel="noopener">vv23</a> on a Smauggy Night. Original prompt by Muz (<a href="https://x.com/viper_moons" target="_blank" rel="noopener">@viper_moons</a>).</p><p class="note">Unofficial community research, not affiliated with The Mutual Fun. Not financial advice.</p></div></details>
+</div>
+</section>
+</main>
+<p class="fine">Unofficial · not affiliated with The Mutual Fun · not financial advice</p>
+<div class="sbar"><span id="sbUpd">Updated —</span><span>5 funds</span><span id="sbBell">Bell —</span></div>
+</div>
 
-<div class="list" id="rows">
-<div class="row" id="tokens"><button class="rowbtn" aria-expanded="false" aria-controls="p-tokens"><span class="dot"></span><b>Every token</b><span class="sum" id="s-tokens"></span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-tokens"><div class="muted" id="tokintro"></div><div class="chips"><button class="chip" data-g="" aria-pressed="true">All</button><button class="chip" data-g="Stock" aria-pressed="false">Stock tokens</button><button class="chip" data-g="Stable" aria-pressed="false">Stablecoin</button><button class="chip" data-g="Meme" aria-pressed="false">Memes</button></div><div id="tok"></div></div></div>
-<div class="row" id="news"><button class="rowbtn" aria-expanded="false" aria-controls="p-news"><span class="dot"></span><b>ETH this week</b><span class="sum" id="s-news"></span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-news"><ul class="news" id="newslist"></ul></div></div>
-<div class="row" id="market"><button class="rowbtn" aria-expanded="false" aria-controls="p-market"><span class="dot"></span><b>ETH and the Market</b><span class="sum" id="s-market"></span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-market"><div class="tiles" id="mktTiles"></div></div></div>
-<div class="row" id="events"><button class="rowbtn" aria-expanded="false" aria-controls="p-events"><span class="dot"></span><b>Next 14 days</b><span class="sum" id="s-events"></span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-events"><div id="ev"></div></div></div>
-<div class="row" id="rules"><button class="rowbtn" aria-expanded="false" aria-controls="p-rules"><span class="dot"></span><b>How the vote works</b><span class="sum" id="s-rules"></span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-rules"><dl class="rules" id="ruleslist"></dl><p class="src" style="margin-top:10px">Source: the weekly vote prompt by Muz and the TMF ballot pages.</p></div></div>
-<div class="row" id="glossary"><button class="rowbtn" aria-expanded="false" aria-controls="p-glossary"><span class="dot"></span><b>Glossary</b><span class="sum" id="s-glossary"></span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-glossary"><dl class="gloss" id="gloss"></dl></div></div>
-<div class="row" id="about"><button class="rowbtn" aria-expanded="false" aria-controls="p-about"><span class="dot"></span><b>About</b><span class="sum" id="s-about">Vibe coded by vv23 on a Smauggy Night</span><span class="chev" aria-hidden="true">▸</span></button>
-<div class="panel" id="p-about"><p class="about-title">The Unofficial TMF Fund Intel Dashboard</p><p>Vibe coded by <a href="https://x.com/vv23_CT" target="_blank" rel="noopener">vv23</a> on a Smauggy Night.</p><p>Original prompt by Muz (<a href="https://x.com/viper_moons" target="_blank" rel="noopener">@viper_moons</a>).</p></div></div>
 </div>
-</div>
+<script>window.__PICS__={"argon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFwAAABsCAYAAADnldX1AAAFdUlEQVR42u2dX2gcVRjFz4i02kJjlmSpsbDWNimNtQQsoZWigrUoBCsioVCaCvatD1qwFJ/EJ5EItWp9qg+2KraI2EZo2bRQpRAabAkhMSYxIZG4qUncUKn/+uD4MPu1znXv3PmX2cnmnJfNnblz996b33575rszsxYqrGOdb9he+w8cetNCFekuUJxwTjgVm6y0xO4NGzcAAIaHhqs6lpPwhHV3WjqiI5sxnEp3DNfFap3Onj3v1Gtc66v9xRbbSXi1x/ClEqtJOCecE06l0aW8cHiX7afeU3UtAICLc32uclxS25WySV++fcYi4XQperKnJmcAAEd3OKC8csENvGy/Nu+Upb79S7er3mihCABobMj4KqvHTWVqnQ11zsuhxlnP/sj21t3bbADo/bzHIuEkHHjoiYfLxuzO0frSXw7Ba3LZEklOed+j3u2q5JrKJqlkm7bLuMa/GbRIOGP4HQnJEpt1ZVHHPW6Aznw/7yrvaq71fD+1fvN9zuu24jx9OBUj4aoLMJEu7kFVV74LALC55fESst6ET87cAAD0930LADjc3hZpwOJa9pwk4SS8nCtZk4OvGC55767uUy7XIYQ+27TK8/3Eb0s9Hdm38+tX85HcDAmnS/FHtpQ/xCnXGWGjT38tZOv8uOzvKbXb88n7dClUjC6lE9lApOsI1pGu266ST5dCLYxL8Uu2Wj7xl+MOOgLmSFRJ7A4ruhQSHk8uRRfDTbkSnSSHAq5pUohzTVPyxp/urYk1BqpZRJMvjxq7/+9SnBwN8+GM4eVXeKJKXIsprx0X2XQpJDweZYvLA9U3nVkGbW8m8zddChVlxWcyHrK/OH0cAHD81Q5f9V5s3x/oE6YjnbkUEh7MpWxd5WS6x4s/herA/ndPLMwJxsjvAAC7aSVdCglPULNzRVdMlhh9+XKvq9727a2uenJcfV0GzKVQybsUv2SrhKqkq9tFclxU0ulSSHgyuRRVfn02mEuhEnUp4xP+/Hdc7oIuhQp2QnZk36ZIQe3idF0qByZuZvcj/0Rq5+DHAxYJr4YY/uPPf1blvyzsuNY/cC9jeFUQfu7qr5EaWNaQ7gGOXv8j0eNIeFqvSzmwY50NAMcujFlBrksJutKTtEtR8+Gm61J080DCmUsJpmcabgWqf7L/pq8zTSEbzKVQFVnx0ZFtenrE3s3O9vMFf/l2E+kknITD14qPev2HybWY7tXR7b+zfXVZgoXs2/3JrARXfKj4XYopds5iWcQuF73fV0M2XQoJR1WsyMyAV89SfgjXPZ9QfeKPqlvFGxUdkKl/ar2WrettILnnGZJwpOQuNnm+Hxb4DojYY3jIOyCSeo4hCeeXJiecSsKlzE3/FqrB7PL6ig4obL91atv5pK/vsq/zlywSvpgIl7U+WeOTVez8wLTnf7LZJxELJdO98zs33W8DQOPqFQD8r13qCG4LOF4SvthzKWldadGeca7b4klo39hNz3qm/aKpse8sEl4NhF+51u+KdR+89JhdbuXmaP6HQGd2cbWjU/vLry3IBJ/+6B3GcP7aYAo0ODDIM00SXsUqTA6TcBK+hHTk9efLbj/41le+9pNwEp4uNeTcv2Tb+dmQZz3TftH89XESvqgIl2xbVKWtHXDFh4QDMOfDVT23Za2dpnYq/Ykg4ZxwTjiVRAyXWBf2jtymBxtsAHjv0kQsHdW1I+8zMlGwwt1pXEvC6VJCkJ20wpLOGL5UCbdXOD8r0t07ZAHA060bS+RO479ldb9alt/DzGVr4Ke+rqwerxIt9UcmCp79y6vjKT1OZfDKORK+pAgXMqJKCMxla2KN7UK8EB1U6viCfuLClkl4Wl2KSkRcn4CkZOqvaXxxlUl4wvoXfeanA4FUKckAAAAASUVORK5CYII=", "bogle": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFwAAABiCAYAAADdn7SFAAAE/UlEQVR42u2dXYhVVRTH/0eKKXsYX5xRU+7FuTplYwwk5oz4QUy+hCg9GTGFWBAKhsYUA4II+iCDhMJIMEiEFD4FEkOgg5ag0qARpfl1RxzKGVMLLfogguPDvUs7m7vv3vt83XPv/P8vM/ucdfbd+/I7a9Zea58zHlLWP/eKfpTrn5hR8FDHmgYqVXn1QrZo/MevAADt3W95JJyKn/BXP1jnROpn/fsSGbiQ3n/0C6frPt971CPhU0iPuZL98/htAMD+nhIo744EgdcdT0qu41m6ocsHgNEjZz0STsKB+aueq4jqwLWZ5d9KhM3NtZRJCrZVPd+5suLx7787FcpOpLujdMdlXte/vuiRcPrwRxJyxXea2jrlWppL0cbt+7HYMQ6nohHet+BOwCfakq6Noy2JjZtsiVpeP0zCSXilqGRuDqF8uKwMdVHG2jVrraIR6Se3aHX5yCGnCae1PiDh9Rql2JIt7ZXv9AIATn10OBZfLWRLv4xSKETKFsqK7NPe5oAvDxuHm0g3KSrZj6KU0h3FlSYJLxHeuawQyofHRXrcPvvu5O8knFFKgrkUiaenmkh4veRS1Lhc1zbF0+rKUddmLoVKJ5ciFR7EVHW3bccl5lJIeDS1/zRpZbe7bzcAYMfADiu7dsvPvzJvNqMUKkqUMh6NbNHQ8IiVjxe7t1/pcbrDdKQzSiHhblHK9kIpizjsSPhLS7oAACfOnQUAHHhveeD81n2nA3ZtrU+5TexcEQDw35ICoxQSnqLGfvkzQKz45sXPBO3kuNip14G5FCrVKMWVbFUrutoC7R8uTwTacZHOKIWEp5NLqZUYpZBwNw2fvGxlF1d0wSiFciP8wzc77JzarbHSz6bg4W8zPsHXmv6ofCJfLtbnq89/2ycXPBLeCD68ePPvhpxg2HkVnn6SPrwhCP/y/K+ROmhtbsr0BK/d+ivV60h41gg/dmHSA4AtPW0+AAyOjHnVds+qK7VWxzx42rrXkYfL7lnd90DCmUtBpJqmWvEZGj6NShUi00pTsolgLoWqScVHV61ft2kPgP8/nYZA9V5qn7rqvZonN5FOwkk4rCo+6v4P0/4U055B3Xn1uEqwkP1wPPPAig+VQJRi8p0b3+hHkrsBdGQzSiHhaIiKzBWw4kPZEK57P6HpPSiocW7FOD7FrnNZwQfSe58hCUdGnkSW9/shoScgEvPhIZ+ASOs9hiScfzT5hVNpRCnytgVnH17jCYUdt07dhZlWf8vOFO94JLyeCJdan9T4pIotNVCdZlkSkZSuF29UHd+ajtk+ACyYNR2Afe1SR3C343xJeL3nUoSE3uV5v1pWz9bnieLuz5VQk53pvIyPhDd6TTOr2rrhhUT6PXDkPH04Cc+QbJ/o4EqThNeXVF9Lwkl4Y0Yp4sM3b5wDADj48YTV9Tp7dRcDCSfh2ZAt2a72JDzrhEu2Lari6iep/hilTFXCTflwGLJ7rv3E3V+t7wQSzi+cXziVhg8XX+f6RO7gwE4fAPYPDmksHg810G9u/lu1P/ncLX27vFo+aUzCG3WluTA/x0B2spLPlXFcvTHh0YdTesL96TMAAMdHL3kA8PLSZ8vxa2l3rLTlvKvU603tuPo/prTXv/gbgOTy4etXTStX7Ul4tgh3JUv+d7EtsbmWZr+W/Yvd8dFwd5xt+/1DwTYJz2qUohIf1rfWSqbxmuYXV5uEp6wHcjKS3kyHkuEAAAAASUVORK5CYII=", "smaug": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGYAAABkCAYAAAB0F0VpAAAFIElEQVR42u2dfWhVZRzHv6cUYjjNP1xq2uZckyGm+DJzCxLDXlhRRMgK06DQP3KiONHFUBJphYZxZ8HEwMLyUjESmzbtZUG70WyZ0W1M59x1Q0wF/zICk9sfd8/W8+y83nuO55x7vt9/xnnez37PZ7/nd55n52gIqM4e2ZjOpf78F2MaQqy7QAVSvs2qeOOTEhG1u7/W3CBFqCd5TmrXqD8SQznSOL8HUDG3fNinlKe9aDfeiDToY6jIGKYneW7EX7hRjoah8tswsXg3YvFu18rRMFS4V2VWuv7veFfLkRgqv4n5vOkFV8uRGCrYxPQmDupG3meOf+HrjRuNa07VaxqJofwj5pvOQQDAhVsVUnqlUu6ji1XS9dpZCQDAPcUPSenPvLRDuj726S7p+p/U73J7BZmflX8fksq1dEygj6ECRMzGdWtMn+reW3i3Lzc80u9t83HHDnyskRgqOHHMydsvZ/72Jw9JvsBIGza9q+tTRPr+97Y46pdxDBXOyL+r4BVb5QQRghA13a1+SAwV7mdlIi4R2rt5JQDgu+ZfAQDH6zM+akXdQvBZGRV+YtSI365E5K5G7ELTVkzQPUcWNl9CYkiMN6s28ewMBicu84UUEhN1Yh67/7Ru+vYDg47aWbthqmn+qbZWR+29vW6mbnr7AImhguRjnJJyuu0tAEDviZitcktq3nA0DiNySAzlLzGx9oKs6pUtqgUA9HXHAQBbF9RI+Xt+a5PKTZ5a6qj99bt+AAC07HiUxFAhjmNuXOmXCBC+Y7lSTqSLcmo9xjFUfhNjNeMfvk8+K9Ch5OcLOSSGhqFoGPoY+7qc6rVVzi2fwFUZRcPQMBQNQ9EwNAxFw9AwFA1DheFc2WHldMzBhrNyfpOcX9OYsBX5i6fPJIbKD2IOG5wjq149C8DoG/ygnMhs250587x6/xVb+z1BJYfERJ0Y9fyW1fkyq7f1GeWPpk/UJUKQMjoeniujwuBjrP621x/JtYfrFv3OBFdlVHCIEW+WeKJ6SzpMO4x+vxGDxESNGKP3gI3VoK83XvZgha3x+/X+MhITFWL6zveE4saDPk4SQ8NQNAx9zFi1d14LxY27Pc6nH19uazX61ckOjcTkIzHPb3s2DQCt7xzVvIicZ8xe7OuXkGKdv3gSnxgRYZcoEoOQftWvsnaZZOEZxUXIhiArzatelTZ7Cjx0ITOzxdtd+wcumc5Uu+051Z0iXIyPxATVxwgyBBFDqasAgK74T/LMUggS9caUy3OterXek3Y/+3AvfUwoiBmZ8QoBqo9R06NGilDyjyQjf8YxJkSIeAYRJwUO/5eUxEQl8lfJMVylUQCAfQ3P6aZvbvrSVj6JCWvkv6/qEWkV1jz+hlSw7tZk2eKJH7U7EfkvmO3sy0ipm0XwMvKfu/Qpb1Z7P59g5B8KH1NXMifzDOqyvD9RoxTsh5wv6jUP9NL3cFUWIWLEjFd9jJEEWdmSou5LpG7C0f6GWl/NN/JZduuTGMqfs8tGO3ZOZzg83mG0O04SQ7lLjPrdS6u9//f37EwDwCctH+jmFw7XHlLSS0seMB1H4V/fm7bXMNzv61vf1MzIUO+n9ds/SQz1P2LEaqt0+hRPO6wqm2JKitcS/YpxJPqucVVGIfdTMtlqZWVFGgBOdfVoetflJdMdrcKKiybBrD2v2wdPyVCSj7GagVbXqozSsyWguGiSp4Sp7RuNX8zkXH9fdq9JTFCJUWeI02sr5Vrfa7l9P25dk5iA6j/vtVyFEN7DjAAAAABJRU5ErkJggg==", "midas": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFwAAABkCAYAAAALxleYAAAFIElEQVR42u2dTWwVVRTH/1NIiAR5hIQXPjR9aHmFWEkTI60u7Ka40QTiRvAjxgUxEcQgoKuuGhemROPnBo0xfgQ3GhKIkZIYXaitISFaQykUqNG2tECsCO58Lt6clLl4586dr3fn8f9vyJ25c+fe4XfPO3POvR0POataWV1Lcv3YhUkPBVYLqFy1sFFkV6vVOrFjY7A5DqBWZNJJeM7yXLfZzWbTSbjrhD/2yhYrYkc+/wkA8PaO+1Pt+AsH6+12PG7X7hevHfZIOL0UPdm/T8wAAN7srYPy4vEg8LrjWcm2P5u2PVADgOFDP3gknDYcuKvnnhoAdHa3BYi6o7UcqSw23CTVxouNNmlZd2usgV+a+gsAcO7bXz0SThs+r6hkP7fUJ1W5/ueT3wXKGzsfCiVaV1/01JJ/AQCf/N1CP5xKQPj+dbOBX3sT6bi3HNqeSqrOhks9lfS4Eq/lyY9JOAm/UQNnVvgkI5IN7/tlJkCuSqyt1Ot29d4Zy3bn9X5Awovqpdj64TobrdPp89MBgtvXrgytB8bDqVS9lAGUrUgXb0WI1BErMp1PSja9FBIe7qXEteEquQcO13OW+7ZUQ++r1rtpBvjeEL0UKt9YipT7/Ov6lTdPIVYI1kmdAWLDixI7IeEoSDz806dLqdjAfkOMxaQ+S5ut91LmADAeTsJ1GZ+k6lf8c5NfnpRsMONDLyUVdf14JVK9I369R3esD32jPHJwtN5uxPsPdS+nl0IlyfhMJCM7a0k/dKQzlkLCERpLAYLewvbfFtR/7S1vPHDyaOj5HnWGdT5i1X5p8DwAYG7zWjCWQsLzlxBrIt2WbDCWQmXipRRF9FJIuJ2XkpYt3/XZ/sDxd54YyGTA9FJIuJ3OTc6m0pGsiKaXcqsT/sYzHdGM2vR4/d9FCuGOD3D7oqv/f6Lih8Er4ePf89GIR8KbwYaf/eOfmP9jC50eYNxxta25jTa8KQj/6sTlRA20Y6nTAzwzfT3X60i4a4QfG5nyAGBn7901AHj3+LhntS7FkUyPTn92VGCzLkX3HEg4Yyl20mXrdTrw+hAAYP3tpdB6o1fnwFgK1biMj2kdirr+W47ve6krsE5FR7bMABPpJJyEI1LGR13/YVqfYlpLqDuvHlcJFrLn+8N1KVQWXorJdo5+mY1tnb/vcnopVIZeislPzlpDYMaHikK47u8Tqvsvb1KDYyvG/in1OrvbakB+f8+QhDeKcDU6Fncvz5oGDyjpHqSsooQknD+afOBUnl6K7GMsmtLu94NtKyK9mn5/dtYj4UUiXHJ9kuOTLLbkQLWqtDc0WGHaWfxwx6oaAKxbudjKK9ERHHUGkPBmiaW4mmlJaqNN9UznZYaQ8KITPnh5OmDrvn41GJORzM3u94es3ujSaken3dvuy+QBv3XoBG34LblP01Ud/WaUb5okvAml2loSTsKbS+KliA1//tnVAID3PpyMdL2u/vjFaySchDuoqGTb1ifhrhMu0bakcq0dMONDwgFEiIcr2ut/w9iVdho9I0g4HzgfOJWHDRdbF3dHrnztO+p3MRHxG8i6+9h+/TurncYkvNnfNLP+jr3pvq5/556Eu0J4bfEyAMDg8CkPADZv2uCTO4Uby+p5tTwxU8/it5ZLiFJfV1avV4mW+mMXJkP7d0wpb+26kmk8fGtPi5+1J+FuES5kJJUQ2FoupWrbhXgh2lYyvsFhIM6Mi1p++YNgmYS76qWoxKc1A/KSqb+m8aVVJuE56z9xSY1eId1YGQAAAABJRU5ErkJggg==", "vladd": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABqCAYAAABDA1ReAAAFH0lEQVR42u1dX4gVVRz+RoSgBX0xdRcWF93ubmJmJMvW1pb5h2AFffBhsTbxyUxSSNIeIpVEkLTQWFkfxP+1hA8KRmELprQioShiZet12ShdNRES1h6UpofrL5yjM+ecuzM7585838vuuefMb86d833n9/udOTMXGGEU6mr8Ql2Nn9TnlYZRIFKFl4YCkrTfN3DNowII9xQw0vN1pSiBCsi6AsKYXygUSkzt6yvPruHxriuBCsirAuJieKX7AiogZYxOuwNhTB8u85kHEOn6ANfWaVz1BVRAXqIgmeuPHvvBA4Cbx7t8AHhz7bZA+4ObV1nZ779UBAA0L9/iAcD8ea/5D/sQRkFEOlGQ6gPCohpbxquK+WRpW2T0JP2gDyDcyIR/3P1xoH7M83MC5TvneiLtqe3Pf9UVKL+9+UtmwoSDPiAM02e0AgAunD+JJNrTBxBu+YB9axcDACY31pcV76vHyef0AYTbq6HCxOblW/BwJmzKfB0kE3Z1LYoKqHQf0P3RG7Ey6vXZC2OxIwoZuHox1gvTvvE7jwqgAoCOljofANpmNQIAvjl+CeWUw7B144ewWQOStSNhfueBQ4leoP29Ax4VkMco6KX6pwJzvjD5yo2hSKab1k+ZUGW02mkLnX1dfdh1OFX8y6MC8uQDZOSFKcJkFSrTw+oFYb7B1Bfo5n6d7zH1TapiqIC8KyCMQXFFQ4IVby2KrE866qECGAVFQ2WyrvxZ8e/SP7XVRvbDVkll7v/N0I6g4Y9BrgURKayG2jL1ZNd+APp7wtKu9Z0Oq364qgQqwHUF2GaWQy8/V6r4/aZVR6YuWAAA+OXIEQDA9tUtgfqVW3sD7cZVj7Gy3zu61L+W+0NW34sKyEseENd6/9f3ngAA/GmogFuDdx7L6EVV/YHyoaHJRsfpzrPplVq4dL+ACkhbAcJ800xVB/EBOgXoGLxtTpBgq3r8suyo7cQHuJIhUwGuhKFtsxpDVzQJRkHZzwNM71jpYBr92MbxSdsZbj5EBWQlE457hLOCpK4LFUAnzAEgOAAcAIIDwAEg8vi+IMHRZUsC5T0H1in1GwLl5vVfWK2CUgGEmwpQmS9ondkR+VTk6fXvAQDm79xrdJ/AVSVQAVlTgLr/Rrc/SPcUZFi9+rnKcGG+9KeBPoBIxQfo5t7F3d8met4GMA8gYPF8QNhzAaZQ7yv/vzs6JbxfPxZRu7eR8nMCVEDWfMAjDLPcJZ14f+gDCA4AB4BIzAc8sq++Nt0vqPbHtV0fVEDWFKDGyU0z61N9c5XanykTqobVH/UdGqbnpQK4FpQthDHcVCFUQF4U0H/iZw8Amtpf9KMUIu1MEbc926cjdUzX1YuCqADuinATK9tfSMTu9u6z9AFUQAUh6dVUKoAKcBPqXE0F5E0BI/W2EKS8OqqLgsQHvLu0BgCwY/c1o+PD2qvnpwJcU4BkaJ8vmeYDQPHqP4H6zp4rHjK4hqPLYE2Zb9ueCnDVB6jMJxgF5XMALl+/i8vX7/JKUQE5zYSfnvgkrxIVkEMFSLw/b1q1DwDHLg6WFf93frrOB4CDO3c8tn7ig7/9th0/U4y0t/rBeVd8sIG/pEcMwweUy3zJKMOYnzTkvEn/BgwVgIw8ITO36RkfAL7/6VcvjrLtbzlOGl96kiVt+3OfvQ0AOHzi30Qu+MJXS5xfs+sGd0U45QOECXHBltGTxo/1XbAvzIx7RpDyml3BMhXgahSkKiJuhbgO3fePq0wFpIz/AN57qVDPRlmMAAAAAElFTkSuQmCC"};</script>
 <script>
-/* light / dark toggle (works even if data fails to load) */
-(()=>{const b=document.getElementById('modebtn'),root=document.documentElement,mq=window.matchMedia('(prefers-color-scheme: dark)');
+(()=>{const b=document.getElementById('modebtn'),root=document.documentElement,mq=matchMedia('(prefers-color-scheme: dark)');
  const cur=()=>root.dataset.theme||(mq.matches?'dark':'light');
  const show=()=>{const d=cur()==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode');};
  b.addEventListener('click',()=>{const n=cur()==='dark'?'light':'dark';if(n===(mq.matches?'dark':'light')){delete root.dataset.theme;try{localStorage.removeItem('sfi-theme')}catch(e){}}else{root.dataset.theme=n;try{localStorage.setItem('sfi-theme',n)}catch(e){}}show();});
  mq.addEventListener&&mq.addEventListener('change',show);show();})();
-
 function main(D){
-const $=s=>document.querySelector(s), el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
-const okUrl=u=>/^https:\/\//.test(u||'');
-const link=(txt,u)=>{if(!okUrl(u))return document.createTextNode(txt);const a=el('a',null,txt);a.href=u;a.target='_blank';a.rel='noopener';return a;};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const link=(t,u)=>{if(!/^https:\/\//.test(u||''))return document.createTextNode(t);const a=el('a',null,t);a.href=u;a.target='_blank';a.rel='noopener';return a;};
 const nf=d=>new Intl.NumberFormat('en-US',{maximumFractionDigits:d,minimumFractionDigits:d});
-const F={usd:v=>'$'+nf(2).format(v),usd0:v=>'$'+nf(0).format(v),pct:v=>(v>0?'+':v<0?'−':'')+nf(1).format(Math.abs(v*100))+'%',pctu:v=>nf(2).format(v*100).replace(/\.?0+$/,'')+'%',usdM:v=>(v<0?'−':'+')+'$'+nf(1).format(Math.abs(v))+'M',usdB:v=>'$'+nf(1).format(v)+'B',int:v=>nf(0).format(v)};
-const M=id=>D.market.find(r=>r.id===id);
-const strong=(t,color)=>{const s=el('strong',null,t);if(color)s.style.color=color;return s;};
-const pill=t=>el('span','pill neutral',t);
-const FUNDS=D.funds, FI=Object.fromEntries(FUNDS.map(f=>[f.id,f]));
-const TOKCOL=['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c6)'];
-const backedList=f=>Object.entries(f.room_tokens).sort((a,b)=>b[1]-a[1]);
-
-$('#weekbadge').textContent='Week '+D.week;
-const BELL=Date.parse(D.bell_utc);
-function tick(){const b=$('#bell');const ms=BELL-Date.now();const sbb=$('#sb-bell');if(ms<=0){b.textContent='Bell rang · Fri Nov 6, 3pm ET';sbb.textContent='Bell rang';return;}
- const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);b.textContent='Bell in '+(d?d+'d ':'')+h+'h '+(d?'':m+'m ')+'· Fri 3pm ET';sbb.textContent='Bell in '+(d?d+'d ':'')+h+'h';}
-tick();setInterval(tick,30000);
-(()=>{const u=D.updates||[];if(!u.length)return;$('#sb-upd').textContent='Updated '+u[0].date;const c=$('#changed');const p=el('div');p.append(el('b',null,'What changed · '+u[0].date),u[0].text);c.append(p);
- if(u.length>1){const d=el('details');d.append(el('summary',null,'Earlier updates'));u.slice(1).forEach(x=>d.append(el('div',null,x.date+': '+x.text)));c.append(d);}})();
-$('#sb-tok').textContent=FUNDS.length+' funds · '+D.tokens.length+' tokens';
-
-/* fund tabs */
+const P=v=>nf(2).format(v*100).replace(/\.?0+$/,'')+'%';
+const F={usd:v=>'$'+nf(2).format(v),usd0:v=>'$'+nf(0).format(v),pct:v=>(v>0?'+':v<0?'−':'')+nf(1).format(Math.abs(v*100))+'%',usdM:v=>(v<0?'−':'+')+'$'+nf(1).format(Math.abs(v))+'M',usdB:v=>'$'+nf(1).format(v)+'B',int:v=>nf(0).format(v)};
+const FUNDS=D.funds,FI=Object.fromEntries(FUNDS.map(f=>[f.id,f])),COL=['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c6)'];
+const backed=f=>Object.entries(f.room_tokens).sort((a,b)=>b[1]-a[1]);
+const HOUSE={argon:['#49698C','#fff','Noble, inert, and unmoved by the news.'],bogle:['#4E8A5A','#fff','Buys the whole haystack.'],smaug:['#9C5248','#fff','Sleeps on the pile and knows every coin in it.'],midas:['#B9902F','#211B14','Everything it touches, marked to gold.'],vladd:['#6E5D8C','#fff','Buys when there is blood in the streets.']};
+const PICS=window.__PICS__||{};
+/* every time is shown in the viewer's own time zone */
+const fmtT=new Intl.DateTimeFormat(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+const fmtTime=new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+const fmtDay=new Intl.DateTimeFormat(undefined,{weekday:'short',month:'short',day:'numeric'});
+const local=iso=>iso?fmtT.format(new Date(iso)):'';
+const stamp=(t,iso,txt)=>{t.textContent=iso?local(iso):(txt||'—');if(iso)t.dateTime=iso;};
 let SEL=(()=>{const h=location.hash.slice(1).toLowerCase();if(FI[h])return h;try{const s=localStorage.getItem('tfi-fund');if(FI[s])return s}catch(e){}return FI.smaug?'smaug':FUNDS[0].id;})();
-const roomShort=f=>{const b=backedList(f);return b.length?'Backs '+b.length+' token'+(b.length>1?'s':''):'All WETH';};
-FUNDS.forEach(f=>{const t=el('button','ftab');t.type='button';t.setAttribute('role','tab');t.id='tab-'+f.id;t.dataset.f=f.id;t.setAttribute('aria-controls','fpanel');
- t.append(el('b',null,f.name));const s=el('span',backedList(f).length?'on':null,roomShort(f));t.append(s);t.append(el('span',null,f.chairs+' chairs'));
- t.addEventListener('click',()=>select(f.id,true));$('#ftabs').append(t);});
-/* five-fund table */
-FUNDS.forEach(f=>{const tr=el('tr');tr.dataset.f=f.id;const b=backedList(f);
- const td1=el('td');td1.append(strong(f.name));tr.append(td1);
- tr.append(el('td','n',f.chairs+' of '+f.floor),el('td','n',F.pctu(f.tmf_held)));
- tr.append(el('td',null,b.length?b.map(([k,v])=>k+' '+F.pctu(v)).join(' · '):'Nothing yet: all to WETH'));
- tr.addEventListener('click',()=>select(f.id,true));$('#ftable tbody').append(tr);});
+let VIEW='week',G='',ALL=false;
 
-function select(id,user){SEL=id;const f=FI[id];
- document.querySelectorAll('.ftab').forEach(t=>{const on=t.dataset.f===id;t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;});
- document.querySelectorAll('#ftable tbody tr').forEach(r=>r.classList.toggle('sel',r.dataset.f===id));
- $('#fpanel').setAttribute('aria-labelledby','tab-'+id);
- const fh=$('#fh');fh.replaceChildren(f.name+': the room, if the bell rang now');fh.append(el('small',null,'From the '+f.name+' ballot, Match the room view · '+f.asof));
- const st=$('#stack'),lg=$('#legend');st.replaceChildren();lg.replaceChildren();
- const parts=[['$TMF held',f.tmf_held,'repeating-linear-gradient(45deg,var(--tmf) 0 7px,var(--tmfstripe) 7px 14px)']];
- backedList(f).forEach(([k,v],i)=>parts.push([k,v,TOKCOL[i%TOKCOL.length]]));
- parts.push(['WETH',f.room_weth,'var(--weth)']);
- parts.forEach(([lab,v,fill])=>{const d=el('div');d.style.width=(v*100)+'%';d.style.background=fill;st.append(d);
-  const s=el('span');const i=el('i');i.style.background=fill;s.append(i,lab+' ');s.append(el('b',null,F.pctu(v)));lg.append(s);});
- st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+F.pctu(v)).join(', '));
- const fx=$('#facts');fx.replaceChildren();
- const fact=(label,val,note)=>{const c=el('div','fact');c.append(el('div','tl',label),el('div','tv',val));if(note)c.append(el('div','ts',note));fx.append(c);};
- fact('Chairs voting',F.int(f.chairs),f.chairs>=f.floor?f.floor+' needed: the dials move at the bell':f.floor+' needed for the dials to change');
- const nb=backedList(f).length;fact('Tokens the room backs',F.int(nb),nb?'Each has cards from at least half the weight cast':'Every token is vetoed so far or has no cards');
- fact('$TMF held',F.pctu(f.tmf_held),'Kept by the fund, never sold');
- const fs=$('#fundsrc');fs.replaceChildren('Room split, chairs and $TMF: ',link(f.name+' ballot page',f.url),', capture '+f.asof+'. The ballot\u2019s room bar rounds $TMF held to a whole percent, so the parts may not add to exactly 100%.');
- if(user){try{localStorage.setItem('tfi-fund',id)}catch(e){}history.replaceState(null,'','#'+id);}
- drawTok();sumTok();drawTL();markGrid();}
-$('#ftabs').addEventListener('keydown',e=>{const i=FUNDS.findIndex(f=>f.id===SEL);let n=null;if(e.key==='ArrowRight')n=(i+1)%FUNDS.length;if(e.key==='ArrowLeft')n=(i-1+FUNDS.length)%FUNDS.length;if(n!=null){e.preventDefault();select(FUNDS[n].id,true);document.getElementById('tab-'+FUNDS[n].id).focus();}});
+/* bell + status */
+const BELL=Date.parse(D.bell_utc);
+const bellAt=fmtDay.format(new Date(BELL))+' '+fmtTime.format(new Date(BELL));
+const tick=()=>{const ms=BELL-Date.now();if(ms<=0){$('#bell').textContent='Bell rang · '+bellAt;$('#sbBell').textContent='Bell rang';return;}const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);
+ $('#bell').textContent='Bell in '+(d?d+'d ':'')+h+'h'+(d?'':' '+m+'m')+' · '+bellAt;$('#sbBell').textContent='Bell in '+(d?d+'d ':'')+h+'h';};tick();setInterval(tick,30000);
+$('#wk').textContent='Week '+D.week;stamp($('#updTime'),D.updated_utc,(D.updates[0]||{}).date);$('#sbUpd').textContent='Updated '+(D.updated_utc?fmtDay.format(new Date(D.updated_utc))+', '+fmtTime.format(new Date(D.updated_utc)):(D.updates[0]||{}).date);
 
-/* row summaries */
-$('#s-news').append('ETH ',strong(F.usd0(M('eth').value)),' · ',strong(F.pct(M('eth_1w').value),M('eth_1w').value<0?'var(--bad)':'var(--good-t)'),' 7d · ',strong(D.news.length+' items'));
-function sumTok(){const f=FI[SEL];const s=$('#s-tokens');s.replaceChildren();const nb=backedList(f).length;const slow=Object.keys(f.fills).length;
- s.append(pill(D.tokens.length+' tokens'),pill(f.name+': '+nb+' backed'),pill(slow+' slow to fill'));}
-$('#s-market').append('BTC ',strong(F.usd0(M('btc').value)),' · Nasdaq ',strong(F.pct(M('nasdaq').value),'var(--bad)'),' Oct 30 · Fear ',strong(F.int(M('fng').value)));
-(()=>{const today=new Date().toISOString().slice(0,10);const up=D.events.filter(e=>e.key&&e.date>=today&&!/Bell/.test(e.short)).slice(0,2);const s=$('#s-events');up.forEach((e,i)=>{if(i)s.append(' · ');s.append(/Jobs/.test(e.short)?strong(e.short,'var(--pink)'):e.short);});})();
-$('#s-rules').append(strong(D.rules.length+' rules'),': 25% cap, 50% backing, 25-chair floor, the dials');
-$('#s-glossary').append(strong(D.glossary.length+' terms'),': the room, WETH, backing, the dials and more');
+/* fund switcher */
+FUNDS.forEach(f=>{const b=el('button','fbtn');b.type='button';b.setAttribute('role','tab');b.dataset.f=f.id;const hc=HOUSE[f.id]||['#453629','#fff'];b.style.setProperty('--fh',hc[0]);b.style.setProperty('--fhi',hc[1]);const sw=el('i','sw');sw.setAttribute('aria-hidden','true');b.append(sw,el('span',null,f.name));
+ const n=backed(f).length;b.append(el('small',null,n?n+' backed':'all WETH'));if(n){const p=el('i','pip');p.setAttribute('aria-hidden','true');b.append(p);}
+ b.setAttribute('aria-label',f.name+(n?', room backs '+n+' tokens':', room backs nothing'));b.addEventListener('click',()=>select(f.id,0));$('#fsw').append(b);});
+$('#fsw').addEventListener('keydown',e=>{const i=FUNDS.findIndex(f=>f.id===SEL);const n=e.key==='ArrowRight'?i+1:e.key==='ArrowLeft'?i-1:null;if(n==null)return;e.preventDefault();const k=(n+FUNDS.length)%FUNDS.length;select(FUNDS[k].id,0);$$('.fbtn')[k].focus();});
+/* swipe on the fund card */
+(()=>{const c=$('#fcard');let x0=null,y0=null;c.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY;},{passive:true});
+ c.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;if(Math.abs(dx)<50||Math.abs(dx)<Math.abs(dy))return;
+  const i=FUNDS.findIndex(f=>f.id===SEL);const k=dx<0?Math.min(FUNDS.length-1,i+1):Math.max(0,i-1);if(k!==i)select(FUNDS[k].id,dx<0?24:-24);},{passive:true});})();
 
-/* panels */
-D.news.forEach(n=>{const li=el('li');li.append(el('b',null,n.head+'. '),n.text+' ');const m=el('span','muted');m.append('(',link(n.source,n.url),')');li.append(m);$('#newslist').append(li);});
-const tile=(r,box)=>{const t=el('div','tile');t.append(el('div','tl',r.label));const v=el('div','tv',r.value==null?'—':(F[r.fmt]||F.int)(Number(r.value)));if(r.fmt==='pct'||r.fmt==='usdM')v.classList.add(r.value<0?'down':'up');t.append(v);const s=el('div','ts');s.append(r.asof+' · ');s.append(link(r.source,r.url));t.append(s);box.append(t);};
-D.market.forEach(r=>tile(r,$('#mktTiles')));
-D.events.forEach(r=>{const e=el('div','ev'+(/Closing Bell/.test(r.event)?' bell':''));const w=el('div','when',r.when_et);w.append(el('span',null,r.when_utc+(/\d:\d/.test(r.when_utc)?' UTC':'')));const t=el('div','what',r.event);t.append(el('span','moves','Affects: '+r.tokens));const s=el('div','src');s.append(link(r.source,r.url));e.append(w,t,s);$('#ev').append(e);});
-D.rules.forEach(r=>$('#ruleslist').append(el('dt',null,r.rule),el('dd',null,r.text)));
+function select(id,dx){SEL=id;const f=FI[id];
+ $$('.fbtn').forEach(b=>{const on=b.dataset.f===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
+ const c=$('#fcard');if(dx){c.style.setProperty('--dx',dx+'px');c.classList.remove('slide');void c.offsetWidth;c.classList.add('slide');}
+ const hc=HOUSE[id]||['#453629','#fff',''];document.documentElement.style.setProperty('--house',hc[0]);document.documentElement.style.setProperty('--house-ink',hc[1]);
+ $('#fcName').textContent=f.name;$('#fcMotto').textContent=hc[2];stamp($('#fcWhen'),f.asof_utc,f.asof);
+ const pic=$('#fcPic');if(PICS[id]){pic.src=PICS[id];pic.hidden=false;}else pic.hidden=true;
+ const b=backed(f);const fb=$('#fcBacks');fb.classList.toggle('none',!b.length);fb.textContent=b.length?'Backs '+b.map(([k,v])=>k+' '+P(v)).join(' · '):'Backs nothing yet: all to WETH';
+ const parts=[['$TMF held',f.tmf_held,'repeating-linear-gradient(45deg,var(--tmf) 0 6px,var(--tmfstripe) 6px 12px)']].concat(b.map(([k,v],i)=>[k,v,COL[i%COL.length]]),[['WETH',f.room_weth,'var(--weth)']]);
+ const st=$('#fcStack'),lg=$('#fcLeg');st.replaceChildren();lg.replaceChildren();
+ parts.forEach(([l,v,fill])=>{const d=el('div');d.style.width=(v*100)+'%';d.style.background=fill;st.append(d);const s=el('span');const i=el('i');i.style.background=fill;s.append(i,l+' ');s.append(el('b',null,P(v)));lg.append(s);});
+ st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+P(v)).join(', '));
+ $('#stChairs').textContent=f.chairs;$('#stFloor').textContent=f.chairs>=f.floor?'✓ over 25 floor':'needs '+f.floor;$('#stTmf').textContent=P(f.tmf_held);$('#stBacked').textContent=b.length+' of '+D.tokens.length;
+ try{localStorage.setItem('tfi-fund',id)}catch(e){}try{history.replaceState(null,'','#'+id)}catch(e){}
+ drawWeek();drawTok();drawGrid();}
+
+/* views */
+$$('.vtab').forEach(t=>t.addEventListener('click',()=>{VIEW=t.dataset.v;$$('.vtab').forEach(x=>x.setAttribute('aria-selected',String(x===t)));$$('.view').forEach(v=>v.hidden=v.dataset.view!==VIEW);}));
+
+function drawWeek(){const f=FI[SEL],H=f.history||[],ol=$('#wkList');ol.replaceChildren();
+ H.slice().reverse().forEach((s,ri)=>{const i=H.length-1-ri,prev=i?H[i-1]:null;const li=el('li');
+  const w=el('div','w',s.asof_utc?fmtDay.format(new Date(s.asof_utc)):s.asof.split(',')[0]);w.append(el('small',null,s.asof_utc?fmtTime.format(new Date(s.asof_utc)):(s.asof.split(', ')[1]||'')));
+  const bk=Object.entries(s.backs).sort((a,b)=>b[1]-a[1]);const b=el('div','b',bk.length?bk.map(([k,v])=>k+' '+P(v)).join(', '):'Nothing backed');
+  if(prev){const pb=Object.keys(prev.backs),nb=bk.map(x=>x[0]);const add=nb.filter(k=>!pb.includes(k)),rem=pb.filter(k=>!nb.includes(k));if(add.length)b.append(' ',el('span','chg','+ '+add.join(', ')));if(rem.length)b.append(' ',el('span','chg','− '+rem.join(', ')));}
+  const c=el('div','c',s.chairs+' chairs');if(prev&&s.chairs!==prev.chairs)c.append(el('small',null,(s.chairs>prev.chairs?'+':'')+(s.chairs-prev.chairs)));
+  li.append(w,b,c);ol.append(li);});
+ $('#wkNote').textContent=(H.length<2?'One capture so far this week; each new one adds a row. ':'Newest first, one row per ballot capture. ')+'Source: the '+f.name+' ballot page.';}
+
+const ORDER={backed:0,vetoed:1,no_cards:2};
+function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
+ D.tokens.filter(r=>!G||r.group===G).slice().sort((a,b)=>ORDER[f.status[a.token]]-ORDER[f.status[b.token]]).forEach(r=>{const s=f.status[r.token];
+  const row=el('div','trow');const bt=el('button','tbtn');bt.type='button';bt.setAttribute('aria-expanded','false');
+  bt.append(el('b',null,r.token),el('span','px',r.onchain),el('span','st '+(s==='backed'?'b':s==='vetoed'?'v':'n'),s==='backed'?P(f.room_tokens[r.token]):s==='vetoed'?'vetoed':'no cards'));
+  const d=el('div','tdet');d.append(el('p',null,r.price));if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
+  const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?' · ~'+fl.n+' Fridays to fill in '+f.name:f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
+  const src=el('p','src');src.append('Source: ',link(r.source,r.url));d.append(src);
+  bt.addEventListener('click',()=>{const o=!row.classList.contains('open');row.classList.toggle('open',o);bt.setAttribute('aria-expanded',String(o));});
+  row.append(bt,d);box.append(row);});}
+$$('#tchips .chip').forEach(c=>c.addEventListener('click',()=>{G=c.dataset.g;$$('#tchips .chip').forEach(x=>x.setAttribute('aria-pressed',String(x===c)));drawTok();}));
+
+(()=>{const h=$('#gHead');FUNDS.forEach(f=>{const th=el('th',null,f.name.slice(0,3));th.title=f.name;th.dataset.f=f.id;th.style.setProperty('--fh',(HOUSE[f.id]||['#453629'])[0]);h.append(th);});})();
+function drawGrid(){const tb=$('#grid tbody');tb.replaceChildren();
+ const sum=el('tr','sum');sum.append(el('td',null,'Chairs'));FUNDS.forEach(f=>{const td=el('td',null,String(f.chairs));td.dataset.f=f.id;sum.append(td);});tb.append(sum);
+ const anyB=t=>FUNDS.some(f=>f.status[t]==='backed');
+ const rows=ALL?D.tokens:D.tokens.filter(r=>anyB(r.token));
+ rows.forEach(r=>{const tr=el('tr');tr.append(el('td',null,r.token));FUNDS.forEach(f=>{const s=f.status[r.token];const td=el('td');td.dataset.f=f.id;
+  td.append(s==='backed'?el('span','cell b',P(f.room_tokens[r.token])):el('span','cell '+(s==='vetoed'?'v':'n'),s==='vetoed'?'–':'·'));tr.append(td);});tb.append(tr);});
+ $$('#grid [data-f]').forEach(c=>c.classList.toggle('sel',c.dataset.f===SEL));
+ $('#gToggle').textContent=ALL?'Show only backed tokens':'Show all '+D.tokens.length+' tokens';}
+$('#gToggle').addEventListener('click',()=>{ALL=!ALL;drawGrid();});
+
+/* more */
+const u=D.updates[0];$('#chgDate').textContent=u.date;$('#chg').textContent=u.text;
+const M=id=>D.market.find(r=>r.id===id);
+$('#mktSum').textContent='ETH '+F.usd0(M('eth').value)+' · '+F.pct(M('eth_1w').value)+' 7d';
+D.market.forEach(r=>{const t=el('div','tile');t.append(el('div','l',r.label));const v=el('div','v',(F[r.fmt]||F.int)(Number(r.value)));if(r.fmt==='pct'||r.fmt==='usdM')v.classList.add(r.value<0?'down':'up');t.append(v);const s=el('div','s');s.append(r.asof+' · ',link(r.source,r.url));t.append(s);$('#tiles').append(t);});
+$('#newsSum').textContent=D.news.length+' items';
+D.news.forEach(n=>{$('#news').append(el('dt',null,n.head));const dd=el('dd',null,n.text+' ');const s=el('span','note');s.append('(',link(n.source,n.url),')');dd.append(s);$('#news').append(dd);});
+const today=new Date().toISOString().slice(0,10);const up=D.events.filter(e=>e.date>=today);$('#evSum').textContent=(up.find(e=>e.key&&!/Bell/.test(e.short))||{}).short||'';
+up.forEach(r=>{const e=el('div','ev'+(r.key?' key':''));const w=el('b',null,r.when_utc.split(',')[0]);w.append(el('small',null,r.when_et));const t=el('div','what',r.event);const s=el('small');s.append(link(r.source,r.url));t.append(s);e.append(w,t);$('#evs').append(e);});
+D.rules.forEach(r=>$('#rules').append(el('dt',null,r.rule),el('dd',null,r.text)));
 D.glossary.forEach(g=>$('#gloss').append(el('dt',null,g.term),el('dd',null,g.def)));
 
-/* token cards: shared facts + the selected fund's room and fill */
-let G='';
-const GROUPS=[['Stable','Stablecoin'],['Stock','Stock tokens'],['Meme','Memes']];
-function card(r){const f=FI[SEL];const c=el('article','tcard');
- const hd=el('div','thead');hd.append(el('span','tname',r.token),el('span','tprice',r.onchain));c.append(hd);
- c.append(el('div','tline',r.price));
- if(r.news&&r.news!=='—')c.append(el('div','tline muted',r.news));
- const tg=el('div','tags');tg.append(el('span','tag',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'));
- const st=f.status[r.token],pct=f.room_tokens[r.token];
- tg.append(el('span','tag'+(st==='backed'?' on':' warn'),f.name+' room: '+(st==='backed'?F.pctu(pct):st==='vetoed'?'vetoed so far':'no cards yet')));
- const fl=f.fills[r.token];
- tg.append(el('span','tag'+(fl?' warn':''),fl?'~'+fl.n+' Fridays to fill':(f.not_in_capture.includes(r.token)?'Fill: not in capture':'No slow-fill warning')));c.append(tg);
- const s=el('div','src');s.append('Source: ',link(r.source,r.url),' · room and fill: '+f.name+' ballot, '+(fl?fl.asof:f.asof));c.append(s);return c;}
-function drawTok(){const box=$('#tok');box.replaceChildren();const f=FI[SEL];
- $('#tokintro').textContent='Prices and news with dates and sources. Room status and fill times are for '+f.name+' (switch funds at the top). On-chain prices are the same on every fund\u2019s ballot.';
- GROUPS.forEach(([g,label])=>{if(G&&G!==g)return;const rs=D.tokens.filter(r=>r.group===g);if(!rs.length)return;const h=el('div','tgh',label+' ');h.append(el('span',null,'· '+rs.length));const grid=el('div','tgrid');rs.forEach(r=>grid.append(card(r)));box.append(h,grid);});}
-document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{G=b.dataset.g;document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawTok();}));
-
-/* token x fund grid */
-(()=>{const hd=$('#tghead');FUNDS.forEach(f=>{const th=el('th');th.append(el('span','lg',f.name),el('span','sh',f.name.slice(0,3)));th.title=f.name;th.dataset.f=f.id;hd.append(th);});
- const tb=$('#tg tbody');GROUPS.forEach(([g,label])=>{const rs=D.tokens.filter(r=>r.group===g);if(!rs.length)return;
-  const gr=el('tr','grp');const gtd=el('td',null,label);gtd.colSpan=FUNDS.length+1;gr.append(gtd);tb.append(gr);
-  rs.forEach(r=>{const tr=el('tr');tr.append(el('td',null,r.token));FUNDS.forEach(f=>{const td=el('td');td.dataset.f=f.id;const s=f.status[r.token];
-   td.append(s==='backed'?el('span','cell b',F.pctu(f.room_tokens[r.token])):s==='vetoed'?(()=>{const c=el('span','cell v');c.append(el('span','lg','vetoed'),el('span','sh','–'));c.title='vetoed';return c;})():el('span','cell n','·'));tr.append(td);});tb.append(tr);});});})();
-function markGrid(){document.querySelectorAll('#tg [data-f]').forEach(c=>c.classList.toggle('sel',c.dataset.f===SEL));}
-/* timeline */
-function drawTL(){const f=FI[SEL];const ol=$('#tline');ol.replaceChildren();const H=f.history||[];
- H.forEach((s,i)=>{const li=el('li');const w=el('div','tl-when',s.asof.split(',')[0]);w.append(el('span',null,(s.asof.split(', ')[1]||'')));li.append(w);
-  const wh=el('div','tl-what');const ch=el('div','tl-chairs');const bar=el('span','bar');const fill=el('i');fill.style.width=Math.min(100,s.chairs/ Math.max(80,...H.map(x=>x.chairs))*100)+'%';const floor=el('b');floor.style.left=(25/Math.max(80,...H.map(x=>x.chairs))*100)+'%';floor.title='25-chair floor';bar.append(fill,floor);
-  ch.append(strong(s.chairs+' chairs'),bar);wh.append(ch);
-  const bk=Object.entries(s.backs).sort((a,b)=>b[1]-a[1]);
-  const prev=i?H[i-1]:null;const line=el('div',null);
-  line.append(bk.length?'Room backs '+bk.map(([k,v])=>k+' '+F.pctu(v)).join(', '):'Room backs nothing: all to WETH');
-  if(prev){const pb=Object.keys(prev.backs),nb=bk.map(x=>x[0]);const add=nb.filter(k=>!pb.includes(k)),rem=pb.filter(k=>!nb.includes(k));
-   if(add.length)line.append(' · ',el('span','change','new: '+add.join(', ')));if(rem.length)line.append(' · ',el('span','change','dropped: '+rem.join(', ')));
-   const dc=s.chairs-prev.chairs;if(dc)ch.append(el('span','change',(dc>0?'+':'')+dc));}
-  wh.append(line);wh.append(el('div','tl-note','$TMF held '+F.pctu(s.tmf_held)));li.append(wh);ol.append(li);});
- $('#tlnote').textContent=H.length<2?'One capture so far this week. Each new capture adds a point here.':'Each point is one ballot capture. The line marks the 25-chair floor.';}
-
-select(SEL,false);
-
-const KEY='tfi-rows-v1';const st=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}})();
-const setRow=(row,open)=>{row.classList.toggle('open',open);row.querySelector('.rowbtn').setAttribute('aria-expanded',String(open));st[row.id]=open;try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
-document.querySelectorAll('.row').forEach(row=>{if(st[row.id])setRow(row,true);row.querySelector('.rowbtn').addEventListener('click',()=>setRow(row,!row.classList.contains('open')));});
-const h=location.hash.slice(1);const target=h&&document.getElementById(h);if(target&&target.classList.contains('row')){setRow(target,true);target.scrollIntoView();}
-window.addEventListener('hashchange',()=>{const x=location.hash.slice(1).toLowerCase();if(FI[x])select(x,false);});
+select(SEL,0);
+addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();if(FI[h]&&h!==SEL)select(h,0);});
 }
-fetch('data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.querySelector('.sheet-body').prepend(p);});
-</script></body></html>
+(window.__DATA__?Promise.resolve(window.__DATA__):fetch('data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();})).then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
+
+</script>
+</body></html>
