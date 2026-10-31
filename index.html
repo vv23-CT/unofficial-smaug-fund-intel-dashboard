@@ -62,22 +62,50 @@ tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--acc,var(--mkt)) 4
 .pct.on{background:color-mix(in srgb,var(--good) 22%,transparent);color:var(--good)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin:4px 0 2px}
 .legend span{display:inline-flex;align-items:center;gap:5px}
-.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,19rem),1fr));gap:12px;margin-top:6px}
-.tcard{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:var(--r);border:1px solid color-mix(in srgb,var(--acc) 40%,var(--line));border-left:5px solid var(--acc);background:linear-gradient(170deg,color-mix(in srgb,var(--acc) 10%,var(--panel)),var(--panel) 60%)}
-.tcard.pick{box-shadow:0 0 0 2px color-mix(in srgb,var(--good) 60%,transparent)}
-.thead{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.tname{font:700 20px/1 var(--sans);letter-spacing:.01em}
-.ttype{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.tpct{margin-left:auto;font:400 26px/1 var(--serif);font-variant-numeric:tabular-nums}
-.tpct.on{color:var(--good)} .tpct.off{color:var(--muted)}
-.tconf{font-size:12px;color:var(--muted)}
-.tline{font-size:13px;line-height:1.45}
-.tline b{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:1px}
-.tprice{font-size:12px;color:var(--muted)}
-.tfoot{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}
-.tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--grid);color:var(--fg)}
-.tag.warn{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
-.tsrc{font-size:12px;color:var(--muted)}
+.tgroup{margin-top:14px}
+.tgroup>summary,.tgh{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin:0 0 8px;cursor:default;list-style:none}
+.tgroup>summary{cursor:pointer}.tgroup>summary::-webkit-details-marker{display:none}
+.tgroup>summary::after{content:"▸";color:var(--muted);transition:transform .15s}.tgroup[open]>summary::after{transform:rotate(90deg)}
+.tgh .n,.tgroup>summary .n{font-weight:600;color:var(--muted)}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,16.5rem),1fr));gap:8px}
+.tcard{display:flex;flex-direction:column;gap:5px;padding:10px 12px;border-radius:8px;border:1px solid color-mix(in srgb,var(--acc) 35%,var(--line));border-left:4px solid var(--acc);background:linear-gradient(170deg,color-mix(in srgb,var(--acc) 9%,var(--panel)),var(--panel) 65%)}
+.tcard.pick{box-shadow:0 0 0 2px color-mix(in srgb,var(--good) 55%,transparent)}
+.thead{display:flex;align-items:center;gap:7px}
+.tname{font:700 16px/1 var(--sans)}
+.ttype{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.tpct{margin-left:auto;font:400 20px/1 var(--serif);font-variant-numeric:tabular-nums}
+.tpct.on{color:var(--good)}.tpct.off{color:var(--muted)}
+.tconf{font-size:11px;color:var(--muted)}
+.tline{font-size:13px;line-height:1.35}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--grid);color:var(--fg)}
+.tag.warn{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+.tmore{font-size:12px;color:var(--muted)}
+.tmore summary{cursor:pointer;font-weight:600;color:var(--fg);opacity:.75;list-style:none}
+.tmore summary::-webkit-details-marker{display:none}
+.tmore summary::before{content:"+ ";}.tmore[open] summary::before{content:"− ";}
+.tmore div{margin-top:4px;line-height:1.4}.tmore b{color:var(--fg);font-weight:600}
+.nav{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:8px 0;margin:-8px 0 -10px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(6px);scrollbar-width:none}
+.nav a{flex:none;text-decoration:none;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+.nav a:hover{border-color:var(--eth)}
+section,header{scroll-margin-top:52px}
+.evlist{display:flex;flex-direction:column}
+.ev{display:grid;grid-template-columns:8.5rem 1fr auto;gap:4px 12px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.ev:last-child{border-bottom:0}
+.ev .when{font-weight:700;font-variant-numeric:tabular-nums}.ev .when span{display:block;font-weight:400;font-size:11.5px;color:var(--muted)}
+.ev .what{line-height:1.35}.ev .moves{display:block;font-size:11.5px;color:var(--muted)}
+.ev .src{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.ev.bell{background:color-mix(in srgb,var(--pink) 9%,transparent);border-radius:6px;padding-inline:8px;margin-inline:-8px}
+.ev.bell .what{font-weight:700}
+@media (max-width:640px){
+ .wrap{padding:12px 12px 32px;gap:16px}
+ .herobody{padding:14px}.lede{font-size:15px}
+ .card{padding:14px}
+ .tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .tile{padding:10px 10px 9px 14px}.tv{font-size:22px}.ts{font-size:11px}
+ .bar{grid-template-columns:4.6rem 1fr 3.2rem}
+ .ev{grid-template-columns:6.2rem 1fr}.ev .src{grid-column:2}
+}
 footer{font-size:12px;color:var(--muted);text-align:center}
 @media (prefers-reduced-motion:no-preference){.fill{animation:grow .6s ease-out;transform-origin:left}@keyframes grow{from{transform:scaleX(0)}}}
 </style></head><body><div class="wrap">
@@ -91,17 +119,9 @@ footer{font-size:12px;color:var(--muted);text-align:center}
 <p class="muted">Unofficial community research by @vv23_CT, not affiliated with The Mutual Fun. Not financial advice. Research pass Oct 30–31, 2026. The final card comes Friday afternoon after the 8:30am ET jobs report. Bell: Fri Nov 6, 20:00 UTC (3:00pm ET).</p>
 </div></header>
 
-<section><h2 style="--acc:var(--teal)">Ballot room</h2><div class="tiles" id="roomTiles"></div></section>
-<section><h2 style="--acc:var(--eth)">ETH and the backdrop</h2><div class="tiles" id="mktTiles"></div></section>
-
+<nav class="nav" aria-label="Sections"><a href="#card">My card</a><a href="#eth">ETH call</a><a href="#tokens">Tokens</a><a href="#room">Room</a><a href="#market">Market</a><a href="#events">Events</a></nav>
 <div class="grid">
-<section class="card" style="--acc:var(--eth)">
-<h2>ETH call · next 1–2 weeks</h2>
-<p class="muted">Everything is scored against ETH, so this decides how much stays in WETH.</p>
-<div class="call">Down to flat · medium confidence</div>
-<ol id="reasons"></ol>
-</section>
-<section class="card" style="--acc:var(--good)">
+<section class="card" id="card" style="--acc:var(--good)">
 <h2>My card this week</h2>
 <p class="muted">As percent of the fund, the way the ballot shows it. $TMF stays held, max 25% per token, and the rest sits in WETH.</p>
 <div class="bars" id="bars"></div>
@@ -111,22 +131,38 @@ footer{font-size:12px;color:var(--muted);text-align:center}
 </div>
 <div class="post"><b>Why USDG?</b> ETH looks weak into next week: ETF outflows, the Binance hack, and a Fed leaning toward a hike. A dollar token gains in ETH terms if ETH keeps sliding, and USDG fills fast. If enough of us put USDG at 25%, it clears 50% backing. If not, it just stays in WETH, so it costs nothing to try. Profit take 50%, burn 0%.</div>
 </section>
+<section class="card" id="eth" style="--acc:var(--eth)">
+<h2>ETH call · next 1–2 weeks</h2>
+<p class="muted">Everything is scored against ETH, so this decides how much stays in WETH.</p>
+<div class="call">Down to flat · medium confidence</div>
+<ol id="reasons"></ol>
+</section>
 </div>
 
-<section class="card" style="--acc:var(--mkt)">
+<section class="card" id="tokens" style="--acc:var(--mkt)">
 <h2>Every token vs ETH</h2>
-<p class="muted">Calls are vs ETH over the next 2–4 weeks. My picks come first, then the rest from strongest to weakest.</p>
+<p class="muted">Calls are vs ETH over the next 2–4 weeks. Tap "+ details" on a card for the price check and source.</p>
 <div class="chips">
 <button class="chip" data-g="" aria-pressed="true">All</button><button class="chip" data-g="Stock" aria-pressed="false">Stock tokens</button><button class="chip" data-g="Stable" aria-pressed="false">Stablecoin</button><button class="chip" data-g="Meme" aria-pressed="false">Memes</button>
 </div>
 <div class="legend"><span><i class="pill up">Beat</i> likely to do better than ETH</span><span><i class="pill match">Match</i> moves about like ETH</span><span><i class="pill down">Lag</i> likely to do worse</span><span><i class="pill">Out</i> can't fill or ruled out</span></div>
-<div class="tgrid" id="tok"></div>
+<div id="tok"></div>
 </section>
 
-<section class="card" style="--acc:var(--gold)">
+<section id="room"><h2 style="--acc:var(--teal)">Ballot room</h2><div class="tiles" id="roomTiles"></div></section>
+<section id="market"><h2 style="--acc:var(--eth)">ETH and the backdrop</h2><div class="tiles" id="mktTiles"></div></section>
+
+
+
+
+
+
+
+
+<section class="card" id="events" style="--acc:var(--gold)">
 <h2>Next 14 days</h2>
 <p class="muted">The jobs report lands the morning of the bell.</p>
-<div class="scroll"><table><thead><tr><th>When (UTC)</th><th>ET</th><th>Event</th><th>Moves</th><th>Source</th></tr></thead><tbody id="ev"></tbody></table></div>
+<div class="evlist" id="ev"></div>
 </section>
 
 <footer>Unofficial · community research, not financial advice · data as of Oct 31, 2026 · do your own research before you vote</footer>
@@ -160,21 +196,26 @@ const cls=c=>c==='Beat'?'up':c==='Lag'?'down':c==='Match'?'match':'';
 let G='';
 const ORDER={Beat:0,Match:1,Lag:2};
 const accOf=c=>c==='Beat'?'var(--good)':c==='Lag'?'var(--bad)':c==='Match'?'var(--mkt)':'#8a8f98';
+const GROUPS=[['pick','My picks',true],['Beat','Beat ETH',true],['Match','Match ETH',true],['Lag','Lag ETH',true],['Out','Out: can\'t fill or ruled out',false]];
+function card(r){const out=!(r.call in ORDER);const call=out?'Out':r.call;const c=el('article','tcard'+(Number(r.pct)>0?' pick':''));c.style.setProperty('--acc',accOf(call));
+ const hd=el('div','thead');hd.append(el('span','tname',r.token),el('span','pill '+cls(call),call),el('span','tconf',String(r.conf).replace(' · Fomo pending','')));
+ hd.append(el('span','tpct '+(Number(r.pct)>0?'on':'off'),r.pct==null?'—':r.pct+'%'));c.append(hd);
+ c.append(el('div','tline',out?r.risk:r.catalyst));
+ const tg=el('div','tags');const slow=/too slow|~\d+ Fridays/.test(r.fill);
+ tg.append(el('span','tag',r.group==='Stable'?'Stablecoin':r.group==='Meme'?'Meme':'Stock'));
+ tg.append(el('span','tag',(r.fee*100).toFixed(1).replace('.0','')+'% fee'));
+ if(!out)tg.append(el('span','tag'+(slow?' warn':''),slow?r.fill.replace(' to a quarter',' to fill'):'Fills fast'));
+ tg.append(el('span','tag'+(/vetoed/.test(r.backing)?' warn':''),/vetoed/.test(r.backing)?'Room: no backing':'Room: '+r.backing));c.append(tg);
+ const d=el('details','tmore');d.append(el('summary',null,'details'));const b=el('div');
+ if(!out){b.append(el('b',null,'Risk: '),r.risk);b.append(el('br'));}
+ b.append(el('b',null,'Price: '),r.last);b.append(el('br'));b.append(el('b',null,'Source: '),link(r.source,r.url));d.append(b);c.append(d);return c;}
 function drawTok(){const box=$('#tok');box.replaceChildren();
- const rows=D.tokens.filter(r=>!G||r.group===G).slice().sort((a,b)=>(Number(b.pct)||0)-(Number(a.pct)||0)||((ORDER[a.call]??3)-(ORDER[b.call]??3))||a.token.localeCompare(b.token));
- rows.forEach(r=>{const out=!(r.call in ORDER);const call=out?'Out':r.call;const c=el('article','tcard'+(Number(r.pct)>0?' pick':''));c.style.setProperty('--acc',accOf(call));
-  const hd=el('div','thead');hd.append(el('span','tname',r.token),el('span','ttype',r.group==='Stable'?'Stablecoin':r.group==='Meme'?'Meme':'Stock token'));
-  const pc=el('span','tpct '+(Number(r.pct)>0?'on':'off'),r.pct==null?'—':r.pct+'%');hd.append(pc);c.append(hd);
-  const cl=el('div','thead');cl.append(el('span','pill '+cls(call),call));cl.append(el('span','tconf',String(r.conf).replace(' · Fomo pending','')+' confidence'));c.append(cl);
-  const ln=(k,v)=>{const d=el('div','tline');d.append(el('b',null,k),v);c.append(d);};
-  ln('Why it could move',r.catalyst);ln('Main risk',r.risk);
-  c.append(el('div','tprice',r.last));
-  const ft=el('div','tfoot');const slow=/too slow|~\d+ Fridays/.test(r.fill);
-  ft.append(el('span','tag',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'));
-  ft.append(el('span','tag'+(slow?' warn':''),r.fill.replace('No slow-fill warning','Fills fast')));
-  ft.append(el('span','tag'+(/vetoed/.test(r.backing)?' warn':''),'Room: '+r.backing.replace('vetoed so far','no backing yet')));
-  c.append(ft);const s=el('div','tsrc');s.append('Source: ',link(r.source,r.url));c.append(s);box.append(c);});}
+ const rows=D.tokens.filter(r=>!G||r.group===G);
+ const key=r=>Number(r.pct)>0?'pick':(r.call in ORDER?r.call:'Out');
+ GROUPS.forEach(([k,label,open])=>{const rs=rows.filter(r=>key(r)===k).sort((a,b)=>a.token.localeCompare(b.token));if(!rs.length)return;
+  const g=el(open?'div':'details','tgroup');const h=el(open?'div':'summary','tgh');h.append(label,el('span','n','· '+rs.length));
+  if(!open){g.append(h);}else g.append(h);const grid=el('div','tgrid');rs.forEach(r=>grid.append(card(r)));g.append(grid);box.append(g);});}
 drawTok();
 document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{G=b.dataset.g;document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawTok();}));
-D.events.forEach(r=>{const tr=el('tr');[r.when_utc,r.when_et,r.event,r.tokens].forEach(t=>tr.append(el('td',null,t)));const s=el('td');s.append(link(r.source,r.url));tr.append(s);$('#ev').append(tr);});
+D.events.forEach(r=>{const e=el('div','ev'+(/Closing Bell/.test(r.event)?' bell':''));const w=el('div','when',r.when_et);w.append(el('span',null,r.when_utc+(r.when_utc.includes(':')?' UTC':'')));const t=el('div','what',r.event);t.append(el('span','moves','Moves: '+r.tokens));const s=el('div','src');s.append(link(r.source,r.url));e.append(w,t,s);$('#ev').append(e);});
 </script></body></html>
