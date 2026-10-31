@@ -7,18 +7,18 @@
   {
    "id": "eth",
    "label": "ETH price",
-   "value": 2241.57,
+   "value": 2245.1,
    "fmt": "usd",
-   "asof": "Oct 31, 11:00 UTC",
+   "asof": "Oct 31, 12:15 UTC",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/ethereum/"
   },
   {
    "id": "eth_1w",
    "label": "ETH, last 7 days",
-   "value": -0.0532,
+   "value": -0.0493,
    "fmt": "pct",
-   "asof": "Oct 31, 11:00 UTC",
+   "asof": "Oct 31, 12:15 UTC",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/ethereum/"
   },
@@ -79,27 +79,27 @@
   {
    "id": "turnout",
    "label": "Chairs voting (floor 25)",
-   "value": 44,
+   "value": 46,
    "fmt": "int",
-   "asof": "Oct 31",
+   "asof": "Oct 31, 8:15am ET",
    "source": "SMAUG ballot page (screenshot)",
    "url": "https://themutual.fun/"
   },
   {
    "id": "tmf_held",
    "label": "$TMF held",
-   "value": 0.3567,
+   "value": 0.3619,
    "fmt": "pctu",
-   "asof": "Oct 31",
+   "asof": "Oct 31, 8:15am ET",
    "source": "SMAUG ballot page (screenshot)",
    "url": "https://themutual.fun/"
   },
   {
    "id": "weth_now",
    "label": "WETH",
-   "value": 0.64,
+   "value": 0.63,
    "fmt": "pctu",
-   "asof": "Oct 31",
+   "asof": "Oct 31, 8:15am ET",
    "source": "SMAUG ballot page (screenshot)",
    "url": "https://themutual.fun/"
   },
@@ -108,7 +108,7 @@
    "label": "Tokens the room backs",
    "value": 0,
    "fmt": "int",
-   "asof": "Oct 31",
+   "asof": "Oct 31, 8:15am ET",
    "source": "SMAUG ballot page (screenshot)",
    "url": "https://themutual.fun/"
   }
@@ -155,12 +155,12 @@
   {
    "token": "USDG",
    "group": "Stable",
-   "price": "$0.99981 (CMC, Oct 31). Market cap $2.98B",
+   "price": "$0.99970 (CMC, Oct 31). Market cap $2.98B",
    "news": "Issued by Paxos.",
    "fee": 0.003,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "0.000447 WETH",
+   "onchain": "0.000446 WETH",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/global-dollar-usdg/",
    "slow": false
@@ -171,7 +171,7 @@
    "price": "No outside price checked yet; ballot price only.",
    "news": "—",
    "fee": 0.01,
-   "fill": "~43 Fridays to a quarter",
+   "fill": "~44 Fridays to a quarter",
    "backing": "Not shown on ballot (Oct 31)",
    "onchain": "0.044872 WETH",
    "source": "SMAUG ballot page (screenshot)",
@@ -186,7 +186,7 @@
    "fee": 0.01,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "0.159852 WETH",
+   "onchain": "0.159676 WETH",
    "source": "Trading Economics",
    "url": "https://tradingeconomics.com/commodity/gold",
    "slow": false
@@ -199,7 +199,7 @@
    "fee": 0.003,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "0.310106 WETH",
+   "onchain": "0.309641 WETH",
    "source": "investingLive",
    "url": "https://investinglive.com/stocks/nasdaq-suffers-worst-month-since-march-2025-as-technology-stocks-tumble/",
    "slow": false
@@ -212,7 +212,7 @@
    "fee": 0.003,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "0.090811 WETH",
+   "onchain": "0.090756 WETH",
    "source": "Trading Economics / Earnings Whispers",
    "url": "https://tradingeconomics.com/united-states/stock-market",
    "slow": false
@@ -225,7 +225,7 @@
    "fee": 0.003,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "0.178313 WETH",
+   "onchain": "0.178188 WETH",
    "source": "Trading Economics",
    "url": "https://tradingeconomics.com/united-states/stock-market",
    "slow": false
@@ -238,7 +238,7 @@
    "fee": 0.003,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "0.274327 WETH",
+   "onchain": "0.273642 WETH",
    "source": "Trading Economics",
    "url": "https://tradingeconomics.com/united-states/stock-market",
    "slow": false
@@ -277,7 +277,7 @@
    "fee": 0.003,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "0.064909 WETH",
+   "onchain": "0.064896 WETH",
    "source": "24/7 Wall St",
    "url": "https://247wallst.com/investing/2026/10/30/coinbase-tumbles-11-as-record-binance-hack-hits-crypto-and-trading-revenue-slides-strategy-sinks-12-robinhood-plunges-10-circle-drops-9/",
    "slow": false
@@ -290,7 +290,7 @@
    "fee": 0.01,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "0.058862 WETH",
+   "onchain": "0.058962 WETH",
    "source": "24/7 Wall St",
    "url": "https://247wallst.com/investing/2026/10/30/coinbase-tumbles-11-as-record-binance-hack-hits-crypto-and-trading-revenue-slides-strategy-sinks-12-robinhood-plunges-10-circle-drops-9/",
    "slow": false
@@ -298,7 +298,7 @@
   {
    "token": "PONS",
    "group": "Meme",
-   "price": "$0.2262 (CMC, Oct 31). 24h -5.5%, 7d -0.3%, 30d -58.4%. Market cap $151.9M",
+   "price": "$0.2260 (CMC, Oct 31). 24h -4.1%, 7d -0.6%, 30d -58.9%. Market cap $151.8M",
    "news": "Since launch (Jul 13, 2026): 3.84M swaps, 889,738 WETH volume, 156,620 traders; 12 tokens claim the PONS ticker, this is the most traded (RobinX, Oct 31). ~102.7K holders; top 10 wallets hold 55.5% (CMC holder data).",
    "fee": 0.003,
    "fill": "No slow-fill warning",
@@ -311,12 +311,12 @@
   {
    "token": "CASHCAT",
    "group": "Meme",
-   "price": "$0.0910 (CMC, Oct 31). 24h -1.6%, 7d -2.9%, 30d -47.4%. Market cap $91.0M",
+   "price": "$0.0931 (CMC, Oct 31). 24h +1.4%, 7d 0.0%, 30d -46.0%. Market cap $93.1M",
    "news": "Since launch: 5.38M swaps, 1,157,200 WETH volume, 122,274 traders; 12 tokens claim the CASHCAT ticker, this is the most traded. Contract has no owner, mint, pause or blacklist functions (RobinX, Oct 31). ~111K holders; top 10 wallets hold 37.1% (CMC holder data).",
    "fee": 0.003,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "40.3067 WETH per 1M",
+   "onchain": "40.7728 WETH per 1M",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/cash-cat/",
    "slow": false
@@ -324,12 +324,12 @@
   {
    "token": "VIRTUAL",
    "group": "Meme",
-   "price": "$0.5794 (CMC, Oct 31). 24h -1.1%, 7d -7.9%, 30d -27.6%. Market cap $381.8M",
+   "price": "$0.5795 (CMC, Oct 31). 24h -1.2%, 7d -7.6%, 30d -27.6%. Market cap $381.9M",
    "news": "Bridged token. On Robinhood Chain since Aug 3, 2026: 2.61M swaps, 266,795 WETH volume, 120,961 traders; 12 tokens claim the VIRTUAL ticker, this is the most traded (RobinX, Oct 31).",
    "fee": 0.003,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "0.000259 WETH",
+   "onchain": "0.000258 WETH",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/virtual-protocol/",
    "slow": false
@@ -337,12 +337,12 @@
   {
    "token": "AI",
    "group": "Meme",
-   "price": "$0.0613 (CMC, Oct 31). 24h -3.6%, 7d +11.5%, 30d -62.1%. Market cap $61.3M",
+   "price": "$0.0614 (CMC, Oct 31). 24h -2.6%, 7d +14.6%, 30d -61.8%. Market cap $61.4M",
    "news": "Since launch (Jul 31, 2026): 2.18M swaps, 400,688 WETH volume, 106,176 traders; 12 tokens claim the AI ticker, this is the most traded (RobinX, Oct 31).",
    "fee": 0.01,
    "fill": "No slow-fill warning",
    "backing": "0%, vetoed so far",
-   "onchain": "27.9868 WETH per 1M",
+   "onchain": "27.3834 WETH per 1M",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/artificial-inu-ai/",
    "slow": false
@@ -350,12 +350,12 @@
   {
    "token": "MANCER",
    "group": "Meme",
-   "price": "$0.001688 (CMC, Oct 31). 24h +8.7%, 7d +18.2%, 30d -15.3%. Market cap $1.5M",
+   "price": "$0.001656 (CMC, Oct 31). 24h +7.5%, 7d +15.4%, 30d -19.9%. Market cap $1.5M",
    "news": "Since launch (Aug 7, 2026): 168,167 swaps, 20,520 WETH volume, 19,837 traders; 12 tokens claim the MANCER ticker, this is the most traded (RobinX, Oct 31). Launched Books with Clutch Markets and an iOS beta around Oct 29–30 (@MancerXYZ on X).",
    "fee": 0.01,
    "fill": "~9 Fridays to a quarter",
    "backing": "0%, vetoed so far",
-   "onchain": "0.7544 WETH per 1M",
+   "onchain": "0.7395 WETH per 1M",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/mancer/",
    "slow": true
@@ -368,7 +368,7 @@
    "fee": 0.01,
    "fill": "~27 Fridays to a quarter",
    "backing": "0%, vetoed so far",
-   "onchain": "2.919 WETH per 1M",
+   "onchain": "2.9375 WETH per 1M",
    "source": "SMAUG ballot page (screenshot)",
    "url": "https://themutual.fun/",
    "slow": true
@@ -379,7 +379,7 @@
    "price": "On-chain price from ballot only",
    "news": "—",
    "fee": 0.01,
-   "fill": "~114 Fridays to a quarter",
+   "fill": "~115 Fridays to a quarter",
    "backing": "0%, vetoed so far",
    "onchain": "53.3089 WETH per 1M",
    "source": "SMAUG ballot page (screenshot)",
@@ -392,7 +392,7 @@
    "price": "On-chain price from ballot only",
    "news": "—",
    "fee": 0.01,
-   "fill": "~507 Fridays to a quarter",
+   "fill": "~512 Fridays to a quarter",
    "backing": "0%, vetoed so far",
    "onchain": "0.0091 WETH per 1M",
    "source": "SMAUG ballot page (screenshot)",
@@ -615,6 +615,10 @@
   }
  ],
  "updates": [
+  {
+   "date": "Oct 31",
+   "text": "Ballot (8:15am ET): 46 chairs voting (floor 25). $TMF held 36.19%, WETH 63%. All 19 tokens still 0% and vetoed so far. On-chain prices refreshed; fill estimates APE ~115, DERP ~512, SGOV ~44 Fridays. ETH and meme prices refreshed from CoinMarketCap (12:15 UTC)."
+  },
   {
    "date": "Oct 31",
    "text": "Renamed to Unofficial SMAUG Fund Intel Dashboard. Ballot screenshot (Oct 31): 44 chairs voting, past the 25 floor, so the dials move at the bell. $TMF held 35.67%, WETH 64%. All 19 tokens still 0% and vetoed so far. On-chain prices and fill estimates refreshed (SGOV ~43, STONKBROKER ~27, APE ~114, DERP ~507 Fridays). Meme prices from CoinMarketCap and lifetime trading facts from RobinX added."
