@@ -187,6 +187,26 @@ html,body{height:100%;overflow:hidden}
 .stat b span{font:inherit;color:inherit;letter-spacing:0}
 .stat em{font-size:12px;vertical-align:1px}
 @media (min-width:700px){.page{padding:20px}}
+/* bigger portrait at whole-number scale: 2x on phones, 3x on wide screens */
+.portrait{width:calc(var(--pw,46) * 2px);height:calc(var(--ph,53) * 2px);margin-bottom:-4px}
+@media (max-width:340px){.portrait{width:calc(var(--pw,46) * 1px);height:calc(var(--ph,53) * 1px)}}
+/* auto-adjusting layout: one column on phones, two on wide screens */
+@media (min-width:900px){
+ .page .app{max-width:1120px}
+ .hd{padding:14px 20px 6px}
+ .body{display:grid;grid-template-columns:minmax(330px,400px) minmax(0,1fr);column-gap:20px;row-gap:10px;padding:14px 20px 18px;align-items:start}
+ .body>*{grid-column:2}
+ .body>.fcard{grid-column:1;grid-row:1 / span 6;position:sticky;top:0}
+ .body>.swipehint{display:none}
+ .vtabs{margin:0;padding:0;top:0}
+ .portrait{width:calc(var(--pw,46) * 3px);height:calc(var(--ph,53) * 3px)}
+ .fc-name{font-size:30px}
+ .fsw{padding:8px 20px}
+ .fc-head{align-items:center}
+ .fc-head .txt{gap:6px}
+ .fine{padding:0 20px 10px}
+}
+
 .vtabs{position:sticky;top:-12px;z-index:3;background:var(--panel);margin:0 -12px;padding:12px 12px 0}
 </style>
 <script>try{var t=localStorage.getItem('sfi-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
@@ -309,7 +329,7 @@ function select(id,dx){SEL=id;const f=FI[id];
  const c=$('#fcard');if(dx){c.style.setProperty('--dx',dx+'px');c.classList.remove('slide');void c.offsetWidth;c.classList.add('slide');}
  const hc=HOUSE[id]||['#453629','#fff',''];document.documentElement.style.setProperty('--house',hc[0]);document.documentElement.style.setProperty('--house-ink',hc[1]);
  $('#fcName').textContent=f.name;stamp($('#fcWhen'),f.asof_utc,f.asof);
- const pic=$('#fcPic');if(PICS[id]){pic.onload=()=>{pic.style.width=(pic.naturalWidth/2)+'px';pic.style.height=(pic.naturalHeight/2)+'px';};pic.src=PICS[id];pic.hidden=false;const s=(window.__SEATS__||{})[id];pic.alt=s?f.name+' Seat '+s:'';pic.title=s?f.name+' Seat '+s:'';}else pic.hidden=true;
+ const pic=$('#fcPic');if(PICS[id]){pic.onload=()=>{pic.style.setProperty('--pw',pic.naturalWidth/2);pic.style.setProperty('--ph',pic.naturalHeight/2);};pic.src=PICS[id];pic.hidden=false;const s=(window.__SEATS__||{})[id];pic.alt=s?f.name+' Seat '+s:'';pic.title=s?f.name+' Seat '+s:'';}else pic.hidden=true;
  const b=backed(f);const fb=$('#fcBacks');fb.classList.toggle('none',!b.length);fb.textContent=b.length?'Backs '+b.map(([k,v])=>k+' '+P(v)).join(' · '):'Backs nothing yet: all to WETH';
  const parts=[['$TMF held',f.tmf_held,'repeating-linear-gradient(45deg,var(--tmf) 0 6px,var(--tmfstripe) 6px 12px)']].concat(b.map(([k,v],i)=>[k,v,COL[i%COL.length]]),[['WETH',f.room_weth,'var(--weth)']]);
  const st=$('#fcStack'),lg=$('#fcLeg');st.replaceChildren();lg.replaceChildren();
