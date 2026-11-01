@@ -1,0 +1,37 @@
+{
+ "asof_utc": "2026-11-01T23:07:54Z",
+ "block": 103753374,
+ "epoch": 2,
+ "closes_utc": "2026-11-06T20:00:00.000Z",
+ "source": "Robinhood Chain (public RPC): Ballot chairsVoted(fund, week); DividendOffice enrolledCount(fund)",
+ "url": "https://robinhoodchain.blockscout.com/address/0xa1de85247d30eb67c83d010f9240ae81a8d744fe",
+ "ballot": "0xa1de85247d30eb67c83d010f9240ae81a8d744fe",
+ "dividend_office": "0xf658b4abdafc6c8d652742d563e9d9ab8b454475",
+ "funds": {
+  "argon": {
+   "enrolled": 264,
+   "voted": 105,
+   "enrolled_weight": 39720
+  },
+  "bogle": {
+   "enrolled": 233,
+   "voted": 58,
+   "enrolled_weight": 33845
+  },
+  "smaug": {
+   "enrolled": 307,
+   "voted": 74,
+   "enrolled_weight": 41857
+  },
+  "midas": {
+   "enrolled": 257,
+   "voted": 80,
+   "enrolled_weight": 38425
+  },
+  "vladd": {
+   "enrolled": 293,
+   "voted": 102,
+   "enrolled_weight": 49614
+  }
+ }
+}
