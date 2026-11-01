@@ -2,7 +2,7 @@
  "version": 2,
  "week": 2,
  "bell_utc": "2026-11-06T20:00:00Z",
- "updated_utc": "2026-10-31T13:03:00Z",
+ "updated_utc": "2026-11-01T11:00:00Z",
  "funds": [
   {
    "id": "argon",
@@ -367,38 +367,38 @@
   {
    "id": "eth",
    "label": "ETH price",
-   "value": 2245.1,
+   "value": 2268.1,
    "fmt": "usd",
-   "asof": "Oct 31, 12:15 UTC",
+   "asof": "Nov 1, 10:38 UTC",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/ethereum/"
   },
   {
    "id": "eth_1w",
    "label": "ETH, last 7 days",
-   "value": -0.0493,
+   "value": -0.0241,
    "fmt": "pct",
-   "asof": "Oct 31, 12:15 UTC",
+   "asof": "Nov 1, 10:38 UTC",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/ethereum/"
   },
   {
    "id": "eth_etf",
-   "label": "Spot ETH ETF flow, Oct 29",
-   "value": -105.5,
+   "label": "Spot ETH ETF flow, Oct 30",
+   "value": -155.85,
    "fmt": "usdM",
    "asof": "Oct 30",
-   "source": "KuCoin News (SoSoValue data)",
-   "url": "https://kucoin.com/news/flash/bitcoin-etfs-see-17m-inflows-ethereum-etfs-lose-105m-on-october-29"
+   "source": "Bloomingbit (SoSoValue data)",
+   "url": "https://en.bloomingbit.io/feed/news/123346"
   },
   {
    "id": "btc",
    "label": "BTC price",
-   "value": 77445.96,
+   "value": 77949.51,
    "fmt": "usd0",
-   "asof": "Oct 30",
-   "source": "CNBC",
-   "url": "https://www.cnbc.com/2026/10/30/bitcoin-ether-price-binance-security-scare-rattles-crypto-markets.html"
+   "asof": "Nov 1, 10:38 UTC",
+   "source": "CoinMarketCap",
+   "url": "https://coinmarketcap.com/currencies/bitcoin/"
   },
   {
    "id": "nasdaq",
@@ -423,7 +423,7 @@
    "label": "Fear & Greed (CMC)",
    "value": 36,
    "fmt": "int",
-   "asof": "Oct 31 (46 a week ago)",
+   "asof": "Nov 1 (43 a week ago)",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/charts/fear-and-greed-index/"
   },
@@ -440,9 +440,9 @@
  "news": [
   {
    "head": "ETF outflows",
-   "text": "Spot ETH ETFs had net outflows four days in a row through Oct 29, including −$105.5M on Oct 29.",
-   "source": "KuCoin News (SoSoValue data), Oct 30",
-   "url": "https://kucoin.com/news/flash/bitcoin-etfs-see-17m-inflows-ethereum-etfs-lose-105m-on-october-29"
+   "text": "Spot ETH ETFs had net outflows of −$155.85M on Oct 30, a fifth straight day of outflows and the biggest daily outflow since Oct 7. BlackRock's ETHA had the largest outflow ($76.64M).",
+   "source": "Bloomingbit (SoSoValue data), Oct 30",
+   "url": "https://en.bloomingbit.io/feed/news/123346"
   },
   {
    "head": "Large holders",
@@ -452,9 +452,9 @@
   },
   {
    "head": "Binance hack",
-   "text": "About $6.3B was stolen from Binance on Oct 29. About $3B has been frozen, Binance says it will cover all losses, and it expects to resume withdrawals within 48 hours.",
-   "source": "CNBC, Oct 30",
-   "url": "https://www.cnbc.com/2026/10/30/bitcoin-ether-price-binance-security-scare-rattles-crypto-markets.html"
+   "text": "About $6.3B was stolen from Binance on Oct 29. On Nov 1 Binance reopened Bitcoin withdrawals, then USDT, USDC and ETH on Ethereum and USDT, USDC and BNB on BNB Smart Chain, and said it has replenished about 95% of affected assets. More assets and networks are to follow in phases.",
+   "source": "crypto.news, Nov 1",
+   "url": "https://crypto.news/binance-restores-usdt-usdc-eth-bnb-withdrawals/"
   },
   {
    "head": "The Fed",
@@ -479,7 +479,7 @@
   {
    "token": "USDG",
    "group": "Stable",
-   "price": "$0.99970 (CMC, Oct 31). Market cap $2.98B",
+   "price": "$0.99967 (CMC, Nov 1). Market cap $2.93B",
    "news": "Issued by Paxos.",
    "fee": 0.003,
    "onchain": "0.000446 WETH",
@@ -600,7 +600,7 @@
   {
    "token": "PONS",
    "group": "Meme",
-   "price": "$0.2260 (CMC, Oct 31). 24h -4.1%, 7d -0.6%, 30d -58.9%. Market cap $151.8M",
+   "price": "$0.2449 (CMC, Nov 1). 24h +7.6%, 7d +9.5%, 30d -53.4%. Market cap $164.4M",
    "news": "Since launch (Jul 13, 2026): 3.84M swaps, 889,738 WETH volume, 156,620 traders; 12 tokens claim the PONS ticker, this is the most traded (RobinX, Oct 31). ~102.7K holders; top 10 wallets hold 55.5% (CMC holder data).",
    "fee": 0.003,
    "onchain": "0.000101 WETH",
@@ -611,7 +611,7 @@
   {
    "token": "CASHCAT",
    "group": "Meme",
-   "price": "$0.0931 (CMC, Oct 31). 24h +1.4%, 7d 0.0%, 30d -46.0%. Market cap $93.1M",
+   "price": "$0.0946 (CMC, Nov 1). 24h +4.5%, 7d +3.0%, 30d -46.3%. Market cap $94.6M",
    "news": "Since launch: 5.38M swaps, 1,157,200 WETH volume, 122,274 traders; 12 tokens claim the CASHCAT ticker, this is the most traded. Contract has no owner, mint, pause or blacklist functions (RobinX, Oct 31). ~111K holders; top 10 wallets hold 37.1% (CMC holder data).",
    "fee": 0.003,
    "onchain": "40.7728 WETH per 1M",
@@ -622,7 +622,7 @@
   {
    "token": "VIRTUAL",
    "group": "Meme",
-   "price": "$0.5795 (CMC, Oct 31). 24h -1.2%, 7d -7.6%, 30d -27.6%. Market cap $381.9M",
+   "price": "$0.5974 (CMC, Nov 1). 24h +2.4%, 7d -2.5%, 30d -26.9%. Market cap $393.7M",
    "news": "Bridged token. On Robinhood Chain since Aug 3, 2026: 2.61M swaps, 266,795 WETH volume, 120,961 traders; 12 tokens claim the VIRTUAL ticker, this is the most traded (RobinX, Oct 31).",
    "fee": 0.003,
    "onchain": "0.000258 WETH",
@@ -633,7 +633,7 @@
   {
    "token": "AI",
    "group": "Meme",
-   "price": "$0.0614 (CMC, Oct 31). 24h -2.6%, 7d +14.6%, 30d -61.8%. Market cap $61.4M",
+   "price": "$0.0669 (CMC, Nov 1). 24h +8.8%, 7d +23.2%, 30d -56.0%. Market cap $66.9M",
    "news": "Since launch (Jul 31, 2026): 2.18M swaps, 400,688 WETH volume, 106,176 traders; 12 tokens claim the AI ticker, this is the most traded (RobinX, Oct 31).",
    "fee": 0.01,
    "onchain": "27.3834 WETH per 1M",
@@ -644,7 +644,7 @@
   {
    "token": "MANCER",
    "group": "Meme",
-   "price": "$0.001656 (CMC, Oct 31). 24h +7.5%, 7d +15.4%, 30d -19.9%. Market cap $1.5M",
+   "price": "$0.001772 (CMC, Nov 1). 24h +4.8%, 7d +42.0%, 30d -20.6%. Market cap $1.59M",
    "news": "Since launch (Aug 7, 2026): 168,167 swaps, 20,520 WETH volume, 19,837 traders; 12 tokens claim the MANCER ticker, this is the most traded (RobinX, Oct 31). Launched Books with Clutch Markets and an iOS beta around Oct 29–30 (@MancerXYZ on X).",
    "fee": 0.01,
    "onchain": "0.7395 WETH per 1M",
@@ -688,30 +688,6 @@
  ],
  "events": [
   {
-   "id": "e1",
-   "date": "2026-10-31",
-   "when_utc": "Sat Oct 31–Sun Nov 1",
-   "when_et": "Weekend",
-   "event": "Binance aims to resume withdrawals",
-   "tokens": "ETH, COIN, all memes",
-   "source": "CNBC",
-   "url": "https://www.cnbc.com/2026/10/30/bitcoin-ether-price-binance-security-scare-rattles-crypto-markets.html",
-   "short": "Binance withdrawals back",
-   "key": false
-  },
-  {
-   "id": "e2",
-   "date": "2026-11-01",
-   "when_utc": "Sun Nov 1",
-   "when_et": "2am ET",
-   "event": "US clocks fall back, so the bell moves to 3pm ET",
-   "tokens": "Bell timing",
-   "source": "themutual.fun",
-   "url": "https://themutual.fun/",
-   "short": "Clocks fall back",
-   "key": false
-  },
-  {
    "id": "e3",
    "date": "2026-11-01",
    "when_utc": "Sun Nov 1",
@@ -721,6 +697,42 @@
    "source": "SEC 8-K",
    "url": "https://www.sec.gov/Archives/edgar/data/0001050446/000105044626000047/mstr-20261029x8kxex9912.htm",
    "short": "STRC daily dividends",
+   "key": false
+  },
+  {
+   "id": "e11",
+   "date": "2026-11-02",
+   "when_utc": "Mon Nov 2",
+   "when_et": "Time not confirmed",
+   "event": "ISM Manufacturing PMI (October)",
+   "tokens": "ETH, QQQ, SGOV",
+   "source": "Newsquawk",
+   "url": "https://www.newsquawk.com/headlines/week-in-focus-2nd-6th-november-2026-highlights-include-us-midterm-election-nfp-ism-pmis-rba-boe-and-ez-cpi-",
+   "short": "ISM mfg Mon",
+   "key": false
+  },
+  {
+   "id": "e12",
+   "date": "2026-11-02",
+   "when_utc": "Mon Nov 2, after close",
+   "when_et": "After close (call 5:00pm ET)",
+   "event": "Apple and Palantir Q3 earnings",
+   "tokens": "QQQ",
+   "source": "StockTitan",
+   "url": "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-2-2026",
+   "short": "Apple earnings Mon",
+   "key": false
+  },
+  {
+   "id": "e13",
+   "date": "2026-11-03",
+   "when_utc": "Tue Nov 3, after close",
+   "when_et": "After close (call 5:00pm ET)",
+   "event": "AMD Q3 earnings",
+   "tokens": "QQQ, NVDA",
+   "source": "StockTitan",
+   "url": "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-2-2026",
+   "short": "AMD earnings Tue",
    "key": false
   },
   {
@@ -745,6 +757,18 @@
    "source": "Capp Notes",
    "url": "https://cappnotes.substack.com/p/closing-look-friday-october-30-2026",
    "short": "JOLTS Tue",
+   "key": false
+  },
+  {
+   "id": "e14",
+   "date": "2026-11-04",
+   "when_utc": "Wed Nov 4",
+   "when_et": "Time not confirmed",
+   "event": "ISM Services PMI (October) and Treasury quarterly refunding announcement",
+   "tokens": "ETH, QQQ, SGOV",
+   "source": "Newsquawk",
+   "url": "https://www.newsquawk.com/headlines/week-in-focus-2nd-6th-november-2026-highlights-include-us-midterm-election-nfp-ism-pmis-rba-boe-and-ez-cpi-",
+   "short": "ISM services Wed",
    "key": false
   },
   {
@@ -914,9 +938,21 @@
   {
    "term": "This week so far",
    "def": "A fund's timeline for the week: one point per ballot capture, showing chairs, what the room backs and $TMF held."
+  },
+  {
+   "term": "ISM PMI",
+   "def": "Monthly survey indexes of US manufacturing and services activity from the Institute for Supply Management. Above 50 means activity grew that month."
+  },
+  {
+   "term": "ETF net flow",
+   "def": "Money put into a fund's shares minus money taken out on a given day. Negative means more was taken out than put in."
   }
  ],
  "updates": [
+  {
+   "date": "Nov 1",
+   "text": "Daily refresh (no new ballot captures; all five funds' rooms unchanged from Oct 31, 9:00–9:03am ET; ARGON's room backs NVDA and GLD, MIDAS's backs USDG, MSTR and TSLA). ETH, BTC, USDG, meme prices and Fear & Greed refreshed from CoinMarketCap (Nov 1, 10:38 UTC). ETH ETF flow updated to Oct 30 (−$155.85M). Binance news updated: withdrawals reopening in phases from Nov 1. Events: past items removed; ISM PMIs, Apple/Palantir and AMD earnings added. Stock closes unchanged (no trading since Oct 30)."
+  },
   {
    "date": "Oct 31",
    "text": "New compact layout: a pinned fund selector, one summary card per fund, and four tabs (This week, Tokens, All funds, More) instead of one long page. Each fund now shows in its own color, and every time is shown in your own time zone."
