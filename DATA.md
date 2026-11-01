@@ -27,3 +27,9 @@ The page (`index.html`) reads everything from `data.json`. To update the dashboa
 - `rules`: how the vote works. Each: `rule, text`.
 - `glossary`: each `term, def`.
 - `updates`: newest first. Each `date, text`.
+
+## chain.json (automatic)
+Written every 30 minutes by `.github/workflows/turnout.yml` (`tools/chain_turnout.mjs`), only when a count changes. Read-only calls to public Robinhood Chain contracts; counts only.
+- `asof_utc, block, epoch` (the contract's week number), `closes_utc`, `source, url`
+- `funds`: `{id: {enrolled, voted, enrolled_weight}}`. `enrolled` = DividendOffice `enrolledCount(fund)`; `voted` = Ballot `chairsVoted(fund, epoch)`.
+The page uses chain.json for turnout when it is newer than the `turnout` stored in data.json. Don't edit it by hand.

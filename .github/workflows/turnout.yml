@@ -1,0 +1,34 @@
+name: Chain turnout (every 30 min)
+
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: turnout
+  cancel-in-progress: false
+
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Read turnout from Robinhood Chain
+        run: node tools/chain_turnout.mjs chain.json
+      - name: Save if anything changed
+        run: |
+          if git diff --quiet -- chain.json && git ls-files --error-unmatch chain.json >/dev/null 2>&1; then echo "No change"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add chain.json
+          git commit -m "Turnout from chain $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0; sleep 10; done
+          exit 1

@@ -350,7 +350,7 @@ function select(id,dx){SEL=id;const f=FI[id];
   $('#tuPct').textContent=Math.round(pct*100)+'%';$('#tuTxt').textContent=T.voted+' of '+T.enrolled+' enrolled chairs voted';
   $('#tuFill').style.width=Math.min(100,pct*100)+'%';$('#tuFloor').style.left=Math.min(100,f.floor/T.enrolled*100)+'%';
   $('#tuBar').setAttribute('aria-label',T.voted+' of '+T.enrolled+' enrolled chairs voted, '+Math.round(pct*100)+' percent; the 25-chair floor is marked');
-  const s=$('#tuSrc');s.replaceChildren('On-chain · as of '+local(T.asof_utc)+' · ');s.append(link('Ballot contract',(D.chain||{}).url));}
+  const s=$('#tuSrc');s.replaceChildren('On-chain · '+(T.epoch&&T.epoch!==D.week?'week '+T.epoch+' · ':'')+'as of '+local(T.asof_utc)+' · ');s.append(link('Ballot contract',(D.chain||{}).url));}
  else tb.hidden=true;
  const pic=$('#fcPic');if(PICS[id]){pic.onload=()=>{pic.style.setProperty('--pw',pic.naturalWidth/2);pic.style.setProperty('--ph',pic.naturalHeight/2);};pic.src=PICS[id];pic.hidden=false;const s=(window.__SEATS__||{})[id];pic.alt=s?f.name+' Seat '+s:'';pic.title=s?f.name+' Seat '+s:'';}else pic.hidden=true;
  const b=backed(f);const fb=$('#fcBacks');fb.classList.toggle('none',!b.length);fb.textContent=b.length?'Backs '+b.map(([k,v])=>k+' '+P(v)).join(' · '):'Backs nothing yet: all to WETH';
@@ -415,7 +415,13 @@ D.glossary.forEach(g=>$('#gloss').append(el('dt',null,g.term),el('dd',null,g.def
 select(SEL,0);
 addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();if(FI[h]&&h!==SEL)select(h,0);});
 }
-(window.__DATA__?Promise.resolve(window.__DATA__):fetch('data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();})).then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
+(window.__DATA__?Promise.resolve(window.__DATA__):fetch('data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}))
+ /* newer turnout from the 30-minute chain reader, if it's there */
+ .then(d=>fetch('chain.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null).then(c=>{if(c&&c.funds&&c.asof_utc){
+   d.chain=Object.assign({},d.chain||{},{url:c.url||(d.chain||{}).url,epoch:c.epoch});
+   (d.funds||[]).forEach(f=>{const x=c.funds[f.id];if(x&&(!f.turnout||c.asof_utc>f.turnout.asof_utc))f.turnout={enrolled:x.enrolled,voted:x.voted,enrolled_weight:x.enrolled_weight,asof_utc:c.asof_utc,epoch:c.epoch};});}
+   return d;}))
+ .then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
 
 </script>
 </body></html>
