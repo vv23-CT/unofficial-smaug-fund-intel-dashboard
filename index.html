@@ -186,6 +186,19 @@ html,body{height:100%;overflow:hidden}
 .stat b{font-size:16px;line-height:1.2;white-space:nowrap}
 .stat b span{font:inherit;color:inherit;letter-spacing:0}
 .stat em{font-size:12px;vertical-align:1px}
+
+/* turnout, read from the chain */
+.turn{display:flex;flex-direction:column;gap:4px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card2)}
+.tu-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:13px}
+.tu-l{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tu-top b{font:400 20px/1 var(--serif);font-variant-numeric:tabular-nums}
+.tu-top #tuTxt{color:var(--fg)}
+.tu-bar{position:relative;height:8px;border-radius:4px;background:var(--pale)}
+.tu-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--house);transition:width .3s ease}
+.tu-bar span{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--fg);opacity:.7}
+.tu-src{font-size:11px;color:var(--muted)}
+.tu-src a{color:inherit}
+table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 @media (min-width:700px){.page{padding:20px}}
 /* bigger portrait at whole-number scale: 2x on phones, 3x on wide screens */
 .portrait{width:calc(var(--pw,46) * 2px);height:calc(var(--ph,53) * 2px);margin-bottom:-4px}
@@ -231,6 +244,7 @@ html,body{height:100%;overflow:hidden}
 </div><img class="portrait" id="fcPic" alt="" width="92" height="108"></div>
 <div class="stack" id="fcStack" role="img" aria-label="Room split"></div>
 <div class="leg" id="fcLeg"></div>
+<div class="turn" id="fcTurn" hidden><div class="tu-top"><span class="tu-l">Turnout</span><b id="tuPct">—</b><span id="tuTxt">—</span></div><div class="tu-bar" role="img" id="tuBar"><i id="tuFill"></i><span id="tuFloor" title="25-chair floor"></span></div><div class="tu-src" id="tuSrc"></div></div>
 <div class="stats">
 <div class="stat"><span>Chairs</span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></div>
 <div class="stat"><span>$TMF held</span><b id="stTmf">—</b></div>
@@ -329,13 +343,22 @@ function select(id,dx){SEL=id;const f=FI[id];
  const c=$('#fcard');if(dx){c.style.setProperty('--dx',dx+'px');c.classList.remove('slide');void c.offsetWidth;c.classList.add('slide');}
  const hc=HOUSE[id]||['#453629','#fff',''];document.documentElement.style.setProperty('--house',hc[0]);document.documentElement.style.setProperty('--house-ink',hc[1]);
  $('#fcName').textContent=f.name;stamp($('#fcWhen'),f.asof_utc,f.asof);
+ 
+ /* turnout from the chain */
+ const T=f.turnout;const tw=T&&(!f.asof_utc||T.asof_utc>=f.asof_utc);
+ const tb=$('#fcTurn');if(T&&T.enrolled){tb.hidden=false;const pct=T.voted/T.enrolled;
+  $('#tuPct').textContent=Math.round(pct*100)+'%';$('#tuTxt').textContent=T.voted+' of '+T.enrolled+' enrolled chairs voted';
+  $('#tuFill').style.width=Math.min(100,pct*100)+'%';$('#tuFloor').style.left=Math.min(100,f.floor/T.enrolled*100)+'%';
+  $('#tuBar').setAttribute('aria-label',T.voted+' of '+T.enrolled+' enrolled chairs voted, '+Math.round(pct*100)+' percent; the 25-chair floor is marked');
+  const s=$('#tuSrc');s.replaceChildren('On-chain · as of '+local(T.asof_utc)+' · ');s.append(link('Ballot contract',(D.chain||{}).url));}
+ else tb.hidden=true;
  const pic=$('#fcPic');if(PICS[id]){pic.onload=()=>{pic.style.setProperty('--pw',pic.naturalWidth/2);pic.style.setProperty('--ph',pic.naturalHeight/2);};pic.src=PICS[id];pic.hidden=false;const s=(window.__SEATS__||{})[id];pic.alt=s?f.name+' Seat '+s:'';pic.title=s?f.name+' Seat '+s:'';}else pic.hidden=true;
  const b=backed(f);const fb=$('#fcBacks');fb.classList.toggle('none',!b.length);fb.textContent=b.length?'Backs '+b.map(([k,v])=>k+' '+P(v)).join(' · '):'Backs nothing yet: all to WETH';
  const parts=[['$TMF held',f.tmf_held,'repeating-linear-gradient(45deg,var(--tmf) 0 6px,var(--tmfstripe) 6px 12px)']].concat(b.map(([k,v],i)=>[k,v,COL[i%COL.length]]),[['WETH',f.room_weth,'var(--weth)']]);
  const st=$('#fcStack'),lg=$('#fcLeg');st.replaceChildren();lg.replaceChildren();
  parts.forEach(([l,v,fill])=>{const d=el('div');d.style.width=(v*100)+'%';d.style.background=fill;st.append(d);const s=el('span');const i=el('i');i.style.background=fill;s.append(i,l+' ');s.append(el('b',null,P(v)));lg.append(s);});
  st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+P(v)).join(', '));
- $('#stChairs').textContent=f.chairs;$('#stFloor').textContent=f.chairs>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=f.chairs>=f.floor?'Over the 25-chair floor: the dials move at the bell':'Below the 25-chair floor';$('#stTmf').textContent=P(f.tmf_held);$('#stBacked').textContent=b.length+' of '+D.tokens.length;
+ const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-chair floor: the dials move at the bell':'Below the 25-chair floor';$('#stTmf').textContent=P(f.tmf_held);$('#stBacked').textContent=b.length+' of '+D.tokens.length;
  try{localStorage.setItem('tfi-fund',id)}catch(e){}try{history.replaceState(null,'','#'+id)}catch(e){}
  drawWeek();drawTok();drawGrid();}
 
@@ -365,7 +388,10 @@ $$('#tchips .chip').forEach(c=>c.addEventListener('click',()=>{G=c.dataset.g;$$(
 
 (()=>{const h=$('#gHead');FUNDS.forEach(f=>{const th=el('th',null,f.name.slice(0,3));th.title=f.name;th.dataset.f=f.id;th.style.setProperty('--fh',(HOUSE[f.id]||['#453629'])[0]);h.append(th);});})();
 function drawGrid(){const tb=$('#grid tbody');tb.replaceChildren();
- const sum=el('tr','sum');sum.append(el('td',null,'Chairs'));FUNDS.forEach(f=>{const td=el('td',null,String(f.chairs));td.dataset.f=f.id;sum.append(td);});tb.append(sum);
+ const row=(lab,fn,cls)=>{const tr=el('tr','sum');tr.append(el('td',null,lab));FUNDS.forEach(f=>{const td=el('td',cls||null,fn(f));td.dataset.f=f.id;tr.append(td);});tb.append(tr);};
+ const hasT=FUNDS.every(f=>f.turnout&&f.turnout.enrolled);
+ row('Chairs voted',f=>String(f.turnout&&f.turnout.asof_utc>=(f.asof_utc||'')?f.turnout.voted:f.chairs));
+ if(hasT){row('Enrolled',f=>String(f.turnout.enrolled));row('Turnout',f=>Math.round(f.turnout.voted/f.turnout.enrolled*100)+'%','tu');}
  const anyB=t=>FUNDS.some(f=>f.status[t]==='backed');
  const rows=ALL?D.tokens:D.tokens.filter(r=>anyB(r.token));
  rows.forEach(r=>{const tr=el('tr');tr.append(el('td',null,r.token));FUNDS.forEach(f=>{const s=f.status[r.token];const td=el('td');td.dataset.f=f.id;

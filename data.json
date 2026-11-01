@@ -82,7 +82,13 @@
      }
     }
    ],
-   "asof_utc": "2026-11-01T11:32:00Z"
+   "asof_utc": "2026-11-01T11:32:00Z",
+   "turnout": {
+    "enrolled": 264,
+    "voted": 105,
+    "enrolled_weight": 39720,
+    "asof_utc": "2026-11-01T22:19:28Z"
+   }
   },
   {
    "id": "bogle",
@@ -155,7 +161,13 @@
      "backs": {}
     }
    ],
-   "asof_utc": "2026-11-01T11:33:00Z"
+   "asof_utc": "2026-11-01T11:33:00Z",
+   "turnout": {
+    "enrolled": 233,
+    "voted": 58,
+    "enrolled_weight": 33845,
+    "asof_utc": "2026-11-01T22:19:28Z"
+   }
   },
   {
    "id": "smaug",
@@ -247,7 +259,13 @@
      "backs": {}
     }
    ],
-   "asof_utc": "2026-11-01T11:34:00Z"
+   "asof_utc": "2026-11-01T11:34:00Z",
+   "turnout": {
+    "enrolled": 307,
+    "voted": 72,
+    "enrolled_weight": 41857,
+    "asof_utc": "2026-11-01T22:19:28Z"
+   }
   },
   {
    "id": "midas",
@@ -324,7 +342,13 @@
      "backs": {}
     }
    ],
-   "asof_utc": "2026-11-01T11:35:00Z"
+   "asof_utc": "2026-11-01T11:35:00Z",
+   "turnout": {
+    "enrolled": 257,
+    "voted": 80,
+    "enrolled_weight": 38425,
+    "asof_utc": "2026-11-01T22:19:28Z"
+   }
   },
   {
    "id": "vladd",
@@ -401,7 +425,13 @@
      "backs": {}
     }
    ],
-   "asof_utc": "2026-11-01T11:36:00Z"
+   "asof_utc": "2026-11-01T11:36:00Z",
+   "turnout": {
+    "enrolled": 293,
+    "voted": 101,
+    "enrolled_weight": 49614,
+    "asof_utc": "2026-11-01T22:19:28Z"
+   }
   }
  ],
  "market": [
@@ -987,9 +1017,21 @@
   {
    "term": "ETF net flow",
    "def": "Money put into a fund's shares minus money taken out on a given day. Negative means more was taken out than put in."
+  },
+  {
+   "term": "Enrolled Seats",
+   "def": "Seats signed up to vote in a fund this week. Only Seats enrolled before the week began can cast a card."
+  },
+  {
+   "term": "Turnout",
+   "def": "Chairs that have voted this week out of the fund's enrolled Seats, read from the Ballot and DividendOffice contracts on Robinhood Chain."
   }
  ],
  "updates": [
+  {
+   "date": "Nov 1",
+   "text": "New: turnout for every fund, read from public contracts on Robinhood Chain (5:19pm ET). ARGON 105 of 264 enrolled chairs have voted (40%), BOGLE 58 of 233 (25%), SMAUG 72 of 307 (23%), MIDAS 80 of 257 (31%), VLADD 101 of 293 (34%). 416 of 1,354 enrolled chairs overall (31%)."
+  },
   {
    "date": "Nov 1",
    "text": "New captures of all five funds (6:32 to 6:36am ET). ARGON's room now backs NVDA 7.07% (GLD dropped back to vetoed). MIDAS's room no longer backs USDG, MSTR or TSLA, so every room except ARGON's is all WETH for now. Chairs are up everywhere: ARGON 92, BOGLE 52, SMAUG 63, MIDAS 74, VLADD 97. All rows expanded, so every fill estimate is known. ETH and meme prices refreshed from CoinMarketCap (11:39 UTC); Binance has begun reopening withdrawals."
@@ -1026,5 +1068,14 @@
    "date": "Oct 30",
    "text": "First research pass for the SMAUG Week 2 ballot."
   }
- ]
+ ],
+ "chain": {
+  "asof_utc": "2026-11-01T22:19:28Z",
+  "block": 103725625,
+  "epoch": 2,
+  "source": "Robinhood Chain (public RPC): Ballot contract chairsVoted(fund, week); DividendOffice contract enrolledCount(fund)",
+  "ballot": "0xa1de85247d30eb67c83d010f9240ae81a8d744fe",
+  "dividend_office": "0xf658b4abdafc6c8d652742d563e9d9ab8b454475",
+  "url": "https://robinhoodchain.blockscout.com/address/0xa1de85247d30eb67c83d010f9240ae81a8d744fe"
+ }
 }
