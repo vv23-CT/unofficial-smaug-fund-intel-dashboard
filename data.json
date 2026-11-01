@@ -2,33 +2,32 @@
  "version": 2,
  "week": 2,
  "bell_utc": "2026-11-06T20:00:00Z",
- "updated_utc": "2026-10-31T13:03:00Z",
+ "updated_utc": "2026-11-01T11:45:00Z",
  "funds": [
   {
    "id": "argon",
    "name": "ARGON",
-   "asof": "Oct 31, 9:00am ET",
+   "asof": "Nov 1, 6:32am ET",
    "source": "ARGON ballot page, Match the room view (capture)",
    "url": "https://themutual.fun/ballot?fund=argon",
-   "chairs": 71,
+   "chairs": 92,
    "floor": 25,
-   "tmf_held": 0.3654,
-   "room_weth": 0.496,
+   "tmf_held": 0.3544,
+   "room_weth": 0.5693,
    "room_tokens": {
-    "NVDA": 0.0787,
-    "GLD": 0.0553
+    "NVDA": 0.0707
    },
    "status": {
     "MSTR": "vetoed",
     "META": "vetoed",
     "NVDA": "backed",
-    "COIN": "vetoed",
     "QQQ": "vetoed",
-    "RDDT": "vetoed",
+    "COIN": "vetoed",
     "TSLA": "vetoed",
     "GOOGL": "vetoed",
+    "RDDT": "vetoed",
     "USDG": "vetoed",
-    "GLD": "backed",
+    "GLD": "vetoed",
     "SGOV": "no_cards",
     "CASHCAT": "vetoed",
     "VIRTUAL": "vetoed",
@@ -41,24 +40,24 @@
    },
    "fills": {
     "SGOV": {
-     "n": 44,
-     "asof": "Oct 31, 9:00am ET"
+     "n": 43,
+     "asof": "Nov 1, 6:32am ET"
     },
     "MANCER": {
-     "n": 9,
-     "asof": "Oct 31, 9:00am ET"
+     "n": 8,
+     "asof": "Nov 1, 6:32am ET"
     },
     "STONKBROKER": {
-     "n": 27,
-     "asof": "Oct 31, 9:00am ET"
+     "n": 11,
+     "asof": "Nov 1, 6:32am ET"
     },
     "APE": {
-     "n": 115,
-     "asof": "Oct 31, 9:00am ET"
+     "n": 113,
+     "asof": "Nov 1, 6:32am ET"
     },
     "DERP": {
-     "n": 514,
-     "asof": "Oct 31, 9:00am ET"
+     "n": 506,
+     "asof": "Nov 1, 6:32am ET"
     }
    },
    "not_in_capture": [],
@@ -72,30 +71,39 @@
       "GLD": 0.0553
      },
      "asof_utc": "2026-10-31T13:00:00Z"
+    },
+    {
+     "asof": "Nov 1, 6:32am ET",
+     "asof_utc": "2026-11-01T11:32:00Z",
+     "chairs": 92,
+     "tmf_held": 0.3544,
+     "backs": {
+      "NVDA": 0.0707
+     }
     }
    ],
-   "asof_utc": "2026-10-31T13:00:00Z"
+   "asof_utc": "2026-11-01T11:32:00Z"
   },
   {
    "id": "bogle",
    "name": "BOGLE",
-   "asof": "Oct 31, 9:01am ET",
+   "asof": "Nov 1, 6:33am ET",
    "source": "BOGLE ballot page, Match the room view (capture)",
    "url": "https://themutual.fun/ballot?fund=bogle",
-   "chairs": 41,
+   "chairs": 52,
    "floor": 25,
-   "tmf_held": 0.3124,
-   "room_weth": 0.68,
+   "tmf_held": 0.3053,
+   "room_weth": 0.69,
    "room_tokens": {},
    "status": {
     "MSTR": "vetoed",
     "META": "vetoed",
     "NVDA": "vetoed",
-    "COIN": "vetoed",
     "QQQ": "vetoed",
-    "RDDT": "vetoed",
+    "COIN": "vetoed",
     "TSLA": "vetoed",
     "GOOGL": "vetoed",
+    "RDDT": "vetoed",
     "USDG": "vetoed",
     "GLD": "vetoed",
     "SGOV": "vetoed",
@@ -110,24 +118,24 @@
    },
    "fills": {
     "SGOV": {
-     "n": 41,
-     "asof": "Oct 31, 9:01am ET"
+     "n": 40,
+     "asof": "Nov 1, 6:33am ET"
     },
     "MANCER": {
      "n": 8,
-     "asof": "Oct 31, 9:01am ET"
+     "asof": "Nov 1, 6:33am ET"
     },
     "STONKBROKER": {
-     "n": 25,
-     "asof": "Oct 31, 9:01am ET"
+     "n": 10,
+     "asof": "Nov 1, 6:33am ET"
     },
     "APE": {
-     "n": 107,
-     "asof": "Oct 31, 9:01am ET"
+     "n": 105,
+     "asof": "Nov 1, 6:33am ET"
     },
     "DERP": {
-     "n": 475,
-     "asof": "Oct 31, 9:01am ET"
+     "n": 470,
+     "asof": "Nov 1, 6:33am ET"
     }
    },
    "not_in_capture": [],
@@ -138,26 +146,37 @@
      "tmf_held": 0.3124,
      "backs": {},
      "asof_utc": "2026-10-31T13:01:00Z"
+    },
+    {
+     "asof": "Nov 1, 6:33am ET",
+     "asof_utc": "2026-11-01T11:33:00Z",
+     "chairs": 52,
+     "tmf_held": 0.3053,
+     "backs": {}
     }
    ],
-   "asof_utc": "2026-10-31T13:01:00Z"
+   "asof_utc": "2026-11-01T11:33:00Z"
   },
   {
    "id": "smaug",
    "name": "SMAUG",
-   "asof": "Oct 31, 9:02am ET",
+   "asof": "Nov 1, 6:34am ET",
    "source": "SMAUG ballot page, Match the room view (capture)",
    "url": "https://themutual.fun/ballot?fund=smaug",
-   "chairs": 46,
+   "chairs": 63,
    "floor": 25,
-   "tmf_held": 0.358,
-   "room_weth": 0.64,
+   "tmf_held": 0.3465,
+   "room_weth": 0.65,
    "room_tokens": {},
    "status": {
     "MSTR": "vetoed",
     "META": "vetoed",
     "NVDA": "vetoed",
+    "QQQ": "vetoed",
     "COIN": "vetoed",
+    "TSLA": "vetoed",
+    "GOOGL": "vetoed",
+    "RDDT": "vetoed",
     "USDG": "vetoed",
     "GLD": "vetoed",
     "SGOV": "no_cards",
@@ -165,10 +184,6 @@
     "VIRTUAL": "vetoed",
     "PONS": "vetoed",
     "AI": "vetoed",
-    "QQQ": "vetoed",
-    "RDDT": "vetoed",
-    "TSLA": "vetoed",
-    "GOOGL": "vetoed",
     "MANCER": "vetoed",
     "STONKBROKER": "vetoed",
     "APE": "vetoed",
@@ -176,36 +191,27 @@
    },
    "fills": {
     "SGOV": {
-     "n": 44,
-     "asof": "Oct 31, 9:02am ET"
+     "n": 43,
+     "asof": "Nov 1, 6:34am ET"
     },
     "MANCER": {
-     "n": 9,
-     "asof": "Oct 31, 8:15am ET"
+     "n": 8,
+     "asof": "Nov 1, 6:34am ET"
     },
     "STONKBROKER": {
-     "n": 27,
-     "asof": "Oct 31, 8:15am ET"
+     "n": 11,
+     "asof": "Nov 1, 6:34am ET"
     },
     "APE": {
-     "n": 115,
-     "asof": "Oct 31, 8:15am ET"
+     "n": 112,
+     "asof": "Nov 1, 6:34am ET"
     },
     "DERP": {
-     "n": 512,
-     "asof": "Oct 31, 8:15am ET"
+     "n": 500,
+     "asof": "Nov 1, 6:34am ET"
     }
    },
-   "not_in_capture": [
-    "QQQ",
-    "RDDT",
-    "TSLA",
-    "GOOGL",
-    "MANCER",
-    "STONKBROKER",
-    "APE",
-    "DERP"
-   ],
+   "not_in_capture": [],
    "history": [
     {
      "asof": "Oct 30",
@@ -232,41 +238,44 @@
      "tmf_held": 0.358,
      "backs": {},
      "asof_utc": "2026-10-31T13:02:00Z"
+    },
+    {
+     "asof": "Nov 1, 6:34am ET",
+     "asof_utc": "2026-11-01T11:34:00Z",
+     "chairs": 63,
+     "tmf_held": 0.3465,
+     "backs": {}
     }
    ],
-   "asof_utc": "2026-10-31T13:02:00Z"
+   "asof_utc": "2026-11-01T11:34:00Z"
   },
   {
    "id": "midas",
    "name": "MIDAS",
-   "asof": "Oct 31, 9:02am ET",
+   "asof": "Nov 1, 6:35am ET",
    "source": "MIDAS ballot page, Match the room view (capture)",
    "url": "https://themutual.fun/ballot?fund=midas",
-   "chairs": 53,
+   "chairs": 74,
    "floor": 25,
-   "tmf_held": 0.345,
-   "room_weth": 0.4297,
-   "room_tokens": {
-    "MSTR": 0.0599,
-    "TSLA": 0.0401,
-    "USDG": 0.1203
-   },
+   "tmf_held": 0.3329,
+   "room_weth": 0.66,
+   "room_tokens": {},
    "status": {
-    "MSTR": "backed",
+    "MSTR": "vetoed",
     "META": "vetoed",
     "NVDA": "vetoed",
-    "TSLA": "backed",
-    "USDG": "backed",
+    "QQQ": "vetoed",
+    "COIN": "vetoed",
+    "TSLA": "vetoed",
+    "GOOGL": "vetoed",
+    "RDDT": "vetoed",
+    "USDG": "vetoed",
     "GLD": "vetoed",
     "SGOV": "vetoed",
     "CASHCAT": "vetoed",
     "VIRTUAL": "vetoed",
     "PONS": "vetoed",
     "AI": "vetoed",
-    "COIN": "vetoed",
-    "QQQ": "vetoed",
-    "RDDT": "vetoed",
-    "GOOGL": "vetoed",
     "MANCER": "vetoed",
     "STONKBROKER": "vetoed",
     "APE": "vetoed",
@@ -274,20 +283,27 @@
    },
    "fills": {
     "SGOV": {
-     "n": 43,
-     "asof": "Oct 31, 9:02am ET"
+     "n": 42,
+     "asof": "Nov 1, 6:35am ET"
+    },
+    "MANCER": {
+     "n": 8,
+     "asof": "Nov 1, 6:35am ET"
+    },
+    "STONKBROKER": {
+     "n": 10,
+     "asof": "Nov 1, 6:35am ET"
+    },
+    "APE": {
+     "n": 110,
+     "asof": "Nov 1, 6:35am ET"
+    },
+    "DERP": {
+     "n": 490,
+     "asof": "Nov 1, 6:35am ET"
     }
    },
-   "not_in_capture": [
-    "COIN",
-    "QQQ",
-    "RDDT",
-    "GOOGL",
-    "MANCER",
-    "STONKBROKER",
-    "APE",
-    "DERP"
-   ],
+   "not_in_capture": [],
    "history": [
     {
      "asof": "Oct 31, 9:02am ET",
@@ -299,58 +315,76 @@
       "USDG": 0.1203
      },
      "asof_utc": "2026-10-31T13:02:00Z"
+    },
+    {
+     "asof": "Nov 1, 6:35am ET",
+     "asof_utc": "2026-11-01T11:35:00Z",
+     "chairs": 74,
+     "tmf_held": 0.3329,
+     "backs": {}
     }
    ],
-   "asof_utc": "2026-10-31T13:02:00Z"
+   "asof_utc": "2026-11-01T11:35:00Z"
   },
   {
    "id": "vladd",
    "name": "VLADD",
-   "asof": "Oct 31, 9:03am ET",
+   "asof": "Nov 1, 6:36am ET",
    "source": "VLADD ballot page, Match the room view (capture)",
    "url": "https://themutual.fun/ballot?fund=vladd",
-   "chairs": 72,
+   "chairs": 97,
    "floor": 25,
-   "tmf_held": 0.4173,
-   "room_weth": 0.58,
+   "tmf_held": 0.4058,
+   "room_weth": 0.59,
    "room_tokens": {},
    "status": {
     "MSTR": "vetoed",
     "META": "vetoed",
     "NVDA": "vetoed",
+    "QQQ": "vetoed",
     "COIN": "vetoed",
+    "TSLA": "vetoed",
+    "GOOGL": "vetoed",
+    "RDDT": "vetoed",
     "USDG": "vetoed",
     "GLD": "vetoed",
     "SGOV": "vetoed",
     "CASHCAT": "vetoed",
-    "VIRTUAL": "no_cards",
+    "VIRTUAL": "vetoed",
     "PONS": "vetoed",
-    "AI": "no_cards",
-    "QQQ": "vetoed",
-    "RDDT": "vetoed",
-    "TSLA": "vetoed",
-    "GOOGL": "vetoed",
+    "AI": "vetoed",
     "MANCER": "vetoed",
     "STONKBROKER": "vetoed",
     "APE": "vetoed",
     "DERP": "no_cards"
    },
    "fills": {
+    "RDDT": {
+     "n": 8,
+     "asof": "Nov 1, 6:36am ET"
+    },
     "SGOV": {
-     "n": 48,
-     "asof": "Oct 31, 9:03am ET"
+     "n": 47,
+     "asof": "Nov 1, 6:36am ET"
+    },
+    "MANCER": {
+     "n": 9,
+     "asof": "Nov 1, 6:36am ET"
+    },
+    "STONKBROKER": {
+     "n": 12,
+     "asof": "Nov 1, 6:36am ET"
+    },
+    "APE": {
+     "n": 123,
+     "asof": "Nov 1, 6:36am ET"
+    },
+    "DERP": {
+     "n": 550,
+     "asof": "Nov 1, 6:36am ET"
     }
    },
-   "not_in_capture": [
-    "QQQ",
-    "RDDT",
-    "TSLA",
-    "GOOGL",
-    "MANCER",
-    "STONKBROKER",
-    "APE",
-    "DERP"
-   ],
+   "not_in_capture": [],
    "history": [
     {
      "asof": "Oct 31, 9:03am ET",
@@ -358,47 +392,54 @@
      "tmf_held": 0.4173,
      "backs": {},
      "asof_utc": "2026-10-31T13:03:00Z"
+    },
+    {
+     "asof": "Nov 1, 6:36am ET",
+     "asof_utc": "2026-11-01T11:36:00Z",
+     "chairs": 97,
+     "tmf_held": 0.4058,
+     "backs": {}
     }
    ],
-   "asof_utc": "2026-10-31T13:03:00Z"
+   "asof_utc": "2026-11-01T11:36:00Z"
   }
  ],
  "market": [
   {
    "id": "eth",
    "label": "ETH price",
-   "value": 2245.1,
+   "value": 2264.87,
    "fmt": "usd",
-   "asof": "Oct 31, 12:15 UTC",
+   "asof": "Nov 1, 11:39 UTC",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/ethereum/"
   },
   {
    "id": "eth_1w",
    "label": "ETH, last 7 days",
-   "value": -0.0493,
+   "value": -0.0271,
    "fmt": "pct",
-   "asof": "Oct 31, 12:15 UTC",
+   "asof": "Nov 1, 11:39 UTC",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/ethereum/"
   },
   {
    "id": "eth_etf",
-   "label": "Spot ETH ETF flow, Oct 29",
-   "value": -105.5,
+   "label": "Spot ETH ETF flow, Oct 30",
+   "value": -155.85,
    "fmt": "usdM",
    "asof": "Oct 30",
-   "source": "KuCoin News (SoSoValue data)",
-   "url": "https://kucoin.com/news/flash/bitcoin-etfs-see-17m-inflows-ethereum-etfs-lose-105m-on-october-29"
+   "source": "Bloomingbit (SoSoValue data)",
+   "url": "https://en.bloomingbit.io/feed/news/123346"
   },
   {
    "id": "btc",
    "label": "BTC price",
-   "value": 77445.96,
+   "value": 77949.51,
    "fmt": "usd0",
-   "asof": "Oct 30",
-   "source": "CNBC",
-   "url": "https://www.cnbc.com/2026/10/30/bitcoin-ether-price-binance-security-scare-rattles-crypto-markets.html"
+   "asof": "Nov 1, 10:38 UTC",
+   "source": "CoinMarketCap",
+   "url": "https://coinmarketcap.com/currencies/bitcoin/"
   },
   {
    "id": "nasdaq",
@@ -423,7 +464,7 @@
    "label": "Fear & Greed (CMC)",
    "value": 36,
    "fmt": "int",
-   "asof": "Oct 31 (46 a week ago)",
+   "asof": "Nov 1 (43 a week ago)",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/charts/fear-and-greed-index/"
   },
@@ -440,9 +481,9 @@
  "news": [
   {
    "head": "ETF outflows",
-   "text": "Spot ETH ETFs had net outflows four days in a row through Oct 29, including −$105.5M on Oct 29.",
-   "source": "KuCoin News (SoSoValue data), Oct 30",
-   "url": "https://kucoin.com/news/flash/bitcoin-etfs-see-17m-inflows-ethereum-etfs-lose-105m-on-october-29"
+   "text": "Spot ETH ETFs had net outflows of −$155.85M on Oct 30, a fifth straight day of outflows and the biggest daily outflow since Oct 7. BlackRock's ETHA had the largest outflow ($76.64M).",
+   "source": "Bloomingbit (SoSoValue data), Oct 30",
+   "url": "https://en.bloomingbit.io/feed/news/123346"
   },
   {
    "head": "Large holders",
@@ -452,9 +493,9 @@
   },
   {
    "head": "Binance hack",
-   "text": "About $6.3B was stolen from Binance on Oct 29. About $3B has been frozen, Binance says it will cover all losses, and it expects to resume withdrawals within 48 hours.",
-   "source": "CNBC, Oct 30",
-   "url": "https://www.cnbc.com/2026/10/30/bitcoin-ether-price-binance-security-scare-rattles-crypto-markets.html"
+   "text": "About $6.3B was stolen from Binance on Oct 29. On Nov 1 Binance began reopening withdrawals in phases, starting with bitcoin, then ETH, USDT, USDC, BNB and XRP. It says it has covered about 95% of the affected amount from its own funds and that users won't bear the losses; about $3B is frozen.",
+   "source": "CoinDesk, Nov 1",
+   "url": "https://www.coindesk.com/markets/2026/11/01/binance-opens-crypto-withdrawals-in-phases-starting-with-bitcoin-following-usd6-3-billion-hack"
   },
   {
    "head": "The Fed",
@@ -479,13 +520,13 @@
   {
    "token": "USDG",
    "group": "Stable",
-   "price": "$0.99970 (CMC, Oct 31). Market cap $2.98B",
+   "price": "$0.99967 (CMC, Nov 1). Market cap $2.93B",
    "news": "Issued by Paxos.",
    "fee": 0.003,
-   "onchain": "0.000446 WETH",
+   "onchain": "0.000441 WETH",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/global-dollar-usdg/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "SGOV",
@@ -493,10 +534,10 @@
    "price": "No outside price checked yet; ballot price only.",
    "news": "—",
    "fee": 0.01,
-   "onchain": "0.044872 WETH",
+   "onchain": "0.04502 WETH",
    "source": "SMAUG ballot page (screenshot)",
    "url": "https://themutual.fun/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "GLD",
@@ -504,10 +545,10 @@
    "price": "Gold Dec futures (GLD tracks gold): $3,884.90, −3.6% on Oct 30, a 51-week low.",
    "news": "—",
    "fee": 0.01,
-   "onchain": "0.159676 WETH",
+   "onchain": "0.157378 WETH",
    "source": "Trading Economics",
    "url": "https://tradingeconomics.com/commodity/gold",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "QQQ",
@@ -515,10 +556,10 @@
    "price": "Nasdaq-100 index (QQQ tracks it): −3.5% on Oct 30 to 28,384.85. Nasdaq Composite −5.2% in October.",
    "news": "—",
    "fee": 0.003,
-   "onchain": "0.309641 WETH",
+   "onchain": "0.306683 WETH",
    "source": "investingLive",
    "url": "https://investinglive.com/stocks/nasdaq-suffers-worst-month-since-march-2025-as-technology-stocks-tumble/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "NVDA",
@@ -526,10 +567,10 @@
    "price": "$204.64, −4.2% on Oct 30; −11.4% in October",
    "news": "Next earnings Nov 17 per Earnings Whispers (other calendars list Nov 18).",
    "fee": 0.003,
-   "onchain": "0.090756 WETH",
+   "onchain": "0.090276 WETH",
    "source": "Trading Economics / Earnings Whispers",
    "url": "https://tradingeconomics.com/united-states/stock-market",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "TSLA",
@@ -537,10 +578,10 @@
    "price": "$399.82, −0.9% on Oct 30; +12.9% in October",
    "news": "—",
    "fee": 0.003,
-   "onchain": "0.178188 WETH",
+   "onchain": "0.176345 WETH",
    "source": "Trading Economics",
    "url": "https://tradingeconomics.com/united-states/stock-market",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "META",
@@ -548,10 +589,10 @@
    "price": "$614.87, −1.6% on Oct 30; −15.3% in October",
    "news": "—",
    "fee": 0.003,
-   "onchain": "0.273642 WETH",
+   "onchain": "0.271136 WETH",
    "source": "Trading Economics",
    "url": "https://tradingeconomics.com/united-states/stock-market",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "GOOGL",
@@ -562,7 +603,7 @@
    "onchain": "0.125544 WETH",
    "source": "Trading Economics",
    "url": "https://tradingeconomics.com/united-states/stock-market",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "RDDT",
@@ -570,10 +611,10 @@
    "price": "About $90–92 on Oct 30, −29%, a 52-week low",
    "news": "Q3 revenue $895M (+53% y/y). Q4 guidance $1.00–1.03B vs $1.05B expected.",
    "fee": 0.01,
-   "onchain": "0.041129 WETH",
+   "onchain": "0.041014 WETH",
    "source": "24/7 Wall St",
    "url": "https://247wallst.com/investing/2026/10/30/reddit-plunges-25-as-search-traffic-slump-and-soft-outlook-overshadow-earnings-beat-snap-falls-5-pinterest-drops-4-meta-dips/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "COIN",
@@ -581,10 +622,10 @@
    "price": "About $142.50–143.54 on Oct 30, −11% (closed $160.59 on Oct 29)",
    "news": "Q3 revenue $1.16B vs $1.21B expected. Price targets cut: Barclays to $120, Wells Fargo to $174.",
    "fee": 0.003,
-   "onchain": "0.064896 WETH",
+   "onchain": "0.064599 WETH",
    "source": "24/7 Wall St",
    "url": "https://247wallst.com/investing/2026/10/30/coinbase-tumbles-11-as-record-binance-hack-hits-crypto-and-trading-revenue-slides-strategy-sinks-12-robinhood-plunges-10-circle-drops-9/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "MSTR",
@@ -592,65 +633,65 @@
    "price": "About $125.25–130.51 on Oct 30, −8% to −12%",
    "news": "Holds 848,517 BTC (company, Q3 results).",
    "fee": 0.01,
-   "onchain": "0.058962 WETH",
+   "onchain": "0.059015 WETH",
    "source": "24/7 Wall St",
    "url": "https://247wallst.com/investing/2026/10/30/coinbase-tumbles-11-as-record-binance-hack-hits-crypto-and-trading-revenue-slides-strategy-sinks-12-robinhood-plunges-10-circle-drops-9/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "PONS",
    "group": "Meme",
-   "price": "$0.2260 (CMC, Oct 31). 24h -4.1%, 7d -0.6%, 30d -58.9%. Market cap $151.8M",
-   "news": "Since launch (Jul 13, 2026): 3.84M swaps, 889,738 WETH volume, 156,620 traders; 12 tokens claim the PONS ticker, this is the most traded (RobinX, Oct 31). ~102.7K holders; top 10 wallets hold 55.5% (CMC holder data).",
+   "price": "$0.2453 (CMC, Nov 1). 24h +8.0%, 7d +7.5%, 30d -53.7%. Market cap $164.7M",
+   "news": "Since launch (Jul 13, 2026): 3.85M swaps, 890,693 WETH volume, 156,715 traders; 12 tokens claim the PONS ticker, this is the most traded (RobinX, Nov 1). ~102.7K holders; top 10 wallets hold 55.5% (CMC holder data).",
    "fee": 0.003,
-   "onchain": "0.000101 WETH",
+   "onchain": "0.000108 WETH",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/pons/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "CASHCAT",
    "group": "Meme",
-   "price": "$0.0931 (CMC, Oct 31). 24h +1.4%, 7d 0.0%, 30d -46.0%. Market cap $93.1M",
-   "news": "Since launch: 5.38M swaps, 1,157,200 WETH volume, 122,274 traders; 12 tokens claim the CASHCAT ticker, this is the most traded. Contract has no owner, mint, pause or blacklist functions (RobinX, Oct 31). ~111K holders; top 10 wallets hold 37.1% (CMC holder data).",
+   "price": "$0.0954 (CMC, Nov 1). 24h +4.3%, 7d +4.1%, 30d -45.7%. Market cap $95.4M",
+   "news": "Since launch: 5.39M swaps, 1,157,884 WETH volume, 122,451 traders; FDV $94.8M (Nov 1, 11:21 UTC); 12 tokens claim the CASHCAT ticker, this is the most traded. Contract has no owner, mint, pause or blacklist functions (RobinX, Nov 1). ~111K holders; top 10 wallets hold 37.1% (CMC holder data).",
    "fee": 0.003,
-   "onchain": "40.7728 WETH per 1M",
+   "onchain": "41.7339 WETH per 1M",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/cash-cat/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "VIRTUAL",
    "group": "Meme",
-   "price": "$0.5795 (CMC, Oct 31). 24h -1.2%, 7d -7.6%, 30d -27.6%. Market cap $381.9M",
-   "news": "Bridged token. On Robinhood Chain since Aug 3, 2026: 2.61M swaps, 266,795 WETH volume, 120,961 traders; 12 tokens claim the VIRTUAL ticker, this is the most traded (RobinX, Oct 31).",
+   "price": "$0.5951 (CMC, Nov 1). 24h +2.8%, 7d -3.0%, 30d -26.7%. Market cap $392.2M",
+   "news": "Bridged token. On Robinhood Chain since Aug 3, 2026: 2.62M swaps, 267,034 WETH volume, 121,203 traders; 12 tokens claim the VIRTUAL ticker, this is the most traded (RobinX, Nov 1).",
    "fee": 0.003,
-   "onchain": "0.000258 WETH",
+   "onchain": "0.000263 WETH",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/virtual-protocol/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "AI",
    "group": "Meme",
-   "price": "$0.0614 (CMC, Oct 31). 24h -2.6%, 7d +14.6%, 30d -61.8%. Market cap $61.4M",
-   "news": "Since launch (Jul 31, 2026): 2.18M swaps, 400,688 WETH volume, 106,176 traders; 12 tokens claim the AI ticker, this is the most traded (RobinX, Oct 31).",
+   "price": "$0.0661 (CMC, Nov 1). 24h +7.5%, 7d +17.6%, 30d -57.8%. Market cap $66.1M",
+   "news": "Since launch (Jul 31, 2026): 2.19M swaps, 401,056 WETH volume, 106,402 traders; FDV $65.9M (Nov 1, 11:21 UTC); 12 tokens claim the AI ticker, this is the most traded (RobinX, Nov 1).",
    "fee": 0.01,
-   "onchain": "27.3834 WETH per 1M",
+   "onchain": "29.3893 WETH per 1M",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/artificial-inu-ai/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "MANCER",
    "group": "Meme",
-   "price": "$0.001656 (CMC, Oct 31). 24h +7.5%, 7d +15.4%, 30d -19.9%. Market cap $1.5M",
-   "news": "Since launch (Aug 7, 2026): 168,167 swaps, 20,520 WETH volume, 19,837 traders; 12 tokens claim the MANCER ticker, this is the most traded (RobinX, Oct 31). Launched Books with Clutch Markets and an iOS beta around Oct 29–30 (@MancerXYZ on X).",
+   "price": "$0.001770 (CMC, Nov 1). 24h +6.9%, 7d +44.6%, 30d -20.2%. Market cap $1.6M",
+   "news": "Since launch (Aug 7, 2026): 168,486 swaps, 20,535 WETH volume, 19,889 traders; FDV $4.42M (Nov 1, 11:21 UTC); 12 tokens claim the MANCER ticker, this is the most traded (RobinX, Nov 1). Launched Books with Clutch Markets and an iOS beta around Oct 29–30 (@MancerXYZ on X).",
    "fee": 0.01,
-   "onchain": "0.7395 WETH per 1M",
+   "onchain": "0.7808 WETH per 1M",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/mancer/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "STONKBROKER",
@@ -658,10 +699,10 @@
    "price": "On-chain price from ballot only",
    "news": "—",
    "fee": 0.01,
-   "onchain": "2.9375 WETH per 1M",
+   "onchain": "3.1799 WETH per 1M",
    "source": "SMAUG ballot page (screenshot)",
    "url": "https://themutual.fun/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "APE",
@@ -672,7 +713,7 @@
    "onchain": "53.3089 WETH per 1M",
    "source": "SMAUG ballot page (screenshot)",
    "url": "https://themutual.fun/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   },
   {
    "token": "DERP",
@@ -680,37 +721,13 @@
    "price": "On-chain price from ballot only",
    "news": "—",
    "fee": 0.01,
-   "onchain": "0.0091 WETH per 1M",
+   "onchain": "0.009 WETH per 1M",
    "source": "SMAUG ballot page (screenshot)",
    "url": "https://themutual.fun/",
-   "onchain_asof": "Oct 31, 9:00am ET"
+   "onchain_asof": "Nov 1, 6:32am ET"
   }
  ],
  "events": [
-  {
-   "id": "e1",
-   "date": "2026-10-31",
-   "when_utc": "Sat Oct 31–Sun Nov 1",
-   "when_et": "Weekend",
-   "event": "Binance aims to resume withdrawals",
-   "tokens": "ETH, COIN, all memes",
-   "source": "CNBC",
-   "url": "https://www.cnbc.com/2026/10/30/bitcoin-ether-price-binance-security-scare-rattles-crypto-markets.html",
-   "short": "Binance withdrawals back",
-   "key": false
-  },
-  {
-   "id": "e2",
-   "date": "2026-11-01",
-   "when_utc": "Sun Nov 1",
-   "when_et": "2am ET",
-   "event": "US clocks fall back, so the bell moves to 3pm ET",
-   "tokens": "Bell timing",
-   "source": "themutual.fun",
-   "url": "https://themutual.fun/",
-   "short": "Clocks fall back",
-   "key": false
-  },
   {
    "id": "e3",
    "date": "2026-11-01",
@@ -721,6 +738,42 @@
    "source": "SEC 8-K",
    "url": "https://www.sec.gov/Archives/edgar/data/0001050446/000105044626000047/mstr-20261029x8kxex9912.htm",
    "short": "STRC daily dividends",
+   "key": false
+  },
+  {
+   "id": "e11",
+   "date": "2026-11-02",
+   "when_utc": "Mon Nov 2",
+   "when_et": "Time not confirmed",
+   "event": "ISM Manufacturing PMI (October)",
+   "tokens": "ETH, QQQ, SGOV",
+   "source": "Newsquawk",
+   "url": "https://www.newsquawk.com/headlines/week-in-focus-2nd-6th-november-2026-highlights-include-us-midterm-election-nfp-ism-pmis-rba-boe-and-ez-cpi-",
+   "short": "ISM mfg Mon",
+   "key": false
+  },
+  {
+   "id": "e12",
+   "date": "2026-11-02",
+   "when_utc": "Mon Nov 2, after close",
+   "when_et": "After close (call 5:00pm ET)",
+   "event": "Apple and Palantir Q3 earnings",
+   "tokens": "QQQ",
+   "source": "StockTitan",
+   "url": "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-2-2026",
+   "short": "Apple earnings Mon",
+   "key": false
+  },
+  {
+   "id": "e13",
+   "date": "2026-11-03",
+   "when_utc": "Tue Nov 3, after close",
+   "when_et": "After close (call 5:00pm ET)",
+   "event": "AMD Q3 earnings",
+   "tokens": "QQQ, NVDA",
+   "source": "StockTitan",
+   "url": "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-2-2026",
+   "short": "AMD earnings Tue",
    "key": false
   },
   {
@@ -745,6 +798,18 @@
    "source": "Capp Notes",
    "url": "https://cappnotes.substack.com/p/closing-look-friday-october-30-2026",
    "short": "JOLTS Tue",
+   "key": false
+  },
+  {
+   "id": "e14",
+   "date": "2026-11-04",
+   "when_utc": "Wed Nov 4",
+   "when_et": "Time not confirmed",
+   "event": "ISM Services PMI (October) and Treasury quarterly refunding announcement",
+   "tokens": "ETH, QQQ, SGOV",
+   "source": "Newsquawk",
+   "url": "https://www.newsquawk.com/headlines/week-in-focus-2nd-6th-november-2026-highlights-include-us-midterm-election-nfp-ism-pmis-rba-boe-and-ez-cpi-",
+   "short": "ISM services Wed",
    "key": false
   },
   {
@@ -914,9 +979,25 @@
   {
    "term": "This week so far",
    "def": "A fund's timeline for the week: one point per ballot capture, showing chairs, what the room backs and $TMF held."
+  },
+  {
+   "term": "ISM PMI",
+   "def": "Monthly survey indexes of US manufacturing and services activity from the Institute for Supply Management. Above 50 means activity grew that month."
+  },
+  {
+   "term": "ETF net flow",
+   "def": "Money put into a fund's shares minus money taken out on a given day. Negative means more was taken out than put in."
   }
  ],
  "updates": [
+  {
+   "date": "Nov 1",
+   "text": "New captures of all five funds (6:32 to 6:36am ET). ARGON's room now backs NVDA 7.07% (GLD dropped back to vetoed). MIDAS's room no longer backs USDG, MSTR or TSLA, so every room except ARGON's is all WETH for now. Chairs are up everywhere: ARGON 92, BOGLE 52, SMAUG 63, MIDAS 74, VLADD 97. All rows expanded, so every fill estimate is known. ETH and meme prices refreshed from CoinMarketCap (11:39 UTC); Binance has begun reopening withdrawals."
+  },
+  {
+   "date": "Nov 1",
+   "text": "Daily refresh (no new ballot captures; all five funds' rooms unchanged from Oct 31, 9:00–9:03am ET; ARGON's room backs NVDA and GLD, MIDAS's backs USDG, MSTR and TSLA). ETH, BTC, USDG, meme prices and Fear & Greed refreshed from CoinMarketCap (Nov 1, 10:38 UTC). ETH ETF flow updated to Oct 30 (−$155.85M). Binance news updated: withdrawals reopening in phases from Nov 1. Events: past items removed; ISM PMIs, Apple/Palantir and AMD earnings added. RobinX lifetime trading facts refreshed for PONS, CASHCAT, VIRTUAL, AI and MANCER (Nov 1). Stock closes unchanged (no trading since Oct 30)."
+  },
   {
    "date": "Oct 31",
    "text": "New compact layout: a pinned fund selector, one summary card per fund, and four tabs (This week, Tokens, All funds, More) instead of one long page. Each fund now shows in its own color, and every time is shown in your own time zone."
