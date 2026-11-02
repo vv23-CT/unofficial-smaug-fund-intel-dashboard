@@ -199,6 +199,7 @@ html,body{height:100%;overflow:hidden}
 
 .hd .sub .nxt{flex-basis:100%}
 .hd .sub .nxt::before{content:'↻ ';}
+#evs small.res{display:block;color:var(--fg);font-weight:600}
 /* turnout, read from the chain */
 .oc{color:var(--muted);font-size:11px}
 #wkList small.oc{display:block}
@@ -319,7 +320,7 @@ const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=nu
 const link=(t,u)=>{if(!/^https:\/\//.test(u||''))return document.createTextNode(t);const a=el('a',null,t);a.href=u;a.target='_blank';a.rel='noopener';return a;};
 const nf=d=>new Intl.NumberFormat('en-US',{maximumFractionDigits:d,minimumFractionDigits:d});
 const P=v=>nf(2).format(v*100).replace(/\.?0+$/,'')+'%';
-const F={usd:v=>'$'+nf(2).format(v),usd0:v=>'$'+nf(0).format(v),pct:v=>(v>0?'+':v<0?'−':'')+nf(1).format(Math.abs(v*100))+'%',usdM:v=>(v<0?'−':'+')+'$'+nf(1).format(Math.abs(v))+'M',usdB:v=>'$'+nf(1).format(v)+'B',int:v=>nf(0).format(v)};
+const F={usd:v=>'$'+nf(2).format(v),usd0:v=>'$'+nf(0).format(v),pct:v=>(v>0?'+':v<0?'−':'')+nf(1).format(Math.abs(v*100))+'%',usdM:v=>(v<0?'−':'+')+'$'+nf(1).format(Math.abs(v))+'M',usdB:v=>'$'+nf(1).format(v)+'B',int:v=>nf(0).format(v),txt:v=>String(v)};
 const FUNDS=D.funds,FI=Object.fromEntries(FUNDS.map(f=>[f.id,f])),COL=['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c6)'];
 const backed=f=>Object.entries(f.room_tokens).sort((a,b)=>b[1]-a[1]);
 const HOUSE={argon:['#49698C','#fff','Noble, inert, and unmoved by the news.'],bogle:['#4E8A5A','#fff','Buys the whole haystack.'],smaug:['#9C5248','#fff','Sleeps on the pile and knows every coin in it.'],midas:['#B9902F','#211B14','Everything it touches, marked to gold.'],vladd:['#6E5D8C','#fff','Buys when there is blood in the streets.']};
@@ -439,11 +440,15 @@ $('#gToggle').addEventListener('click',()=>{ALL=!ALL;drawGrid();});
 const u=D.updates[0];$('#chgDate').textContent=u.date;$('#chg').textContent=u.text;
 const M=id=>D.market.find(r=>r.id===id);
 $('#mktSum').textContent='ETH '+F.usd0(M('eth').value)+' · '+F.pct(M('eth_1w').value)+' 7d';
-D.market.forEach(r=>{const t=el('div','tile');t.append(el('div','l',r.label));const v=el('div','v',(F[r.fmt]||F.int)(Number(r.value)));if(r.fmt==='pct'||r.fmt==='usdM')v.classList.add(r.value<0?'down':'up');t.append(v);const s=el('div','s');s.append(r.asof+' · ',link(r.source,r.url));t.append(s);$('#tiles').append(t);});
+D.market.forEach(r=>{const t=el('div','tile');t.append(el('div','l',r.label));const v=el('div','v',r.fmt==='txt'?String(r.value):(F[r.fmt]||F.int)(Number(r.value)));if(r.fmt==='pct'||r.fmt==='usdM')v.classList.add(r.value<0?'down':'up');t.append(v);const s=el('div','s');s.append(r.asof+' · ',link(r.source,r.url));t.append(s);$('#tiles').append(t);});
 $('#newsSum').textContent=D.news.length+' items';
 D.news.forEach(n=>{$('#news').append(el('dt',null,n.head));const dd=el('dd',null,n.text+' ');const s=el('span','note');s.append('(',link(n.source,n.url),')');dd.append(s);$('#news').append(dd);});
 const today=new Date().toISOString().slice(0,10);const up=D.events.filter(e=>e.date>=today);$('#evSum').textContent=(up.find(e=>e.key&&!/Bell/.test(e.short))||{}).short||'';
-up.forEach(r=>{const e=el('div','ev'+(r.key?' key':''));const w=el('b',null,r.when_utc.split(',')[0]);w.append(el('small',null,r.when_et));const t=el('div','what',r.event);const s=el('small');s.append(link(r.source,r.url));t.append(s);e.append(w,t);$('#evs').append(e);});
+up.forEach(r=>{const e=el('div','ev'+(r.key?' key':''));const w=el('b',null,r.when_utc.split(',')[0]);w.append(el('small',null,r.when_et));const t=el('div','what',r.event);const E=D.econ||{};
+  /* once BLS has published, show the result on the event itself */
+  if(/jobs report/i.test(r.event)&&E.jobs&&E.jobs.release_date===r.date)t.append(el('small','res','Result: '+(E.jobs.payrolls_change>0?'+':'')+E.jobs.payrolls_change.toLocaleString()+' jobs, unemployment '+E.jobs.unemployment_rate+'% (BLS)'));
+  if(/\bCPI\b/.test(r.event)&&E.cpi&&E.cpi.release_date===r.date)t.append(el('small','res','Result: CPI '+(E.cpi.cpi_mm>0?'+':'')+E.cpi.cpi_mm+'% m/m, '+E.cpi.cpi_yy+'% y/y'+(E.cpi.core_mm!=null?'; core '+(E.cpi.core_mm>0?'+':'')+E.cpi.core_mm+'% m/m':'')+' (BLS)'));
+  const s=el('small');s.append(link(r.source,r.url));t.append(s);e.append(w,t);$('#evs').append(e);});
 D.rules.forEach(r=>$('#rules').append(el('dt',null,r.rule),el('dd',null,r.text)));
 D.glossary.forEach(g=>$('#gloss').append(el('dt',null,g.term),el('dd',null,g.def)));
 
@@ -479,6 +484,15 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
       const cap=(f.history||[]).filter(s=>!s.chain);const undated=cap.filter(s=>!s.asof_utc),dated=cap.filter(s=>s.asof_utc).concat(ch).sort((a,b)=>a.asof_utc<b.asof_utc?-1:1);
       f.history=undated.concat(dated);}});}
    return d;}))
+ /* official jobs and CPI numbers from BLS (written by the GitHub reader on release days) */
+ .then(d=>(window.__ECON__?Promise.resolve(window.__ECON__):fetch('econ.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)).then(E=>{d.econ=E||{};
+   const mo=p=>p?new Date(Date.UTC(+p.slice(0,4),+p.slice(6)-1,1)).toLocaleString(undefined,{month:'short',timeZone:'UTC'}):'';
+   const sg=v=>(v>0?'+':v<0?'−':'')+Math.abs(v).toLocaleString(undefined,{maximumFractionDigits:1});
+   const day=s=>s?new Date(s+'T12:00:00Z').toLocaleDateString(undefined,{month:'short',day:'numeric',timeZone:'UTC'}):'';
+   const J=d.econ.jobs,C=d.econ.cpi,tiles=[];
+   if(J)tiles.push({id:'bls_jobs',label:'Jobs added, '+mo(J.period)+(J.preliminary?' (prelim.)':''),value:sg(J.payrolls_change),fmt:'txt',asof:(J.release_date?'Released '+day(J.release_date)+' · ':'')+'unemployment '+J.unemployment_rate+'%',source:'BLS',url:J.url});
+   if(C)tiles.push({id:'bls_cpi',label:'CPI, '+mo(C.period),value:sg(C.cpi_mm)+'% m/m · '+C.cpi_yy+'% y/y',fmt:'txt',asof:(C.release_date?'Released '+day(C.release_date)+' · ':'')+(C.core_mm!=null?'core '+sg(C.core_mm)+'% m/m':''),source:'BLS',url:C.url});
+   d.market=(d.market||[]).filter(r=>!/^bls_/.test(r.id)).concat(tiles);return d;}))
  .then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
 
 </script>
