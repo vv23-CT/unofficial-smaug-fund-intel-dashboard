@@ -1,6 +1,6 @@
 {
- "asof_utc": "2026-11-02T10:55:16Z",
- "block": 104161297,
+ "asof_utc": "2026-11-02T12:16:57Z",
+ "block": 104208429,
  "epoch": 2,
  "closes_utc": "2026-11-06T20:00:00.000Z",
  "week_start_block": 101990391,
@@ -10,28 +10,28 @@
  "dividend_office": "0xf658b4abdafc6c8d652742d563e9d9ab8b454475",
  "desk": "0xca50244f9135ed70add8d3cbd50ef6f6a76ba654",
  "method": "Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.",
- "cards_read": 348,
+ "cards_read": 355,
  "cards_undecoded": 0,
  "prices": {
-  "COIN": 0.0621589,
-  "MSTR": 0.0589917,
-  "META": 0.269164,
+  "COIN": 0.0620471,
+  "MSTR": 0.0586916,
+  "META": 0.268653,
   "SGOV": 0.0446347,
   "GOOGL": 0.12396,
-  "QQQ": 0.304452,
-  "NVDA": 0.0907379,
-  "GLD": 0.155999,
-  "TSLA": 0.17638,
-  "RDDT": 0.0408258,
-  "STONKBROKER": 0.00000300942,
-  "MANCER": 7.28125e-7,
+  "QQQ": 0.304787,
+  "NVDA": 0.0907833,
+  "GLD": 0.155983,
+  "TSLA": 0.176592,
+  "RDDT": 0.0406629,
+  "STONKBROKER": 0.00000301785,
+  "MANCER": 7.46482e-7,
   "DERP": 9.02223e-9,
   "APE": 0.0000533089,
-  "PONS": 0.000100391,
-  "CASHCAT": 0.0000438473,
-  "USDG": 0.000436939,
-  "AI": 0.000027864,
-  "VIRTUAL": 0.000256987
+  "PONS": 0.000100934,
+  "CASHCAT": 0.0000435371,
+  "USDG": 0.000437552,
+  "AI": 0.000027584,
+  "VIRTUAL": 0.000257012
  },
  "funds": {
   "argon": {
@@ -40,8 +40,8 @@
    "enrolled_weight": 40020,
    "room": {
     "chairs": 112,
-    "tmf_held": 0.3298,
-    "room_weth": 0.5986,
+    "tmf_held": 0.328,
+    "room_weth": 0.6004,
     "room_tokens": {
      "NVDA": 0.0716
     },
@@ -83,9 +83,9 @@
      }
     },
     {
-     "asof_utc": "2026-11-02T10:55:16Z",
+     "asof_utc": "2026-11-02T12:16:57Z",
      "chairs": 112,
-     "tmf_held": 0.3298,
+     "tmf_held": 0.328,
      "backs": {
       "NVDA": 0.0716
      }
@@ -94,12 +94,12 @@
   },
   "bogle": {
    "enrolled": 235,
-   "voted": 62,
+   "voted": 66,
    "enrolled_weight": 34045,
    "room": {
-    "chairs": 62,
-    "tmf_held": 0.2825,
-    "room_weth": 0.7175,
+    "chairs": 66,
+    "tmf_held": 0.2808,
+    "room_weth": 0.7192,
     "room_tokens": {},
     "status": {
      "COIN": "vetoed",
@@ -131,21 +131,21 @@
      "backs": {}
     },
     {
-     "asof_utc": "2026-11-02T10:55:16Z",
-     "chairs": 62,
-     "tmf_held": 0.2825,
+     "asof_utc": "2026-11-02T12:16:57Z",
+     "chairs": 66,
+     "tmf_held": 0.2808,
      "backs": {}
     }
    ]
   },
   "smaug": {
    "enrolled": 308,
-   "voted": 79,
+   "voted": 81,
    "enrolled_weight": 41957,
    "room": {
-    "chairs": 79,
-    "tmf_held": 0.3215,
-    "room_weth": 0.6785,
+    "chairs": 81,
+    "tmf_held": 0.3196,
+    "room_weth": 0.6804,
     "room_tokens": {},
     "status": {
      "COIN": "vetoed",
@@ -177,21 +177,21 @@
      "backs": {}
     },
     {
-     "asof_utc": "2026-11-02T10:55:16Z",
-     "chairs": 79,
-     "tmf_held": 0.3215,
+     "asof_utc": "2026-11-02T12:16:57Z",
+     "chairs": 81,
+     "tmf_held": 0.3196,
      "backs": {}
     }
    ]
   },
   "midas": {
    "enrolled": 256,
-   "voted": 83,
+   "voted": 84,
    "enrolled_weight": 38375,
    "room": {
-    "chairs": 83,
-    "tmf_held": 0.309,
-    "room_weth": 0.691,
+    "chairs": 84,
+    "tmf_held": 0.3072,
+    "room_weth": 0.6928,
     "room_tokens": {},
     "status": {
      "COIN": "vetoed",
@@ -223,21 +223,21 @@
      "backs": {}
     },
     {
-     "asof_utc": "2026-11-02T10:55:16Z",
-     "chairs": 83,
-     "tmf_held": 0.309,
+     "asof_utc": "2026-11-02T12:16:57Z",
+     "chairs": 84,
+     "tmf_held": 0.3072,
      "backs": {}
     }
    ]
   },
   "vladd": {
    "enrolled": 295,
-   "voted": 112,
+   "voted": 115,
    "enrolled_weight": 50527,
    "room": {
-    "chairs": 112,
-    "tmf_held": 0.3862,
-    "room_weth": 0.6138,
+    "chairs": 115,
+    "tmf_held": 0.3842,
+    "room_weth": 0.6158,
     "room_tokens": {},
     "status": {
      "COIN": "vetoed",
@@ -269,9 +269,9 @@
      "backs": {}
     },
     {
-     "asof_utc": "2026-11-02T10:55:16Z",
-     "chairs": 112,
-     "tmf_held": 0.3862,
+     "asof_utc": "2026-11-02T12:16:57Z",
+     "chairs": 115,
+     "tmf_held": 0.3842,
      "backs": {}
     }
    ]
