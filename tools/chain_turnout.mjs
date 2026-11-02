@@ -63,6 +63,7 @@ const closes = new Date(await num(BALLOT, SEL.closesAt, epoch) * 1000).toISOStri
 const weekStart = await num(BALLOT, SEL.closesAt, epoch - 1);
 const prev = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
 let startBlock = prev && prev.epoch === epoch && prev.week_start_block ? prev.week_start_block : null;
+const newWeek = !!(prev && prev.epoch && prev.epoch < epoch); // the bell rang since the last reading
 if (!startBlock) { const ts = async b => parseInt((await rpc('eth_getBlockByNumber', ['0x' + b.toString(16), false])).timestamp, 16);
   let lo = Math.max(0, block - 8_000_000), hi = block; while (hi - lo > 1) { const m = Math.floor((lo + hi) / 2); if (await ts(m) >= weekStart) hi = m; else lo = m; } startBlock = hi; }
 
@@ -74,24 +75,41 @@ const reg = await pool([...Array(nSlots).keys()], 4, async i => { const a = '0x'
 const tokens = reg.map(r => r.symbol);
 if (tokens[0] !== 'TMF' || tokens[1] !== 'WETH') throw new Error('unexpected registry order: ' + tokens.slice(0, 3));
 
-// --- this week's cards: logs -> transactions -> decoded cards (kept in memory only) ---
-const logs = []; { let from = startBlock, step = 400_000; while (from <= block) { const to = Math.min(block, from + step - 1);
+// --- cards: logs -> transactions -> decoded cards (kept in memory only) ---
+// CardReturned(fund, epoch, seat, weight): topics[1] = fund, topics[2] = week (epoch), topics[3] = seat
+const scanFrom = newWeek && prev.week_start_block ? Math.min(prev.week_start_block, startBlock) : startBlock;
+const logs = []; { let from = scanFrom, step = 400_000; while (from <= block) { const to = Math.min(block, from + step - 1);
   const r = await rpc('eth_getLogs', [{ address: BALLOT, topics: [CARD_EVENT], fromBlock: '0x' + from.toString(16), toBlock: '0x' + to.toString(16) }], true);
   if (r.error) { if (step <= 500) throw new Error('getLogs failed'); step = Math.floor(step / 4); continue; } logs.push(...r); from = to + 1; if (r.length < 2000 && step < 4_000_000) step *= 2; } }
-const txHashes = [...new Set(logs.map(l => l.transactionHash))];
+const epochOfTx = new Map(logs.map(l => [l.transactionHash, Number(BigInt(l.topics[2]))]));
 const W = (h, i) => BigInt('0x' + h.slice(i * 64, i * 64 + 64));
-const txs = await pool(txHashes, 8, h => rpc('eth_getTransactionByHash', [h]));
+const txs = await pool([...epochOfTx.keys()], 8, h => rpc('eth_getTransactionByHash', [h]));
 const cards = []; let undecoded = 0;
 for (const t of txs) { const inp = (t?.input || '').slice(2);
   if (!t || (t.to || '').toLowerCase() !== BALLOT || !inp.startsWith(SEL.returnCard)) { undecoded++; continue; }
   const h = inp.slice(8); const fund = Number(W(h, 0)); const oS = Number(W(h, 1)) / 32, oB = Number(W(h, 2)) / 32;
   const seats = Array.from({ length: Number(W(h, oS)) }, (_, i) => W(h, oS + 1 + i).toString());
   const bps = Array.from({ length: Number(W(h, oB)) }, (_, i) => Number(W(h, oB + 1 + i)));
-  cards.push({ fund, seats, bps, block: parseInt(t.blockNumber, 16), idx: parseInt(t.transactionIndex, 16) }); }
+  cards.push({ fund, seats, bps, epoch: epochOfTx.get(t.hash), block: parseInt(t.blockNumber, 16), idx: parseInt(t.transactionIndex, 16) }); }
 cards.sort((a, b) => a.block - b.block || a.idx - b.idx);
-const last = new Map(); for (const c of cards) for (const s of c.seats) last.set(c.fund + ':' + s, c); // a Seat's latest card wins
-const seatKeys = [...last.keys()];
-const weights = new Map((await pool(seatKeys, 8, async k => [k, await num(OFFICE, SEL.votingWeight, BigInt(k.split(':')[1]))])));
+const wCache = new Map(); const weightOf = async seat => { if (!wCache.has(seat)) wCache.set(seat, await num(OFFICE, SEL.votingWeight, BigInt(seat))); return wCache.get(seat); };
+// The room for one week: a Seat's latest card that week wins.
+async function roomsFor(ep) {
+  const last = new Map(); for (const c of cards) if (c.epoch === ep) for (const s of c.seats) last.set(c.fund + ':' + s, c);
+  await pool([...last.keys()], 8, k => weightOf(k.split(':')[1]));
+  const res = {};
+  for (const [i, f] of FUNDS.entries()) {
+    const rows = [...last.keys()].filter(k => k.startsWith(i + ':')).map(k => [last.get(k), wCache.get(k.split(':')[1])]);
+    const T = rows.reduce((x, r) => x + r[1], 0); const room_tokens = {}, status = {};
+    for (let s = 2; s < tokens.length; s++) {
+      const support = T ? rows.filter(([c]) => (c.bps[s] || 0) > 0).reduce((x, [, w]) => x + w, 0) / T : 0;
+      if (support > 0.5) { status[tokens[s]] = 'backed'; room_tokens[tokens[s]] = +(rows.reduce((x, [c, w]) => x + (c.bps[s] || 0) * w, 0) / T / 10000).toFixed(4); }
+      else status[tokens[s]] = support > 0 ? 'vetoed' : 'no_cards';
+    }
+    res[f] = { chairs: rows.length, room_tokens, status };
+  }
+  return res;
+}
 
 // --- token prices in WETH from the price desk (pool fee per token from data.json) ---
 const DATA = fs.existsSync('data.json') ? JSON.parse(fs.readFileSync('data.json', 'utf8')) : { tokens: [], funds: [] };
@@ -100,40 +118,52 @@ const prices = {};
 for (const r of reg.slice(2)) { const fee = feeOf[r.symbol]; if (!fee) continue;
   try { const h = await raw(PRICE_DESK, SEL.priceInWeth, r.address, fee, r.decimals, 0); const p = Number(BigInt(h.slice(0, 66))) / 1e18; if (p > 0) prices[r.symbol] = +p.toPrecision(6); } catch {} }
 
-// --- per fund ---
+// --- per fund, this week ---
+const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+const etDay = iso => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date(iso));
+const rooms = await roomsFor(epoch);
 const funds = {};
 for (const [i, f] of FUNDS.entries()) {
   const enrolled = await num(OFFICE, SEL.enrolledCount, i), voted = await num(BALLOT, SEL.chairsVoted, i, epoch), enrolled_weight = await num(OFFICE, SEL.totalWeight, i);
   const nav = await big(DESK, SEL.navInWeth, i), wethBook = await big(DESK, SEL.bookOf, i, BigInt(WETH));
-  const tmf_held = nav > 0n ? Number((nav - wethBook) * 1000000n / nav) / 1e6 : null;
-  const rows = seatKeys.filter(k => k.startsWith(i + ':')).map(k => [last.get(k), weights.get(k)]);
-  const T = rows.reduce((s, r) => s + r[1], 0);
-  const room_tokens = {}, status = {};
-  for (let s = 2; s < tokens.length; s++) {
-    const support = T ? rows.filter(([c]) => (c.bps[s] || 0) > 0).reduce((x, [, w]) => x + w, 0) / T : 0;
-    if (support > 0.5) { status[tokens[s]] = 'backed'; room_tokens[tokens[s]] = +(rows.reduce((x, [c, w]) => x + (c.bps[s] || 0) * w, 0) / T / 10000).toFixed(4); }
-    else status[tokens[s]] = support > 0 ? 'vetoed' : 'no_cards';
-  }
-  const room_weth = tmf_held == null ? null : +(1 - tmf_held - Object.values(room_tokens).reduce((a, b) => a + b, 0)).toFixed(4);
-  funds[f] = { enrolled, voted, enrolled_weight, room: { chairs: rows.length, tmf_held: +tmf_held.toFixed(4), room_weth, room_tokens, status } };
-  if (rows.length !== voted) funds[f].room.note = `cards read ${rows.length}, contract count ${voted}`;
+  const tmf_held = nav > 0n ? +(Number((nav - wethBook) * 1000000n / nav) / 1e6).toFixed(4) : null;
+  const r = rooms[f];
+  const room_weth = tmf_held == null ? null : +(1 - tmf_held - Object.values(r.room_tokens).reduce((a, b) => a + b, 0)).toFixed(4);
+  const room = { chairs: r.chairs, tmf_held, room_weth, room_tokens: r.room_tokens, status: r.status };
+  if (r.chairs !== voted) room.note = `cards read ${r.chairs}, contract count ${voted}`;
+  // "This week" timeline: one row per day (kept current), plus a new row whenever what the room backs changes
+  const history = prev && prev.epoch === epoch ? (prev.funds?.[f]?.history || []).slice() : [];
+  const row = { asof_utc: now, chairs: r.chairs, tmf_held, backs: r.room_tokens };
+  const L = history[history.length - 1], same = L && Object.keys(L.backs).sort().join() === Object.keys(r.room_tokens).sort().join();
+  if (L && same && etDay(L.asof_utc) === etDay(now)) history[history.length - 1] = row; else history.push(row);
+  funds[f] = { enrolled, voted, enrolled_weight, room, history };
 }
-// --- heads-up: tokens a room newly backs this week (vv sends a capture for their fill time) ---
-const alerts = []; let roomsChanged = !prev || prev.epoch !== epoch;
-for (const f of FUNDS) { const was = prev?.epoch === epoch ? prev?.funds?.[f]?.room : null; const now = funds[f].room;
-  const before = was ? Object.keys(was.room_tokens || {}) : null, after = Object.keys(now.room_tokens);
-  if (!was || before.sort().join() !== after.slice().sort().join()) roomsChanged = true;
-  if (before) for (const t of after) if (!before.includes(t)) { const fill = (DATA.funds || []).find(x => x.id === f)?.fills?.[t];
-    alerts.push({ fund: f.toUpperCase(), token: t, share: now.room_tokens[t], fill_on_file: fill ? fill.asof : null }); } }
+
+// --- after the bell: last week's final rooms, rebuilt from all of that week's cards ---
+const archive = (prev?.archive || []).slice();
+if (newWeek && !archive.some(a => a.week === prev.epoch)) {
+  const fin = await roomsFor(prev.epoch);
+  archive.unshift({ week: prev.epoch, bell_utc: prev.closes_utc, funds: Object.fromEntries(FUNDS.map(f => [f, { chairs: fin[f].chairs, room_tokens: fin[f].room_tokens,
+    tmf_held_last_reading: prev.funds?.[f]?.room?.tmf_held ?? null }])), note: 'Rooms at the bell rebuilt from every card returned that week; $TMF held is from the last reading before the bell.' });
+}
+archive.splice(26);
+
+// --- heads-up: tokens a room newly backs (vv sends a capture for their fill time) ---
+const alerts = []; let roomsChanged = !prev || newWeek;
+for (const f of FUNDS) { const was = prev?.funds?.[f]?.room; const nowR = funds[f].room;
+  const before = !prev ? null : newWeek ? [] : Object.keys(was?.room_tokens || {}), after = Object.keys(nowR.room_tokens);
+  if (!before || before.slice().sort().join() !== after.slice().sort().join()) roomsChanged = true;
+  if (before) for (const t of after) if (!before.includes(t)) { const fill = newWeek ? null : (DATA.funds || []).find(x => x.id === f)?.fills?.[t];
+    alerts.push({ fund: f.toUpperCase(), token: t, share: nowR.room_tokens[t], fill_on_file: fill ? fill.asof : null }); } }
 const out = {
-  asof_utc: new Date().toISOString().replace(/\.\d+Z$/, 'Z'), block, epoch, closes_utc: closes, week_start_block: startBlock,
-  source: 'Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf',
+  asof_utc: now, block, epoch, closes_utc: closes, week_start_block: startBlock,
+  source: 'Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth',
   url: 'https://robinhoodchain.blockscout.com/address/' + BALLOT, ballot: BALLOT, dividend_office: OFFICE, desk: DESK,
   method: 'Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.',
-  cards_read: cards.length, cards_undecoded: undecoded, prices, funds,
+  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, funds, archive,
 };
 // Always save the reading (even if no count moved) so the page's "Updated" time shows the latest check.
 fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
 // hand-offs for the workflow: new heads-up issues, and whether the share image needs re-rendering
 if (process.env.GITHUB_OUTPUT) { fs.writeFileSync('/tmp/alerts.json', JSON.stringify({ epoch, alerts })); fs.appendFileSync(process.env.GITHUB_OUTPUT, `alerts=${alerts.length}\nog=${roomsChanged ? 1 : 0}\n`); }
-console.log(JSON.stringify(Object.fromEntries(Object.entries(funds).map(([k, v]) => [k, { voted: v.voted, chairs: v.room.chairs, tmf: v.room.tmf_held, backs: v.room.room_tokens }]))));
+console.log(JSON.stringify(Object.fromEntries(Object.entries(funds).map(([k, v]) => [k, { voted: v.voted, chairs: v.room.chairs, tmf: v.room.tmf_held, backs: v.room.room_tokens, rows: v.history.length }]))), newWeek ? 'NEW WEEK' : '');

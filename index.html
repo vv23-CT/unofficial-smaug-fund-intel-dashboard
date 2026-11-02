@@ -428,17 +428,23 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
  /* newer turnout from the 30-minute chain reader, if it's there */
  .then(d=>(window.__CHAIN__?Promise.resolve(window.__CHAIN__):fetch('chain.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)).then(c=>{if(c&&c.funds&&c.asof_utc){
    d.chain=Object.assign({},d.chain||{},{url:c.url||(d.chain||{}).url,epoch:c.epoch});
-   if(!d.updated_utc||c.asof_utc>d.updated_utc)d.updated_utc=c.asof_utc;d.chain_asof_utc=c.asof_utc;
+   /* a new week on the chain (the bell rang): last week's captures, fills and timeline drop off */
+   if(c.epoch&&c.epoch>d.week){d.week=c.epoch;(d.funds||[]).forEach(f=>{f.history=[];f.fills={};f.not_in_capture=[];f.asof_utc=null;f.asof='—';f.turnout=null;});}
+   if(!d.updated_utc||c.asof_utc>d.updated_utc)d.updated_utc=c.asof_utc;d.chain_asof_utc=c.asof_utc;d.archive=c.archive||[];
+   if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
    if(c.prices)(d.tokens||[]).forEach(t=>{const p=c.prices[t.token];if(!p)return;const m=/per 1M/.test(t.onchain||'');
-     t.onchain=(m?(p*1e6).toFixed(4):p.toFixed(6))+' WETH'+(m?' per 1M':'');t.onchain_asof_utc=c.asof_utc;});if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
-   (d.funds||[]).forEach(f=>{const x=c.funds[f.id];if(x&&(!f.turnout||c.asof_utc>f.turnout.asof_utc))f.turnout={enrolled:x.enrolled,voted:x.voted,enrolled_weight:x.enrolled_weight,asof_utc:c.asof_utc,epoch:c.epoch};
+     t.onchain=(m?(p*1e6).toFixed(4):p.toFixed(6))+' WETH'+(m?' per 1M':'');t.onchain_asof_utc=c.asof_utc;});
+   (d.funds||[]).forEach(f=>{const x=c.funds[f.id];if(!x)return;if(!f.turnout||c.asof_utc>f.turnout.asof_utc)f.turnout={enrolled:x.enrolled,voted:x.voted,enrolled_weight:x.enrolled_weight,asof_utc:c.asof_utc,epoch:c.epoch};
      /* the room itself, rebuilt from on-chain cards, when it is newer than the last ballot capture (same week only) */
-     const r=x&&x.room;if(r&&r.tmf_held!=null&&c.epoch===d.week&&(!f.asof_utc||c.asof_utc>f.asof_utc)){
+     const r=x.room;if(r&&r.tmf_held!=null&&c.epoch===d.week&&(!f.asof_utc||c.asof_utc>f.asof_utc)){
       f.chairs=r.chairs;f.tmf_held=r.tmf_held;f.room_weth=r.room_weth;f.room_tokens=r.room_tokens;f.status=Object.assign({},f.status,r.status);
-      f.capture_asof_utc=f.asof_utc;f.asof_utc=c.asof_utc;f.room_src='chain';
-      const H=f.history=(f.history||[]).slice();const L=H[H.length-1];
-      if(!L||L.chairs!==r.chairs||JSON.stringify(L.backs)!==JSON.stringify(r.room_tokens))H.push({asof_utc:c.asof_utc,chairs:r.chairs,tmf_held:r.tmf_held,backs:r.room_tokens,chain:true});}});}
+      f.capture_asof_utc=f.asof_utc;f.asof_utc=c.asof_utc;f.room_src='chain';}
+     /* This week: ballot captures plus the reader's own rows (one a day, and one whenever what the room backs changes) */
+     if(c.epoch===d.week){const ch=(x.history||[]).map(s=>Object.assign({},s,{chain:true}));
+      if(!ch.length&&r)ch.push({asof_utc:c.asof_utc,chairs:r.chairs,tmf_held:r.tmf_held,backs:r.room_tokens,chain:true});
+      const cap=(f.history||[]).filter(s=>!s.chain);const undated=cap.filter(s=>!s.asof_utc),dated=cap.filter(s=>s.asof_utc).concat(ch).sort((a,b)=>a.asof_utc<b.asof_utc?-1:1);
+      f.history=undated.concat(dated);}});}
    return d;}))
  .then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
 
