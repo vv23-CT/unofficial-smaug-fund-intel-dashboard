@@ -131,6 +131,16 @@ table.g tr.sum td{font-size:11.5px;color:var(--muted)}
 .ev b{font-size:12.5px}.ev.key .what{font-weight:700}.ev small{display:block;color:var(--muted);font-size:11.5px}
 dl.dl{margin:0;display:flex;flex-direction:column;gap:7px}dl.dl dt{font-weight:700}dl.dl dd{margin:0;color:var(--fg)}
 .changed{font-size:13px;line-height:1.45}
+/* bell results */
+.lastbell{margin:0 0 10px;padding:8px 10px;border:1px solid var(--line);border-left:4px solid var(--house);border-radius:8px;background:var(--card2);font-size:13px;line-height:1.45}
+.lastbell b{font-weight:700}.lastbell small{display:block;color:var(--muted);font-size:11px}
+.brw{margin:0 0 12px}.brw h4{margin:0 0 6px;font-size:13px}
+table.br{width:100%;border-collapse:collapse;font-size:12.5px}
+table.br th,table.br td{text-align:left;padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+table.br th{font-size:11px;color:var(--muted);font-weight:600}
+table.br td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.br tr.sel td{background:var(--card2);font-weight:600}
+.brnote{font-size:11px;color:var(--muted);margin:4px 0 0}
 .fine{font-size:11.5px;color:var(--muted);margin:0;padding:0 12px 10px}
 .sbar{display:flex;gap:3px;padding:3px;background:#d4d0c8;border-top:2px solid var(--frame);font-size:11.5px;color:#222}
 .sbar span{flex:1;padding:2px 7px;border:1px solid;border-color:#808080 #fff #fff #808080;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -263,6 +273,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <button class="vtab" role="tab" type="button" data-v="more" aria-selected="false">More</button>
 </div>
 <section class="view" data-view="week">
+<div class="lastbell" id="lastBell" hidden></div>
 <ol class="wk" id="wkList"></ol>
 <p class="note" id="wkNote"></p>
 </section>
@@ -279,6 +290,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <section class="view" data-view="more" hidden>
 <div class="acc">
 <details open><summary>What changed <span id="chgDate"></span></summary><div class="in changed" id="chg"></div></details>
+<details id="brBox" hidden><summary>Bell results <span id="brSum"></span></summary><div class="in" id="br"></div></details>
 <details><summary>ETH and the market <span id="mktSum"></span></summary><div class="in"><div class="tiles" id="tiles"></div></div></details>
 <details><summary>ETH news <span id="newsSum"></span></summary><div class="in"><dl class="dl" id="news"></dl></div></details>
 <details><summary>Next 14 days <span id="evSum"></span></summary><div class="in"><div class="evl" id="evs"></div></div></details>
@@ -374,7 +386,21 @@ function select(id,dx){SEL=id;const f=FI[id];
 /* views */
 $$('.vtab').forEach(t=>t.addEventListener('click',()=>{const sc=document.getElementById('scroll'),vt=document.querySelector('.vtabs');if(sc&&vt&&sc.scrollTop>vt.offsetTop-12)sc.scrollTop=vt.offsetTop-12;VIEW=t.dataset.v;$$('.vtab').forEach(x=>x.setAttribute('aria-selected',String(x===t)));$$('.view').forEach(v=>v.hidden=v.dataset.view!==VIEW);}));
 
-function drawWeek(){const f=FI[SEL],H=f.history||[],ol=$('#wkList');ol.replaceChildren();
+/* Bell results: each week's final room per fund, rebuilt from that week's on-chain cards (chain.json archive) */
+const ARCH=()=>(D.archive||[]).filter(a=>a.funds&&Object.values(a.funds).some(x=>x.chairs>0));
+const backsTxt=rt=>{const b=Object.entries(rt||{}).sort((a,b)=>b[1]-a[1]);return b.length?b.map(([k,v])=>k+' '+P(v)).join(', '):'Nothing backed: all to WETH';};
+const bellDay=iso=>iso?new Intl.DateTimeFormat(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date(iso)):'';
+function drawBell(){const A=ARCH(),lb=$('#lastBell'),box=$('#brBox'),br=$('#br');
+ if(!A.length){lb.hidden=true;box.hidden=true;return;}
+ const a=A[0],x=a.funds[SEL];lb.hidden=!x;
+ if(x){lb.replaceChildren();const t=el('div');t.append('Last bell · Week '+a.week+': ');t.append(el('b',null,backsTxt(x.room_tokens)));t.append(' · '+x.chairs+' chairs');lb.append(t,el('small',null,'Final room at the bell, '+bellDay(a.bell_utc)+', rebuilt from on-chain cards'));}
+ box.hidden=false;$('#brSum').textContent=A.length+(A.length===1?' week':' weeks');br.replaceChildren();
+ A.forEach(a=>{const w=el('div','brw');w.append(el('h4',null,'Week '+a.week+' · bell '+bellDay(a.bell_utc)));
+  const tb=el('table','br');const hr=el('tr');['Fund','Backed at the bell','Chairs','$TMF held'].forEach(s=>hr.append(el('th',null,s)));tb.append(hr);
+  FUNDS.forEach(f=>{const y=a.funds[f.id];if(!y)return;const tr=el('tr',f.id===SEL?'sel':null);tr.append(el('td',null,f.name),el('td',null,backsTxt(y.room_tokens)),el('td','n',String(y.chairs)),el('td','n',y.tmf_held_last_reading!=null?P(y.tmf_held_last_reading):'—'));tb.append(tr);});
+  w.append(tb);br.append(w);});
+ const n=el('p','brnote');n.append('Rebuilt from every card returned that week on Robinhood Chain (a token is backed when chairs with more than half the voting weight put something on it). $TMF held is the last reading before the bell. ');n.append(link('Ballot contract',(D.chain||{}).url));br.append(n);}
+function drawWeek(){drawBell();const f=FI[SEL],H=f.history||[],ol=$('#wkList');ol.replaceChildren();
  H.slice().reverse().forEach((s,ri)=>{const i=H.length-1-ri,prev=i?H[i-1]:null;const li=el('li');
   const w=el('div','w',s.asof_utc?fmtDay.format(new Date(s.asof_utc)):s.asof.split(',')[0]);w.append(el('small',null,s.asof_utc?fmtTime.format(new Date(s.asof_utc)):(s.asof.split(', ')[1]||'')));if(s.chain)w.append(el('small','oc','on-chain'));
   const bk=Object.entries(s.backs).sort((a,b)=>b[1]-a[1]);const b=el('div','b',bk.length?bk.map(([k,v])=>k+' '+P(v)).join(', '):'Nothing backed');

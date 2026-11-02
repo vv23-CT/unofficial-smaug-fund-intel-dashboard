@@ -30,12 +30,14 @@ jobs:
           npm install --no-save --no-audit --no-fund playwright@1.63.0
           npx playwright install --with-deps chromium
           node tools/render_og.mjs
+      - name: Keep the week in the share-link titles current
+        run: node tools/sync_week.mjs
       - name: Save
         run: |
-          if git diff --quiet -- chain.json og.png && git ls-files --error-unmatch chain.json >/dev/null 2>&1; then echo "No change"; exit 0; fi
+          if git diff --quiet -- chain.json og.png index.html && git ls-files --error-unmatch chain.json >/dev/null 2>&1; then echo "No change"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add chain.json og.png
+          git add chain.json og.png index.html
           git commit -m "Chain reading $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0; sleep 10; done
           exit 1
