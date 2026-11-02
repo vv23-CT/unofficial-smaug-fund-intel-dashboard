@@ -33,3 +33,4 @@ Written every 30 minutes by `.github/workflows/turnout.yml` (`tools/chain_turnou
 - `asof_utc, block, epoch` (the contract's week number), `closes_utc`, `source, url`
 - `funds`: `{id: {enrolled, voted, enrolled_weight}}`. `enrolled` = DividendOffice `enrolledCount(fund)`; `voted` = Ballot `chairsVoted(fund, epoch)`.
 The page uses chain.json for turnout when it is newer than the `turnout` stored in data.json. Don't edit it by hand.
+- Since Nov 1, 2026 each fund in chain.json also has `room`: `chairs, tmf_held, room_weth, room_tokens, status` (same meaning as in data.json), rebuilt from this week's cards: a token is backed when chairs with more than half the voting weight put something on it; its share is the chair-weighted average of all cards; $TMF held = (fund value in WETH − fund WETH) / fund value. The page uses it in place of the last ballot capture when it is newer and in the same week. Fills still come from ballot captures.

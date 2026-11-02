@@ -1,4 +1,4 @@
-name: Chain turnout (every 30 min)
+name: Chain reader: turnout and rooms (every 30 min)
 
 on:
   schedule:
@@ -15,13 +15,13 @@ concurrency:
 jobs:
   read:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Read turnout from Robinhood Chain
+      - name: Read turnout and rooms from Robinhood Chain
         run: node tools/chain_turnout.mjs chain.json
       - name: Save if anything changed
         run: |

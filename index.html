@@ -188,6 +188,8 @@ html,body{height:100%;overflow:hidden}
 .stat em{font-size:12px;vertical-align:1px}
 
 /* turnout, read from the chain */
+.oc{color:var(--muted);font-size:11px}
+#wkList small.oc{display:block}
 .turn{display:flex;flex-direction:column;gap:4px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card2)}
 .tu-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:13px}
 .tu-l{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -240,7 +242,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="fc-head"><div class="txt">
 <span class="fc-name" id="fcName">—</span>
 <div class="fc-backs" id="fcBacks">—</div>
-<span class="fc-when">Room as of <time id="fcWhen">—</time></span>
+<span class="fc-when">Room as of <time id="fcWhen">—</time><span class="oc" id="fcSrc"></span></span>
 </div><img class="portrait" id="fcPic" alt="" width="92" height="108"></div>
 <div class="stack" id="fcStack" role="img" aria-label="Room split"></div>
 <div class="leg" id="fcLeg"></div>
@@ -342,7 +344,7 @@ function select(id,dx){SEL=id;const f=FI[id];
  $$('.fbtn').forEach(b=>{const on=b.dataset.f===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
  const c=$('#fcard');if(dx){c.style.setProperty('--dx',dx+'px');c.classList.remove('slide');void c.offsetWidth;c.classList.add('slide');}
  const hc=HOUSE[id]||['#453629','#fff',''];document.documentElement.style.setProperty('--house',hc[0]);document.documentElement.style.setProperty('--house-ink',hc[1]);
- $('#fcName').textContent=f.name;stamp($('#fcWhen'),f.asof_utc,f.asof);
+ $('#fcName').textContent=f.name;stamp($('#fcWhen'),f.asof_utc,f.asof);$('#fcSrc').textContent=f.room_src==='chain'?' · on-chain':'';
  
  /* turnout from the chain */
  const T=f.turnout;const tw=T&&(!f.asof_utc||T.asof_utc>=f.asof_utc);
@@ -367,12 +369,12 @@ $$('.vtab').forEach(t=>t.addEventListener('click',()=>{const sc=document.getElem
 
 function drawWeek(){const f=FI[SEL],H=f.history||[],ol=$('#wkList');ol.replaceChildren();
  H.slice().reverse().forEach((s,ri)=>{const i=H.length-1-ri,prev=i?H[i-1]:null;const li=el('li');
-  const w=el('div','w',s.asof_utc?fmtDay.format(new Date(s.asof_utc)):s.asof.split(',')[0]);w.append(el('small',null,s.asof_utc?fmtTime.format(new Date(s.asof_utc)):(s.asof.split(', ')[1]||'')));
+  const w=el('div','w',s.asof_utc?fmtDay.format(new Date(s.asof_utc)):s.asof.split(',')[0]);w.append(el('small',null,s.asof_utc?fmtTime.format(new Date(s.asof_utc)):(s.asof.split(', ')[1]||'')));if(s.chain)w.append(el('small','oc','on-chain'));
   const bk=Object.entries(s.backs).sort((a,b)=>b[1]-a[1]);const b=el('div','b',bk.length?bk.map(([k,v])=>k+' '+P(v)).join(', '):'Nothing backed');
   if(prev){const pb=Object.keys(prev.backs),nb=bk.map(x=>x[0]);const add=nb.filter(k=>!pb.includes(k)),rem=pb.filter(k=>!nb.includes(k));if(add.length)b.append(' ',el('span','chg','+ '+add.join(', ')));if(rem.length)b.append(' ',el('span','chg','− '+rem.join(', ')));}
   const c=el('div','c',s.chairs+' chairs');if(prev&&s.chairs!==prev.chairs)c.append(el('small',null,(s.chairs>prev.chairs?'+':'')+(s.chairs-prev.chairs)));
   li.append(w,b,c);ol.append(li);});
- $('#wkNote').textContent=(H.length<2?'One capture so far this week; each new one adds a row. ':'Newest first, one row per ballot capture. ')+'Source: the '+f.name+' ballot page.';}
+ $('#wkNote').textContent=(H.length<2?'One reading so far this week; each new one adds a row. ':'Newest first. ')+'Rows marked on-chain are rebuilt every 30 minutes from the cards on Robinhood Chain; the others are from the '+f.name+' ballot page.';}
 
 const ORDER={backed:0,vetoed:1,no_cards:2};
 function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
@@ -417,9 +419,16 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
 }
 (window.__DATA__?Promise.resolve(window.__DATA__):fetch('data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}))
  /* newer turnout from the 30-minute chain reader, if it's there */
- .then(d=>fetch('chain.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null).then(c=>{if(c&&c.funds&&c.asof_utc){
+ .then(d=>(window.__CHAIN__?Promise.resolve(window.__CHAIN__):fetch('chain.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)).then(c=>{if(c&&c.funds&&c.asof_utc){
    d.chain=Object.assign({},d.chain||{},{url:c.url||(d.chain||{}).url,epoch:c.epoch});
-   (d.funds||[]).forEach(f=>{const x=c.funds[f.id];if(x&&(!f.turnout||c.asof_utc>f.turnout.asof_utc))f.turnout={enrolled:x.enrolled,voted:x.voted,enrolled_weight:x.enrolled_weight,asof_utc:c.asof_utc,epoch:c.epoch};});}
+   if(!d.updated_utc||c.asof_utc>d.updated_utc)d.updated_utc=c.asof_utc;
+   (d.funds||[]).forEach(f=>{const x=c.funds[f.id];if(x&&(!f.turnout||c.asof_utc>f.turnout.asof_utc))f.turnout={enrolled:x.enrolled,voted:x.voted,enrolled_weight:x.enrolled_weight,asof_utc:c.asof_utc,epoch:c.epoch};
+     /* the room itself, rebuilt from on-chain cards, when it is newer than the last ballot capture (same week only) */
+     const r=x&&x.room;if(r&&r.tmf_held!=null&&c.epoch===d.week&&(!f.asof_utc||c.asof_utc>f.asof_utc)){
+      f.chairs=r.chairs;f.tmf_held=r.tmf_held;f.room_weth=r.room_weth;f.room_tokens=r.room_tokens;f.status=Object.assign({},f.status,r.status);
+      f.capture_asof_utc=f.asof_utc;f.asof_utc=c.asof_utc;f.room_src='chain';
+      const H=f.history=(f.history||[]).slice();const L=H[H.length-1];
+      if(!L||L.chairs!==r.chairs||JSON.stringify(L.backs)!==JSON.stringify(r.room_tokens))H.push({asof_utc:c.asof_utc,chairs:r.chairs,tmf_held:r.tmf_held,backs:r.room_tokens,chain:true});}});}
    return d;}))
  .then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
 

@@ -1025,9 +1025,17 @@
   {
    "term": "Turnout",
    "def": "Chairs that have voted this week out of the fund's enrolled Seats, read from the Ballot and DividendOffice contracts on Robinhood Chain."
+  },
+  {
+   "term": "Rebuilt room",
+   "def": "The room worked out from every card returned on Robinhood Chain this week: a token is backed when chairs holding more than half the voting weight put something on it, and its share is the chair-weighted average of all cards. $TMF held comes from the fund's own books. Checked against ballot captures; it can differ from the ballot page by a few tenths of a point."
   }
  ],
  "updates": [
+  {
+   "date": "Nov 1",
+   "text": "New: every fund's room is now rebuilt from on-chain cards every 30 minutes (chairs, $TMF held, what's backed, vetoed or has no cards). It matched all 11 ballot captures this week on chairs and on what's backed. Tonight no fund backs a token: ARGON's NVDA slipped under half of chair weight and is headed to WETH."
+  },
   {
    "date": "Nov 1",
    "text": "New: turnout for every fund, read from public contracts on Robinhood Chain (5:19pm ET). ARGON 105 of 264 enrolled chairs have voted (40%), BOGLE 58 of 233 (25%), SMAUG 72 of 307 (23%), MIDAS 80 of 257 (31%), VLADD 101 of 293 (34%). 416 of 1,354 enrolled chairs overall (31%)."
