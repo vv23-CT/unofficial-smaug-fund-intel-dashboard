@@ -493,6 +493,13 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    if(J)tiles.push({id:'bls_jobs',label:'Jobs added, '+mo(J.period)+(J.preliminary?' (prelim.)':''),value:sg(J.payrolls_change),fmt:'txt',asof:(J.release_date?'Released '+day(J.release_date)+' · ':'')+'unemployment '+J.unemployment_rate+'%',source:'BLS',url:J.url});
    if(C)tiles.push({id:'bls_cpi',label:'CPI, '+mo(C.period),value:sg(C.cpi_mm)+'% m/m · '+C.cpi_yy+'% y/y',fmt:'txt',asof:(C.release_date?'Released '+day(C.release_date)+' · ':'')+(C.core_mm!=null?'core '+sg(C.core_mm)+'% m/m':''),source:'BLS',url:C.url});
    d.market=(d.market||[]).filter(r=>!/^bls_/.test(r.id)).concat(tiles);return d;}))
+ /* daily closes for the stock tokens and the Nasdaq Composite (GitHub, after each weekday close) */
+ .then(d=>(window.__STOCKS__?Promise.resolve(window.__STOCKS__):fetch('stocks.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)).then(St=>{if(!St||!St.closes)return d;
+   const md=s=>{const [m,dd,y]=s.split('/');return new Date(Date.UTC(+y,+m-1,+dd,12)).toLocaleDateString(undefined,{month:'short',day:'numeric',timeZone:'UTC'});};
+   const pc=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%';
+   (d.tokens||[]).forEach(t=>{const c=St.closes[t.token];if(!c)return;t.price='$'+c.close.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+', '+pc(c.change)+' on '+md(c.date)+' (close)';t.source='Nasdaq.com';t.url=c.url;});
+   const X=St.closes.COMP,tl=(d.market||[]).find(r=>r.id==='nasdaq');if(X&&tl){tl.label='Nasdaq, '+md(X.date);tl.value=X.change;tl.asof=X.close.toLocaleString()+' close';tl.source='Nasdaq.com';tl.url=X.url;}
+   return d;}))
  .then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
 
 </script>

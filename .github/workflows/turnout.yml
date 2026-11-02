@@ -35,15 +35,17 @@ jobs:
         run: node tools/sync_week.mjs
       - name: Official jobs and CPI numbers (BLS; only asks on release days)
         run: node tools/bls.mjs || echo 'BLS step skipped'
+      - name: Stock closes (weekdays after the 4 PM close)
+        run: node tools/stocks.mjs || echo 'Stocks step skipped'
       - name: Bell recap and weekly housekeeping (after a bell only)
         id: recap
         run: node tools/bell_recap.mjs
       - name: Save
         run: |
-          if git diff --quiet -- chain.json og.png index.html data.json econ.json && git ls-files --error-unmatch chain.json >/dev/null 2>&1; then echo "No change"; exit 0; fi
+          if git diff --quiet -- chain.json og.png index.html data.json econ.json stocks.json && git ls-files --error-unmatch chain.json >/dev/null 2>&1; then echo "No change"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add chain.json og.png index.html data.json && (git add econ.json 2>/dev/null || true)
+          git add chain.json og.png index.html data.json && (git add econ.json stocks.json 2>/dev/null || true)
           git commit -m "Chain reading $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0; sleep 10; done
           exit 1
