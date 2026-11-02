@@ -35,7 +35,7 @@ function keccak(str) {
 }
 const sel = sig => keccak(sig).slice(0, 8);
 if (sel('currentEpoch()') !== SEL.currentEpoch) throw new Error('keccak self-test failed');
-Object.assign(SEL, { votingWeight: sel('votingWeight(uint256)'), bookOf: sel('bookOf(uint8,address)'), navInWeth: sel('navInWeth(uint8)'), registry: sel('registry(uint256)'), registryCount: sel('registryCount()'), symbol: sel('symbol()'), decimals: sel('decimals()'), priceInWeth: sel('priceInWeth((address,uint24,uint8),bool)') });
+Object.assign(SEL, { totalSupply: sel('totalSupply()'), votingWeight: sel('votingWeight(uint256)'), bookOf: sel('bookOf(uint8,address)'), navInWeth: sel('navInWeth(uint8)'), registry: sel('registry(uint256)'), registryCount: sel('registryCount()'), symbol: sel('symbol()'), decimals: sel('decimals()'), priceInWeth: sel('priceInWeth((address,uint24,uint8),bool)') });
 const PRICE_DESK = '0x5607336c73553edc65176f2256686b69e787ca0f'; // TMF's price desk (values tokens in WETH)
 
 // --- RPC helpers ---
@@ -119,6 +119,20 @@ for (const r of reg.slice(2)) { const fee = feeOf[r.symbol]; if (!fee) continue;
   try { const h = await raw(PRICE_DESK, SEL.priceInWeth, r.address, fee, r.decimals, 0); const p = Number(BigInt(h.slice(0, 66))) / 1e18; if (p > 0) prices[r.symbol] = +p.toPrecision(6);
     if (h.length >= 130) { const dpt = Number(BigInt('0x' + h.slice(66, 130))) / 1e18; if (dpt > 0) depth[r.symbol] = +dpt.toPrecision(4); } } catch {} }
 
+// --- USD: ETH and BTC from Coinbase's public price feed (Kraken if Coinbase fails), ETH 7-day change from Coinbase daily candles ---
+async function getJSON(u) { const r = await fetch(u, { headers: { 'user-agent': 'tmf-fund-intel-dashboard', accept: 'application/json' } }); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); }
+const market = {};
+try { market.eth_usd = Number((await getJSON('https://api.coinbase.com/v2/prices/ETH-USD/spot')).data.amount);
+  market.btc_usd = Number((await getJSON('https://api.coinbase.com/v2/prices/BTC-USD/spot')).data.amount); market.source = 'Coinbase'; market.url = 'https://www.coinbase.com/price/ethereum'; }
+catch { try { const k = (await getJSON('https://api.kraken.com/0/public/Ticker?pair=ETHUSD,XBTUSD')).result; market.eth_usd = Number(k.XETHZUSD.c[0]); market.btc_usd = Number(k.XXBTZUSD.c[0]); market.source = 'Kraken'; market.url = 'https://www.kraken.com/prices/ethereum'; } catch {} }
+try { const c = await getJSON('https://api.exchange.coinbase.com/products/ETH-USD/candles?granularity=86400'); const wk = c[7]?.[4]; if (market.eth_usd && wk) market.eth_7d = +(market.eth_usd / wk - 1).toFixed(4); } catch {}
+if (market.eth_usd) market.asof_utc = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+// token prices in USD (on-chain WETH price x ETH), and FDV (total supply x price) for the chain's own tokens
+const NATIVE = ['PONS', 'CASHCAT', 'AI', 'MANCER', 'STONKBROKER', 'APE', 'DERP']; // VIRTUAL is bridged and USDG is a dollar token: no FDV for them
+const usd = {}, fdv = {};
+if (market.eth_usd) for (const r of reg.slice(2)) { const p = prices[r.symbol]; if (!p) continue; usd[r.symbol] = +(p * market.eth_usd).toPrecision(5);
+  if (NATIVE.includes(r.symbol)) { try { const sup = await big(r.address, SEL.totalSupply); const whole = Number(sup / 10n ** BigInt(Math.max(0, r.decimals - 6))) / 1e6; fdv[r.symbol] = Math.round(whole * usd[r.symbol]); } catch {} } }
+
 // --- per fund, this week ---
 const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
 const etDay = iso => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date(iso));
@@ -165,7 +179,7 @@ const out = {
   source: 'Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth',
   url: 'https://robinhoodchain.blockscout.com/address/' + BALLOT, ballot: BALLOT, dividend_office: OFFICE, desk: DESK,
   method: 'Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.',
-  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, funds, archive,
+  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, funds, archive,
 };
 // Always save the reading (even if no count moved) so the page's "Updated" time shows the latest check.
 fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
