@@ -1,37 +1,177 @@
 {
- "asof_utc": "2026-11-01T23:07:54Z",
- "block": 103753374,
+ "asof_utc": "2026-11-02T00:55:44Z",
+ "block": 103815605,
  "epoch": 2,
  "closes_utc": "2026-11-06T20:00:00.000Z",
- "source": "Robinhood Chain (public RPC): Ballot chairsVoted(fund, week); DividendOffice enrolledCount(fund)",
+ "week_start_block": 101990391,
+ "source": "Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf",
  "url": "https://robinhoodchain.blockscout.com/address/0xa1de85247d30eb67c83d010f9240ae81a8d744fe",
  "ballot": "0xa1de85247d30eb67c83d010f9240ae81a8d744fe",
  "dividend_office": "0xf658b4abdafc6c8d652742d563e9d9ab8b454475",
+ "desk": "0xca50244f9135ed70add8d3cbd50ef6f6a76ba654",
+ "method": "Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.",
+ "cards_read": 321,
+ "cards_undecoded": 0,
  "funds": {
   "argon": {
    "enrolled": 264,
    "voted": 105,
-   "enrolled_weight": 39720
+   "enrolled_weight": 39720,
+   "room": {
+    "chairs": 105,
+    "tmf_held": 0.3489,
+    "room_weth": 0.6511,
+    "room_tokens": {},
+    "status": {
+     "COIN": "vetoed",
+     "MSTR": "vetoed",
+     "META": "vetoed",
+     "SGOV": "no_cards",
+     "GOOGL": "vetoed",
+     "QQQ": "vetoed",
+     "NVDA": "vetoed",
+     "GLD": "vetoed",
+     "TSLA": "vetoed",
+     "RDDT": "vetoed",
+     "STONKBROKER": "vetoed",
+     "MANCER": "vetoed",
+     "DERP": "vetoed",
+     "APE": "vetoed",
+     "PONS": "vetoed",
+     "CASHCAT": "vetoed",
+     "USDG": "vetoed",
+     "AI": "vetoed",
+     "VIRTUAL": "vetoed"
+    }
+   }
   },
   "bogle": {
    "enrolled": 233,
    "voted": 58,
-   "enrolled_weight": 33845
+   "enrolled_weight": 33845,
+   "room": {
+    "chairs": 58,
+    "tmf_held": 0.3007,
+    "room_weth": 0.6993,
+    "room_tokens": {},
+    "status": {
+     "COIN": "vetoed",
+     "MSTR": "vetoed",
+     "META": "vetoed",
+     "SGOV": "vetoed",
+     "GOOGL": "vetoed",
+     "QQQ": "vetoed",
+     "NVDA": "vetoed",
+     "GLD": "vetoed",
+     "TSLA": "vetoed",
+     "RDDT": "vetoed",
+     "STONKBROKER": "vetoed",
+     "MANCER": "vetoed",
+     "DERP": "vetoed",
+     "APE": "vetoed",
+     "PONS": "vetoed",
+     "CASHCAT": "vetoed",
+     "USDG": "vetoed",
+     "AI": "vetoed",
+     "VIRTUAL": "vetoed"
+    }
+   }
   },
   "smaug": {
    "enrolled": 307,
    "voted": 74,
-   "enrolled_weight": 41857
+   "enrolled_weight": 41857,
+   "room": {
+    "chairs": 74,
+    "tmf_held": 0.3411,
+    "room_weth": 0.6589,
+    "room_tokens": {},
+    "status": {
+     "COIN": "vetoed",
+     "MSTR": "vetoed",
+     "META": "vetoed",
+     "SGOV": "vetoed",
+     "GOOGL": "vetoed",
+     "QQQ": "vetoed",
+     "NVDA": "vetoed",
+     "GLD": "vetoed",
+     "TSLA": "vetoed",
+     "RDDT": "vetoed",
+     "STONKBROKER": "vetoed",
+     "MANCER": "vetoed",
+     "DERP": "vetoed",
+     "APE": "vetoed",
+     "PONS": "vetoed",
+     "CASHCAT": "vetoed",
+     "USDG": "vetoed",
+     "AI": "vetoed",
+     "VIRTUAL": "vetoed"
+    }
+   }
   },
   "midas": {
    "enrolled": 257,
    "voted": 80,
-   "enrolled_weight": 38425
+   "enrolled_weight": 38475,
+   "room": {
+    "chairs": 80,
+    "tmf_held": 0.3282,
+    "room_weth": 0.6718,
+    "room_tokens": {},
+    "status": {
+     "COIN": "vetoed",
+     "MSTR": "vetoed",
+     "META": "vetoed",
+     "SGOV": "vetoed",
+     "GOOGL": "vetoed",
+     "QQQ": "vetoed",
+     "NVDA": "vetoed",
+     "GLD": "vetoed",
+     "TSLA": "vetoed",
+     "RDDT": "vetoed",
+     "STONKBROKER": "vetoed",
+     "MANCER": "vetoed",
+     "DERP": "no_cards",
+     "APE": "vetoed",
+     "PONS": "vetoed",
+     "CASHCAT": "vetoed",
+     "USDG": "vetoed",
+     "AI": "vetoed",
+     "VIRTUAL": "vetoed"
+    }
+   }
   },
   "vladd": {
    "enrolled": 293,
    "voted": 102,
-   "enrolled_weight": 49614
+   "enrolled_weight": 49714,
+   "room": {
+    "chairs": 102,
+    "tmf_held": 0.4009,
+    "room_weth": 0.5991,
+    "room_tokens": {},
+    "status": {
+     "COIN": "vetoed",
+     "MSTR": "vetoed",
+     "META": "vetoed",
+     "SGOV": "vetoed",
+     "GOOGL": "vetoed",
+     "QQQ": "vetoed",
+     "NVDA": "vetoed",
+     "GLD": "vetoed",
+     "TSLA": "vetoed",
+     "RDDT": "vetoed",
+     "STONKBROKER": "vetoed",
+     "MANCER": "vetoed",
+     "DERP": "no_cards",
+     "APE": "vetoed",
+     "PONS": "vetoed",
+     "CASHCAT": "vetoed",
+     "USDG": "vetoed",
+     "AI": "vetoed",
+     "VIRTUAL": "vetoed"
+    }
+   }
   }
  }
 }
