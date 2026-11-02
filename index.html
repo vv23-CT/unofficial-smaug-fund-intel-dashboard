@@ -417,6 +417,10 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
   bt.append(el('b',null,r.token),el('span','px',r.onchain),el('span','st '+(s==='backed'?'b':s==='vetoed'?'v':'n'),s==='backed'?P(f.room_tokens[r.token]):s==='vetoed'?'vetoed':'no cards'));
   const d=el('div','tdet');d.append(el('p',null,r.price));if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token],fv=(D.fdv||{})[r.token];d.append(el('p','m','On-chain ≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3))+(fv?' · FDV ≈ $'+(fv>=1e6?(fv/1e6).toFixed(1)+'M':fv>=1e3?(fv/1e3).toFixed(0)+'K':fv)+' (total supply × on-chain price)':'')+' · on-chain, valued in USDG on TMF\u2019s price desk'));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
   const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?(fl.n<=1?' · a quarter of '+f.name+' fills in one Friday':' · ~'+fl.n+' Fridays to fill a quarter of '+f.name):f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
+  const dx=(D.dex||{})[r.token];if(dx){const mon=v=>v==null?'—':v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':v>=1e3?'$'+(v/1e3).toFixed(0)+'K':'$'+Math.round(v);
+   const pr=dx.price_usd==null?'—':dx.price_usd>=1?'$'+dx.price_usd.toFixed(2):'$'+dx.price_usd.toPrecision(3);
+   const ch=dx.change_24h==null?'':' ('+(dx.change_24h>0?'+':dx.change_24h<0?'−':'')+Math.abs(dx.change_24h).toFixed(1)+'% 24h)';
+   const p=el('p','m');p.append('DEX: '+pr+ch+' · market cap '+mon(dx.market_cap)+' · main pool: liquidity '+mon(dx.liquidity_usd)+', 24h volume '+mon(dx.volume_24h)+' · as of '+local(D.dex_asof)+' · ',link('DexScreener',dx.url));d.append(p);}
   if(r.onchain_asof_utc)d.append(el('p','m','On-chain price '+r.onchain+' as of '+local(r.onchain_asof_utc)+' (TMF price desk)'));const src=el('p','src');src.append('Source: ',link(r.source,r.url));d.append(src);
   bt.addEventListener('click',()=>{const o=!row.classList.contains('open');row.classList.toggle('open',o);bt.setAttribute('aria-expanded',String(o));});
   row.append(bt,d);box.append(row);});}
@@ -466,7 +470,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    const mk=c.market;if(mk&&mk.eth_usd&&mk.asof_utc){const at=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(mk.asof_utc));
      const setT=(id,v,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=at;t.source=mk.source;t.url=mk.url;if(label)t.label=label;}};
      setT('eth',mk.eth_usd,'ETH price (on-chain)');}
-   d.usd=c.usd||{};d.fdv=c.fdv||{};d.archive=c.archive||[];
+   d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
    if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
    if(c.prices)(d.tokens||[]).forEach(t=>{const p=c.prices[t.token];if(!p)return;const m=/per 1M/.test(t.onchain||'');

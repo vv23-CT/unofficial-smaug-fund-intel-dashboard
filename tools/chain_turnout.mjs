@@ -123,10 +123,27 @@ for (const r of reg.slice(2)) { const fee = feeOf[r.symbol]; if (!fee) continue;
 const market = {};
 if (prices.USDG > 0) { market.eth_usd = +(1 / prices.USDG).toFixed(2); market.source = "TMF price desk (ETH valued in USDG)"; market.url = 'https://robinhoodchain.blockscout.com/address/' + PRICE_DESK; market.asof_utc = new Date().toISOString().replace(/\.\d+Z$/, 'Z'); }
 // token prices in USD (on-chain WETH price x on-chain ETH), and FDV (total supply x price) for the chain's own tokens
-const NATIVE = ['PONS', 'CASHCAT', 'AI', 'MANCER', 'STONKBROKER', 'APE', 'DERP']; // VIRTUAL is bridged and USDG is a dollar token: no FDV for them
+const NATIVE = ['PONS', 'CASHCAT', 'AI', 'MANCER', 'STONKBROKER', 'DERP']; // APE (ApeCoin) and VIRTUAL are bridged and USDG is a dollar token: no on-chain FDV for them
 const usd = {}, fdv = {};
 if (market.eth_usd) for (const r of reg.slice(2)) { const p = prices[r.symbol]; if (!p) continue; usd[r.symbol] = +(p * market.eth_usd).toPrecision(5);
   if (NATIVE.includes(r.symbol)) { try { const sup = await big(r.address, SEL.totalSupply); const whole = Number(sup / 10n ** BigInt(Math.max(0, r.decimals - 6))) / 1e6; fdv[r.symbol] = Math.round(whole * usd[r.symbol]); } catch {} } }
+
+// --- DexScreener (free public API; its terms allow free use with no key): market stats for the chain's own tokens ---
+const DEX_TOKENS = ['PONS', 'CASHCAT', 'AI', 'MANCER', 'STONKBROKER', 'APE', 'DERP', 'VIRTUAL'];
+const dex = {};
+try {
+  const addrs = reg.filter(r => DEX_TOKENS.includes(r.symbol));
+  const r = await fetch('https://api.dexscreener.com/tokens/v1/robinhood/' + addrs.map(a => a.address).join(','), { headers: { accept: 'application/json', 'user-agent': 'tmf-fund-intel-dashboard' } });
+  const pairs = r.ok ? await r.json() : [];
+  for (const a of addrs) {
+    const mine = pairs.filter(p => p.chainId === 'robinhood' && (p.baseToken?.address || '').toLowerCase() === a.address.toLowerCase());
+    if (!mine.length) continue;
+    const top = mine.slice().sort((x, y) => (y.liquidity?.usd || 0) - (x.liquidity?.usd || 0))[0];
+    dex[a.symbol] = { price_usd: Number(top.priceUsd) || null, change_24h: top.priceChange?.h24 ?? null,
+      volume_24h: Math.round(mine.reduce((t, p) => t + (p.volume?.h24 || 0), 0)), liquidity_usd: Math.round(mine.reduce((t, p) => t + (p.liquidity?.usd || 0), 0)),
+      market_cap: top.marketCap ?? null, fdv: top.fdv ?? null, pools: mine.length, url: top.url || ('https://dexscreener.com/robinhood/' + a.address) };
+  }
+} catch (e) { console.log('DexScreener skipped:', String(e).slice(0, 100)); }
 
 // --- per fund, this week ---
 const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
@@ -174,7 +191,7 @@ const out = {
   source: 'Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth',
   url: 'https://robinhoodchain.blockscout.com/address/' + BALLOT, ballot: BALLOT, dividend_office: OFFICE, desk: DESK,
   method: 'Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.',
-  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, funds, archive,
+  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, dex, funds, archive,
 };
 // Always save the reading (even if no count moved) so the page's "Updated" time shows the latest check.
 fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
