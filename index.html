@@ -389,8 +389,8 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
   const row=el('div','trow');const bt=el('button','tbtn');bt.type='button';bt.setAttribute('aria-expanded','false');
   bt.append(el('b',null,r.token),el('span','px',r.onchain),el('span','st '+(s==='backed'?'b':s==='vetoed'?'v':'n'),s==='backed'?P(f.room_tokens[r.token]):s==='vetoed'?'vetoed':'no cards'));
   const d=el('div','tdet');d.append(el('p',null,r.price));if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
-  const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?' · ~'+fl.n+' Fridays to fill in '+f.name:f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
-  const src=el('p','src');src.append('Source: ',link(r.source,r.url));d.append(src);
+  const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?' · ~'+fl.n+' Fridays to fill in '+f.name:f.status[r.token]==='backed'?' · fill time not captured yet':f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
+  if(r.onchain_asof_utc)d.append(el('p','m','On-chain price '+r.onchain+' as of '+local(r.onchain_asof_utc)+' (TMF price desk)'));const src=el('p','src');src.append('Source: ',link(r.source,r.url));d.append(src);
   bt.addEventListener('click',()=>{const o=!row.classList.contains('open');row.classList.toggle('open',o);bt.setAttribute('aria-expanded',String(o));});
   row.append(bt,d);box.append(row);});}
 $$('#tchips .chip').forEach(c=>c.addEventListener('click',()=>{G=c.dataset.g;$$('#tchips .chip').forEach(x=>x.setAttribute('aria-pressed',String(x===c)));drawTok();}));
@@ -428,7 +428,10 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
  /* newer turnout from the 30-minute chain reader, if it's there */
  .then(d=>(window.__CHAIN__?Promise.resolve(window.__CHAIN__):fetch('chain.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)).then(c=>{if(c&&c.funds&&c.asof_utc){
    d.chain=Object.assign({},d.chain||{},{url:c.url||(d.chain||{}).url,epoch:c.epoch});
-   if(!d.updated_utc||c.asof_utc>d.updated_utc)d.updated_utc=c.asof_utc;d.chain_asof_utc=c.asof_utc;if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
+   if(!d.updated_utc||c.asof_utc>d.updated_utc)d.updated_utc=c.asof_utc;d.chain_asof_utc=c.asof_utc;
+   /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
+   if(c.prices)(d.tokens||[]).forEach(t=>{const p=c.prices[t.token];if(!p)return;const m=/per 1M/.test(t.onchain||'');
+     t.onchain=(m?(p*1e6).toFixed(4):p.toFixed(6))+' WETH'+(m?' per 1M':'');t.onchain_asof_utc=c.asof_utc;});if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    (d.funds||[]).forEach(f=>{const x=c.funds[f.id];if(x&&(!f.turnout||c.asof_utc>f.turnout.asof_utc))f.turnout={enrolled:x.enrolled,voted:x.voted,enrolled_weight:x.enrolled_weight,asof_utc:c.asof_utc,epoch:c.epoch};
      /* the room itself, rebuilt from on-chain cards, when it is newer than the last ballot capture (same week only) */
      const r=x&&x.room;if(r&&r.tmf_held!=null&&c.epoch===d.week&&(!f.asof_utc||c.asof_utc>f.asof_utc)){
