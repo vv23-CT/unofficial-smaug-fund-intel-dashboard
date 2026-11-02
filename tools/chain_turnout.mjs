@@ -119,15 +119,10 @@ for (const r of reg.slice(2)) { const fee = feeOf[r.symbol]; if (!fee) continue;
   try { const h = await raw(PRICE_DESK, SEL.priceInWeth, r.address, fee, r.decimals, 0); const p = Number(BigInt(h.slice(0, 66))) / 1e18; if (p > 0) prices[r.symbol] = +p.toPrecision(6);
     if (h.length >= 130) { const dpt = Number(BigInt('0x' + h.slice(66, 130))) / 1e18; if (dpt > 0) depth[r.symbol] = +dpt.toPrecision(4); } } catch {} }
 
-// --- USD: ETH and BTC from Coinbase's public price feed (Kraken if Coinbase fails), ETH 7-day change from Coinbase daily candles ---
-async function getJSON(u) { const r = await fetch(u, { headers: { 'user-agent': 'tmf-fund-intel-dashboard', accept: 'application/json' } }); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); }
+// --- USD from the chain only: ETH valued in USDG (a dollar token) on TMF's own price desk ---
 const market = {};
-try { market.eth_usd = Number((await getJSON('https://api.coinbase.com/v2/prices/ETH-USD/spot')).data.amount);
-  market.btc_usd = Number((await getJSON('https://api.coinbase.com/v2/prices/BTC-USD/spot')).data.amount); market.source = 'Coinbase'; market.url = 'https://www.coinbase.com/price/ethereum'; }
-catch { try { const k = (await getJSON('https://api.kraken.com/0/public/Ticker?pair=ETHUSD,XBTUSD')).result; market.eth_usd = Number(k.XETHZUSD.c[0]); market.btc_usd = Number(k.XXBTZUSD.c[0]); market.source = 'Kraken'; market.url = 'https://www.kraken.com/prices/ethereum'; } catch {} }
-try { const c = await getJSON('https://api.exchange.coinbase.com/products/ETH-USD/candles?granularity=86400'); const wk = c[7]?.[4]; if (market.eth_usd && wk) market.eth_7d = +(market.eth_usd / wk - 1).toFixed(4); } catch {}
-if (market.eth_usd) market.asof_utc = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
-// token prices in USD (on-chain WETH price x ETH), and FDV (total supply x price) for the chain's own tokens
+if (prices.USDG > 0) { market.eth_usd = +(1 / prices.USDG).toFixed(2); market.source = "TMF price desk (ETH valued in USDG)"; market.url = 'https://robinhoodchain.blockscout.com/address/' + PRICE_DESK; market.asof_utc = new Date().toISOString().replace(/\.\d+Z$/, 'Z'); }
+// token prices in USD (on-chain WETH price x on-chain ETH), and FDV (total supply x price) for the chain's own tokens
 const NATIVE = ['PONS', 'CASHCAT', 'AI', 'MANCER', 'STONKBROKER', 'APE', 'DERP']; // VIRTUAL is bridged and USDG is a dollar token: no FDV for them
 const usd = {}, fdv = {};
 if (market.eth_usd) for (const r of reg.slice(2)) { const p = prices[r.symbol]; if (!p) continue; usd[r.symbol] = +(p * market.eth_usd).toPrecision(5);

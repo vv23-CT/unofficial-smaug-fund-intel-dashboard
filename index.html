@@ -415,7 +415,7 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
  D.tokens.filter(r=>!G||r.group===G).slice().sort((a,b)=>ORDER[f.status[a.token]]-ORDER[f.status[b.token]]).forEach(r=>{const s=f.status[r.token];
   const row=el('div','trow');const bt=el('button','tbtn');bt.type='button';bt.setAttribute('aria-expanded','false');
   bt.append(el('b',null,r.token),el('span','px',r.onchain),el('span','st '+(s==='backed'?'b':s==='vetoed'?'v':'n'),s==='backed'?P(f.room_tokens[r.token]):s==='vetoed'?'vetoed':'no cards'));
-  const d=el('div','tdet');d.append(el('p',null,r.price));if((D.usd||{})[r.token]){const u=D.usd[r.token],fv=(D.fdv||{})[r.token];d.append(el('p','m','On-chain ≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3))+(fv?' · FDV ≈ $'+(fv>=1e6?(fv/1e6).toFixed(1)+'M':fv>=1e3?(fv/1e3).toFixed(0)+'K':fv)+' (total supply × on-chain price)':'')+' · TMF price desk × ETH (Coinbase)'));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
+  const d=el('div','tdet');d.append(el('p',null,r.price));if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token],fv=(D.fdv||{})[r.token];d.append(el('p','m','On-chain ≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3))+(fv?' · FDV ≈ $'+(fv>=1e6?(fv/1e6).toFixed(1)+'M':fv>=1e3?(fv/1e3).toFixed(0)+'K':fv)+' (total supply × on-chain price)':'')+' · on-chain, valued in USDG on TMF\u2019s price desk'));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
   const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?(fl.n<=1?' · a quarter of '+f.name+' fills in one Friday':' · ~'+fl.n+' Fridays to fill a quarter of '+f.name):f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
   if(r.onchain_asof_utc)d.append(el('p','m','On-chain price '+r.onchain+' as of '+local(r.onchain_asof_utc)+' (TMF price desk)'));const src=el('p','src');src.append('Source: ',link(r.source,r.url));d.append(src);
   bt.addEventListener('click',()=>{const o=!row.classList.contains('open');row.classList.toggle('open',o);bt.setAttribute('aria-expanded',String(o));});
@@ -462,10 +462,10 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    /* a new week on the chain (the bell rang): last week's captures, fills and timeline drop off */
    if(c.epoch&&c.epoch>d.week){d.week=c.epoch;(d.funds||[]).forEach(f=>{f.history=[];f.fills={};f.not_in_capture=[];f.asof_utc=null;f.asof='—';f.turnout=null;});}
    if(!d.updated_utc||c.asof_utc>d.updated_utc)d.updated_utc=c.asof_utc;d.chain_asof_utc=c.asof_utc;
-   /* ETH and BTC in USD from Coinbase every reading (newer than the morning CoinMarketCap tiles) */
+   /* ETH in USD from the chain every reading: valued in USDG (a dollar token) on TMF's price desk */
    const mk=c.market;if(mk&&mk.eth_usd&&mk.asof_utc){const at=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(mk.asof_utc));
      const setT=(id,v,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=at;t.source=mk.source;t.url=mk.url;if(label)t.label=label;}};
-     setT('eth',mk.eth_usd);setT('eth_1w',mk.eth_7d);setT('btc',mk.btc_usd);}
+     setT('eth',mk.eth_usd,'ETH price (on-chain)');}
    d.usd=c.usd||{};d.fdv=c.fdv||{};d.archive=c.archive||[];
    if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
@@ -493,13 +493,6 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    if(J)tiles.push({id:'bls_jobs',label:'Jobs added, '+mo(J.period)+(J.preliminary?' (prelim.)':''),value:sg(J.payrolls_change),fmt:'txt',asof:(J.release_date?'Released '+day(J.release_date)+' · ':'')+'unemployment '+J.unemployment_rate+'%',source:'BLS',url:J.url});
    if(C)tiles.push({id:'bls_cpi',label:'CPI, '+mo(C.period),value:sg(C.cpi_mm)+'% m/m · '+C.cpi_yy+'% y/y',fmt:'txt',asof:(C.release_date?'Released '+day(C.release_date)+' · ':'')+(C.core_mm!=null?'core '+sg(C.core_mm)+'% m/m':''),source:'BLS',url:C.url});
    d.market=(d.market||[]).filter(r=>!/^bls_/.test(r.id)).concat(tiles);return d;}))
- /* daily closes for the stock tokens and the Nasdaq Composite (GitHub, after each weekday close) */
- .then(d=>(window.__STOCKS__?Promise.resolve(window.__STOCKS__):fetch('stocks.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)).then(St=>{if(!St||!St.closes)return d;
-   const md=s=>{const [m,dd,y]=s.split('/');return new Date(Date.UTC(+y,+m-1,+dd,12)).toLocaleDateString(undefined,{month:'short',day:'numeric',timeZone:'UTC'});};
-   const pc=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%';
-   (d.tokens||[]).forEach(t=>{const c=St.closes[t.token];if(!c)return;t.price='$'+c.close.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+', '+pc(c.change)+' on '+md(c.date)+' (close)';t.source='Nasdaq.com';t.url=c.url;});
-   const X=St.closes.COMP,tl=(d.market||[]).find(r=>r.id==='nasdaq');if(X&&tl){tl.label='Nasdaq, '+md(X.date);tl.value=X.change;tl.asof=X.close.toLocaleString()+' close';tl.source='Nasdaq.com';tl.url=X.url;}
-   return d;}))
  .then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
 
 </script>
