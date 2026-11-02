@@ -148,7 +148,8 @@ const archive = (prev?.archive || []).slice();
 if (newWeek && !archive.some(a => a.week === prev.epoch)) {
   const fin = await roomsFor(prev.epoch);
   archive.unshift({ week: prev.epoch, bell_utc: prev.closes_utc, funds: Object.fromEntries(FUNDS.map(f => [f, { chairs: fin[f].chairs, room_tokens: fin[f].room_tokens,
-    tmf_held_last_reading: prev.funds?.[f]?.room?.tmf_held ?? null }])), note: 'Rooms at the bell rebuilt from every card returned that week; $TMF held is from the last reading before the bell.' });
+    tmf_held_last_reading: prev.funds?.[f]?.room?.tmf_held ?? null, enrolled_last_reading: prev.funds?.[f]?.enrolled ?? null,
+    fills: Object.fromEntries(Object.keys(fin[f].room_tokens).map(t => [t, prev.funds?.[f]?.room?.fills?.[t] ?? null])) }])), note: 'Rooms at the bell rebuilt from every card returned that week; $TMF held is from the last reading before the bell.' });
 }
 archive.splice(26);
 
