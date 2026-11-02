@@ -389,7 +389,7 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
   const row=el('div','trow');const bt=el('button','tbtn');bt.type='button';bt.setAttribute('aria-expanded','false');
   bt.append(el('b',null,r.token),el('span','px',r.onchain),el('span','st '+(s==='backed'?'b':s==='vetoed'?'v':'n'),s==='backed'?P(f.room_tokens[r.token]):s==='vetoed'?'vetoed':'no cards'));
   const d=el('div','tdet');d.append(el('p',null,r.price));if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
-  const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?' · ~'+fl.n+' Fridays to fill in '+f.name:f.status[r.token]==='backed'?' · fill time not captured yet':f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
+  const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?(fl.n<=1?' · a quarter of '+f.name+' fills in one Friday':' · ~'+fl.n+' Fridays to fill a quarter of '+f.name):f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
   if(r.onchain_asof_utc)d.append(el('p','m','On-chain price '+r.onchain+' as of '+local(r.onchain_asof_utc)+' (TMF price desk)'));const src=el('p','src');src.append('Source: ',link(r.source,r.url));d.append(src);
   bt.addEventListener('click',()=>{const o=!row.classList.contains('open');row.classList.toggle('open',o);bt.setAttribute('aria-expanded',String(o));});
   row.append(bt,d);box.append(row);});}
@@ -440,6 +440,8 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
      const r=x.room;if(r&&r.tmf_held!=null&&c.epoch===d.week&&(!f.asof_utc||c.asof_utc>f.asof_utc)){
       f.chairs=r.chairs;f.tmf_held=r.tmf_held;f.room_weth=r.room_weth;f.room_tokens=r.room_tokens;f.status=Object.assign({},f.status,r.status);
       f.capture_asof_utc=f.asof_utc;f.asof_utc=c.asof_utc;f.room_src='chain';}
+     /* Fridays to fill from the price desk's per-Friday limit (same formula the ballot prints) */
+     if(r&&r.fills&&c.epoch===d.week){f.fills={};Object.entries(r.fills).forEach(([t,n])=>{f.fills[t]={n,asof_utc:c.asof_utc,chain:true};});f.not_in_capture=[];}
      /* This week: ballot captures plus the reader's own rows (one a day, and one whenever what the room backs changes) */
      if(c.epoch===d.week){const ch=(x.history||[]).map(s=>Object.assign({},s,{chain:true}));
       if(!ch.length&&r)ch.push({asof_utc:c.asof_utc,chairs:r.chairs,tmf_held:r.tmf_held,backs:r.room_tokens,chain:true});

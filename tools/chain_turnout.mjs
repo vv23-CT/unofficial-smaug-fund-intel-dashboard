@@ -114,9 +114,10 @@ async function roomsFor(ep) {
 // --- token prices in WETH from the price desk (pool fee per token from data.json) ---
 const DATA = fs.existsSync('data.json') ? JSON.parse(fs.readFileSync('data.json', 'utf8')) : { tokens: [], funds: [] };
 const feeOf = Object.fromEntries((DATA.tokens || []).map(t => [t.token, Math.round(t.fee * 1e6)]));
-const prices = {};
+const prices = {}, depth = {}; // depth: the most the desk trades in a token each Friday (WETH), the ballot's "Slow to fill" limit
 for (const r of reg.slice(2)) { const fee = feeOf[r.symbol]; if (!fee) continue;
-  try { const h = await raw(PRICE_DESK, SEL.priceInWeth, r.address, fee, r.decimals, 0); const p = Number(BigInt(h.slice(0, 66))) / 1e18; if (p > 0) prices[r.symbol] = +p.toPrecision(6); } catch {} }
+  try { const h = await raw(PRICE_DESK, SEL.priceInWeth, r.address, fee, r.decimals, 0); const p = Number(BigInt(h.slice(0, 66))) / 1e18; if (p > 0) prices[r.symbol] = +p.toPrecision(6);
+    if (h.length >= 130) { const dpt = Number(BigInt('0x' + h.slice(66, 130))) / 1e18; if (dpt > 0) depth[r.symbol] = +dpt.toPrecision(4); } } catch {} }
 
 // --- per fund, this week ---
 const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
@@ -129,7 +130,10 @@ for (const [i, f] of FUNDS.entries()) {
   const tmf_held = nav > 0n ? +(Number((nav - wethBook) * 1000000n / nav) / 1e6).toFixed(4) : null;
   const r = rooms[f];
   const room_weth = tmf_held == null ? null : +(1 - tmf_held - Object.values(r.room_tokens).reduce((a, b) => a + b, 0)).toFixed(4);
-  const room = { chairs: r.chairs, tmf_held, room_weth, room_tokens: r.room_tokens, status: r.status };
+  // Fridays to fill, as the ballot words it: a quarter of the fund divided by the desk's per-Friday limit for that token
+  const navW = Number(nav) / 1e18, fills = {};
+  for (const [t, dpt] of Object.entries(depth)) fills[t] = Math.ceil((navW / 4) / dpt);
+  const room = { chairs: r.chairs, tmf_held, room_weth, room_tokens: r.room_tokens, status: r.status, nav_weth: +navW.toFixed(4), fills };
   if (r.chairs !== voted) room.note = `cards read ${r.chairs}, contract count ${voted}`;
   // "This week" timeline: one row per day (kept current), plus a new row whenever what the room backs changes
   const history = prev && prev.epoch === epoch ? (prev.funds?.[f]?.history || []).slice() : [];
@@ -160,7 +164,7 @@ const out = {
   source: 'Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth',
   url: 'https://robinhoodchain.blockscout.com/address/' + BALLOT, ballot: BALLOT, dividend_office: OFFICE, desk: DESK,
   method: 'Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.',
-  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, funds, archive,
+  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, funds, archive,
 };
 // Always save the reading (even if no count moved) so the page's "Updated" time shows the latest check.
 fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
