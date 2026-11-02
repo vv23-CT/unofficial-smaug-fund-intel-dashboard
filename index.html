@@ -415,7 +415,7 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
  D.tokens.filter(r=>!G||r.group===G).slice().sort((a,b)=>ORDER[f.status[a.token]]-ORDER[f.status[b.token]]).forEach(r=>{const s=f.status[r.token];
   const row=el('div','trow');const bt=el('button','tbtn');bt.type='button';bt.setAttribute('aria-expanded','false');
   bt.append(el('b',null,r.token),el('span','px',r.onchain),el('span','st '+(s==='backed'?'b':s==='vetoed'?'v':'n'),s==='backed'?P(f.room_tokens[r.token]):s==='vetoed'?'vetoed':'no cards'));
-  const d=el('div','tdet');d.append(el('p',null,r.price));if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token],fv=(D.fdv||{})[r.token];d.append(el('p','m','On-chain ≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3))+(fv?' · FDV ≈ $'+(fv>=1e6?(fv/1e6).toFixed(1)+'M':fv>=1e3?(fv/1e3).toFixed(0)+'K':fv)+' (total supply × on-chain price)':'')+' · on-chain, valued in USDG on TMF\u2019s price desk'));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
+  const d=el('div','tdet');d.append(el('p',null,r.price));if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token],fv=(D.fdv||{})[r.token];d.append(el('p','m','On-chain ≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3))+(()=>{const g=(D.chg||{})[r.token]||{},f=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%',x=[];if(g.h24!=null)x.push('24h '+f(g.h24));if(g.d7!=null)x.push('7d '+f(g.d7));return x.length?' ('+x.join(', ')+')':'';})()+' · on-chain, valued in USDG on TMF\u2019s price desk'));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
   const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?(fl.n<=1?' · a quarter of '+f.name+' fills in one Friday':' · ~'+fl.n+' Fridays to fill a quarter of '+f.name):f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
   const dx=(D.dex||{})[r.token];if(dx){const mon=v=>v==null?'—':v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':v>=1e3?'$'+(v/1e3).toFixed(0)+'K':'$'+Math.round(v);
    const pr=dx.price_usd==null?'—':dx.price_usd>=1?'$'+dx.price_usd.toFixed(2):'$'+dx.price_usd.toPrecision(3);
@@ -469,8 +469,8 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    /* ETH in USD from the chain every reading: valued in USDG (a dollar token) on TMF's price desk */
    const mk=c.market;if(mk&&mk.eth_usd&&mk.asof_utc){const at=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(mk.asof_utc));
      const setT=(id,v,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=at;t.source=mk.source;t.url=mk.url;if(label)t.label=label;}};
-     setT('eth',mk.eth_usd,'ETH price (on-chain)');}
-   d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
+     setT('eth',mk.eth_usd,'ETH price (on-chain)');const ce=(c.changes||{}).ETH;if(ce&&ce.d7!=null)setT('eth_1w',ce.d7,'ETH, last 7 days (on-chain)');}
+   d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
    if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
    if(c.prices)(d.tokens||[]).forEach(t=>{const p=c.prices[t.token];if(!p)return;const m=/per 1M/.test(t.onchain||'');

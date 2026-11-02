@@ -128,6 +128,17 @@ const usd = {}, fdv = {};
 if (market.eth_usd) for (const r of reg.slice(2)) { const p = prices[r.symbol]; if (!p) continue; usd[r.symbol] = +(p * market.eth_usd).toPrecision(5);
   if (NATIVE.includes(r.symbol)) { try { const sup = await big(r.address, SEL.totalSupply); const whole = Number(sup / 10n ** BigInt(Math.max(0, r.decimals - 6))) / 1e6; fdv[r.symbol] = Math.round(whole * usd[r.symbol]); } catch {} } }
 
+// --- price history (hourly, 8 days) for 24h and 7-day changes, from on-chain prices only ---
+const nowMs = Date.now();
+const hist = (prev?.price_hist || []).filter(h => nowMs - Date.parse(h.t) <= 8 * 864e5 + 2 * 36e5);
+if (market.eth_usd && (!hist.length || nowMs - Date.parse(hist[hist.length - 1].t) >= 55 * 6e4)) hist.push({ t: new Date(nowMs).toISOString().replace(/\.\d+Z$/, 'Z'), eth: market.eth_usd, w: prices });
+const near = (ago, tol) => { let best = null; for (const h of hist) { const d = Math.abs(nowMs - ago - Date.parse(h.t)); if (d <= tol && (!best || d < best.d)) best = { h, d }; } return best?.h || null; };
+const changes = {};
+if (market.eth_usd) { const a = near(864e5, 90 * 6e4), b = near(7 * 864e5, 3 * 36e5);
+  const ch = (now, then) => then ? +((now / then - 1)).toFixed(4) : null;
+  changes.ETH = { h24: ch(market.eth_usd, a?.eth), d7: ch(market.eth_usd, b?.eth) };
+  for (const [t, p] of Object.entries(prices)) { const u = p * market.eth_usd; changes[t] = { h24: a?.w?.[t] ? ch(u, a.w[t] * a.eth) : null, d7: b?.w?.[t] ? ch(u, b.w[t] * b.eth) : null }; } }
+
 // --- DexScreener (free public API; its terms allow free use with no key): market stats for the chain's own tokens ---
 const DEX_TOKENS = ['PONS', 'CASHCAT', 'AI', 'MANCER', 'STONKBROKER', 'APE', 'DERP', 'VIRTUAL'];
 const dex = {};
@@ -191,7 +202,7 @@ const out = {
   source: 'Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth',
   url: 'https://robinhoodchain.blockscout.com/address/' + BALLOT, ballot: BALLOT, dividend_office: OFFICE, desk: DESK,
   method: 'Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.',
-  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, dex, funds, archive,
+  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, dex, changes, price_hist: hist, funds, archive,
 };
 // Always save the reading (even if no count moved) so the page's "Updated" time shows the latest check.
 fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
