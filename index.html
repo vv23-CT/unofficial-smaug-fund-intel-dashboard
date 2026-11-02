@@ -187,6 +187,8 @@ html,body{height:100%;overflow:hidden}
 .stat b span{font:inherit;color:inherit;letter-spacing:0}
 .stat em{font-size:12px;vertical-align:1px}
 
+.hd .sub .nxt{flex-basis:100%}
+.hd .sub .nxt::before{content:'↻ ';}
 /* turnout, read from the chain */
 .oc{color:var(--muted);font-size:11px}
 #wkList small.oc{display:block}
@@ -235,7 +237,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="scroll" id="scroll" tabindex="0" aria-label="Dashboard content">
 <header class="hd">
 <h1>What each room is backing</h1>
-<div class="sub"><span id="wk">Week 2</span><span aria-hidden="true">·</span><span class="upd">Updated <time id="updTime">—</time></span></div>
+<div class="sub"><span id="wk">Week 2</span><span aria-hidden="true">·</span><span class="upd">Updated <time id="updTime">—</time></span><span class="nxt" id="nxtWrap" hidden><span id="nxt"></span></span></div>
 </header>
 <main class="body">
 <section class="fcard" id="fcard" aria-live="polite">
@@ -328,7 +330,12 @@ const tick=()=>{const sb=$('#sbBell'),ms=BELL-Date.now();sb.title='Ballots close
  if(ms<=0){sb.textContent='Bell rang '+bellWk+' '+bellTm;return;}
  if(ms<864e5){const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);sb.textContent='Bell in '+(h?h+'h ':'')+m+'m';return;}
  sb.textContent='Bell '+bellWk+' '+bellTm;};tick();setInterval(tick,30000);
-$('#wk').textContent='Week '+D.week;stamp($('#updTime'),D.updated_utc,(D.updates[0]||{}).date);$('#sbUpd').textContent='Updated '+(D.updated_utc?new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(D.updated_utc)):(D.updates[0]||{}).date);
+$('#wk').textContent='Week '+D.week;
+ /* next automatic update: the chain reader runs at :07 and :37 past each hour (GitHub can start it a few minutes late) */
+ (function nextUpd(){if(!D.chain_asof_utc)return;const last=Date.parse(D.chain_asof_utc),now=Date.now();const slot=t=>{const d=new Date(t);d.setUTCSeconds(0,0);const m=d.getUTCMinutes();d.setUTCMinutes(m<7?7:m<37?37:67);return d.getTime();};
+  let nx=slot(Math.max(now,last+60000));const late=now-last>75*60000;$('#nxtWrap').hidden=false;
+  $('#nxt').textContent=late?'Next update running late':'Next update about '+fmtTime.format(new Date(nx)).replace(/ [A-Z]{2,5}$/,'');
+  setTimeout(nextUpd,60000);})();stamp($('#updTime'),D.updated_utc,(D.updates[0]||{}).date);$('#sbUpd').textContent='Updated '+(D.updated_utc?new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(D.updated_utc)):(D.updates[0]||{}).date);
 
 /* fund switcher */
 FUNDS.forEach(f=>{const b=el('button','fbtn');b.type='button';b.setAttribute('role','tab');b.dataset.f=f.id;const hc=HOUSE[f.id]||['#453629','#fff'];b.style.setProperty('--fh',hc[0]);b.style.setProperty('--fhi',hc[1]);const sw=el('i','sw');sw.setAttribute('aria-hidden','true');b.append(sw,el('span',null,f.name));
@@ -421,7 +428,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
  /* newer turnout from the 30-minute chain reader, if it's there */
  .then(d=>(window.__CHAIN__?Promise.resolve(window.__CHAIN__):fetch('chain.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)).then(c=>{if(c&&c.funds&&c.asof_utc){
    d.chain=Object.assign({},d.chain||{},{url:c.url||(d.chain||{}).url,epoch:c.epoch});
-   if(!d.updated_utc||c.asof_utc>d.updated_utc)d.updated_utc=c.asof_utc;
+   if(!d.updated_utc||c.asof_utc>d.updated_utc)d.updated_utc=c.asof_utc;d.chain_asof_utc=c.asof_utc;if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    (d.funds||[]).forEach(f=>{const x=c.funds[f.id];if(x&&(!f.turnout||c.asof_utc>f.turnout.asof_utc))f.turnout={enrolled:x.enrolled,voted:x.voted,enrolled_weight:x.enrolled_weight,asof_utc:c.asof_utc,epoch:c.epoch};
      /* the room itself, rebuilt from on-chain cards, when it is newer than the last ballot capture (same week only) */
      const r=x&&x.room;if(r&&r.tmf_held!=null&&c.epoch===d.week&&(!f.asof_utc||c.asof_utc>f.asof_utc)){

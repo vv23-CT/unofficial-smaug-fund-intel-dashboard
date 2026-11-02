@@ -115,8 +115,6 @@ const out = {
   method: 'Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.',
   cards_read: cards.length, cards_undecoded: undecoded, funds,
 };
-// Only rewrite when something changes, so the site isn't rebuilt every 30 minutes for nothing.
-const strip = o => JSON.stringify(o && { e: o.epoch, f: o.funds });
-if (prev && strip(prev) === strip(out)) { console.log('No change since', prev.asof_utc); process.exit(0); }
+// Always save the reading (even if no count moved) so the page's "Updated" time shows the latest check.
 fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
 console.log(JSON.stringify(Object.fromEntries(Object.entries(funds).map(([k, v]) => [k, { voted: v.voted, chairs: v.room.chairs, tmf: v.room.tmf_held, backs: v.room.room_tokens }]))));
