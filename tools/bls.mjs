@@ -1,6 +1,6 @@
 // Official US jobs and CPI numbers from the Bureau of Labor Statistics' public data feed (free, no key).
 // Writes econ.json. To stay far inside the keyless limit (about 25 requests a day) it only asks BLS
-// on a release day between 8:29 and 11:30 AM ET, until that month's numbers appear, or when econ.json
+// on a release day between 8:29 and 11:30 AM ET (the release calendar also feeds "Next 14 days": jobs, CPI and Fed decisions), until that month's numbers appear, or when econ.json
 // has nothing yet. The release calendar comes from BLS's own schedule pages, refreshed weekly.
 import fs from 'node:fs';
 const OUT = 'econ.json';
@@ -21,6 +21,14 @@ if (!prev.schedule || !prev.schedule_utc || now - new Date(prev.schedule_utc) > 
       const days = [...t.matchAll(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)\.? (\d{1,2}), (20\d\d)\b/g)].map(m => `${m[3]}-${String(MON[m[1]]).padStart(2, '0')}-${m[2].padStart(2, '0')}`);
       if (days.length) sched[k] = [...new Set(days)].sort(); } catch {}
   }
+  // Federal Reserve: FOMC meeting dates (the decision is on the last day, statement at 2:00 PM ET)
+  try { const t = await (await fetch('https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm', { headers: UA })).text();
+    const FULL = { January: 1, February: 2, March: 3, April: 4, May: 5, June: 6, July: 7, August: 8, September: 9, October: 10, November: 11, December: 12 };
+    const days = [];
+    for (const panel of t.split(/<h4[^>]*>/).slice(1)) { const y = (panel.match(/(20\d\d) FOMC Meetings/) || [])[1]; if (!y) continue;
+      for (const m of panel.matchAll(/fomc-meeting__month[^>]*>\s*<strong>([A-Za-z]+)(?:\/([A-Za-z]+))?<\/strong>[\s\S]*?fomc-meeting__date[^>]*>\s*([\d]+)(?:-(\d+))?\*?/g)) {
+        const mon = FULL[m[2] || m[1]], day = m[4] || m[3]; if (mon) days.push(`${y}-${String(mon).padStart(2, '0')}-${String(day).padStart(2, '0')}`); } }
+    const keep = `${now.getUTCFullYear() - 1}-01-01`; if (days.length) sched.fomc = [...new Set(days)].filter(d => d >= keep).sort(); } catch {}
   if (Object.keys(sched).length) { out.schedule = { ...(prev.schedule || {}), ...sched }; out.schedule_utc = now.toISOString().replace(/\.\d+Z$/, 'Z'); changed = true; }
 }
 const today = etDate(now), mins = etHM(now);

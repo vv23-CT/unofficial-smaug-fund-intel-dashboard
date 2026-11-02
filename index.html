@@ -496,7 +496,19 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    const J=d.econ.jobs,C=d.econ.cpi,tiles=[];
    if(J)tiles.push({id:'bls_jobs',label:'Jobs added, '+mo(J.period)+(J.preliminary?' (prelim.)':''),value:sg(J.payrolls_change),fmt:'txt',asof:(J.release_date?'Released '+day(J.release_date)+' · ':'')+'unemployment '+J.unemployment_rate+'%',source:'BLS',url:J.url});
    if(C)tiles.push({id:'bls_cpi',label:'CPI, '+mo(C.period),value:sg(C.cpi_mm)+'% m/m · '+C.cpi_yy+'% y/y',fmt:'txt',asof:(C.release_date?'Released '+day(C.release_date)+' · ':'')+(C.core_mm!=null?'core '+sg(C.core_mm)+'% m/m':''),source:'BLS',url:C.url});
-   d.market=(d.market||[]).filter(r=>!/^bls_/.test(r.id)).concat(tiles);return d;}))
+   d.market=(d.market||[]).filter(r=>!/^bls_/.test(r.id)).concat(tiles);
+   /* official release dates (BLS jobs and CPI, Fed decisions) added to "Next 14 days" unless already listed */
+   const S=d.econ.schedule||{},t0=new Date(),iso=x=>x.toISOString().slice(0,10),end=iso(new Date(t0.getTime()+14*864e5)),td=iso(new Date(t0.getTime()-864e5));
+   const lbl=s=>{const x=new Date(s+'T12:00:00Z');return x.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',timeZone:'UTC'}).replace(',','');};
+   const prevMonth=s=>{const x=new Date(s+'T12:00:00Z');x.setUTCDate(1);x.setUTCMonth(x.getUTCMonth()-1);return x.toLocaleDateString('en-US',{month:'long',timeZone:'UTC'});};
+   const have=(date,re)=>(d.events||[]).some(e=>e.date===date&&re.test(e.event));
+   const add=(k,re,ev)=>(S[k]||[]).filter(x=>x>=td&&x<=end).forEach(x=>{if(!have(x,re))d.events.push(Object.assign({id:'auto_'+k+'_'+x,date:x,when_utc:lbl(x),key:true},ev(x)));});
+   d.events=d.events||[];
+   add('jobs',/jobs report|payroll/i,x=>({when_et:'8:30am ET',event:prevMonth(x)+' jobs report',tokens:'Everything',short:'Jobs report '+lbl(x).split(' ')[0]+' 8:30am',source:'BLS schedule',url:'https://www.bls.gov/schedule/news_release/empsit.htm'}));
+   add('cpi',/\bCPI\b|inflation/i,x=>({when_et:'8:30am ET',event:prevMonth(x)+' CPI (inflation)',tokens:'ETH, SGOV, GLD, QQQ',short:'CPI '+lbl(x),source:'BLS schedule',url:'https://www.bls.gov/schedule/news_release/cpi.htm'}));
+   add('fomc',/\bFed\b|FOMC/i,x=>({when_et:'2:00pm ET',event:'Fed rate decision (FOMC)',tokens:'Everything',short:'Fed decision '+lbl(x),source:'Federal Reserve',url:'https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm'}));
+   d.events.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+   return d;}))
  .then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
 
 </script>
