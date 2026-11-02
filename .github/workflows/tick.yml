@@ -1,0 +1,52 @@
+name: "Chain reader clock - every ~30 min"
+
+# GitHub's own schedule (cron) never fires for this repo, so this keeps time instead:
+# wait on the reader-timer environment's 29-minute wait timer, start a chain reading,
+# then queue the next tick. Waiting uses no runner time. If the environment or its
+# timer is missing, the clock stops instead of looping. Start or restart it from the
+# Actions tab (Run workflow) or with:
+#   gh api -X POST repos/vv23-CT/unofficial-tmf-fund-intel-dashboard/actions/workflows/tick.yml/dispatches -f ref=main
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'   # restarts the clock if it ever stops (only if GitHub's scheduler works)
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      ok: ${{ steps.c.outputs.ok }}
+    steps:
+      - id: c
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # stop if another clock is already waiting on its timer (prevents two chains);
+          # the tick that just queued this one is still finishing, so in_progress runs don't count
+          OTHERS=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/tick.yml/runs?per_page=20" \
+            --jq "[.workflow_runs[] | select(.id != ${{ github.run_id }}) | select(.status==\"queued\" or .status==\"waiting\" or .status==\"pending\")] | length")
+          if [ "$OTHERS" != "0" ]; then echo "Another tick is running ($OTHERS); stopping this one."; echo "ok=0" >> $GITHUB_OUTPUT; exit 0; fi
+          # stop unless the reader-timer environment exists with a wait timer of 20+ minutes
+          W=$(gh api "repos/$GITHUB_REPOSITORY/environments/reader-timer" --jq '[.protection_rules[]? | select(.type=="wait_timer") | .wait_timer] | max // 0' 2>/dev/null || echo 0)
+          echo "wait_timer=$W"
+          if [ "${W:-0}" -ge 20 ]; then echo "ok=1" >> $GITHUB_OUTPUT; else echo "reader-timer environment missing or its wait timer is under 20 minutes; the clock stops."; echo "ok=0" >> $GITHUB_OUTPUT; fi
+  wait:
+    needs: check
+    if: needs.check.outputs.ok == '1'
+    runs-on: ubuntu-latest
+    environment: reader-timer
+    steps:
+      - run: echo "Waited for the timer."
+  go:
+    needs: wait
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X POST "repos/$GITHUB_REPOSITORY/actions/workflows/turnout.yml/dispatches" -f ref=main
+          gh api -X POST "repos/$GITHUB_REPOSITORY/actions/workflows/tick.yml/dispatches" -f ref=main

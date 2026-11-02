@@ -331,9 +331,9 @@ const tick=()=>{const sb=$('#sbBell'),ms=BELL-Date.now();sb.title='Ballots close
  if(ms<864e5){const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);sb.textContent='Bell in '+(h?h+'h ':'')+m+'m';return;}
  sb.textContent='Bell '+bellWk+' '+bellTm;};tick();setInterval(tick,30000);
 $('#wk').textContent='Week '+D.week;
- /* next automatic update: the chain reader runs at :07 and :37 past each hour (GitHub can start it a few minutes late) */
- (function nextUpd(){if(!D.chain_asof_utc)return;const last=Date.parse(D.chain_asof_utc),now=Date.now();const slot=t=>{const d=new Date(t);d.setUTCSeconds(0,0);const m=d.getUTCMinutes();d.setUTCMinutes(m<7?7:m<37?37:67);return d.getTime();};
-  let nx=slot(Math.max(now,last+60000));const late=now-last>75*60000;$('#nxtWrap').hidden=false;
+ /* next automatic update: the chain reader runs about every 30 minutes */
+ (function nextUpd(){if(!D.chain_asof_utc)return;const last=Date.parse(D.chain_asof_utc),now=Date.now();/* readings come about every 31 minutes (29-minute timer plus start-up) */
+  let nx=last+31*60000;if(nx<now)nx=now+60000;const late=now-last>75*60000;$('#nxtWrap').hidden=false;
   $('#nxt').textContent=late?'Next update running late':'Next update about '+fmtTime.format(new Date(nx)).replace(/ [A-Z]{2,5}$/,'');
   setTimeout(nextUpd,60000);})();stamp($('#updTime'),D.updated_utc,(D.updates[0]||{}).date);$('#sbUpd').textContent='Updated '+(D.updated_utc?new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(D.updated_utc)):(D.updates[0]||{}).date);
 
