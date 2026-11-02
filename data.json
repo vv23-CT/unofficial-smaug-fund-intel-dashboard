@@ -2,7 +2,7 @@
  "version": 2,
  "week": 2,
  "bell_utc": "2026-11-06T20:00:00Z",
- "updated_utc": "2026-11-01T11:45:00Z",
+ "updated_utc": "2026-11-02T11:50:00Z",
  "funds": [
   {
    "id": "argon",
@@ -438,18 +438,18 @@
   {
    "id": "eth",
    "label": "ETH price",
-   "value": 2264.87,
+   "value": 2283.56,
    "fmt": "usd",
-   "asof": "Nov 1, 11:39 UTC",
+   "asof": "Nov 2, 11:43 UTC",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/ethereum/"
   },
   {
    "id": "eth_1w",
    "label": "ETH, last 7 days",
-   "value": -0.0271,
+   "value": -0.0196,
    "fmt": "pct",
-   "asof": "Nov 1, 11:39 UTC",
+   "asof": "Nov 2, 11:43 UTC",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/currencies/ethereum/"
   },
@@ -458,7 +458,7 @@
    "label": "Spot ETH ETF flow, Oct 30",
    "value": -155.85,
    "fmt": "usdM",
-   "asof": "Oct 30",
+   "asof": "Oct 30 (last trading day; no newer flow yet)",
    "source": "Bloomingbit (SoSoValue data)",
    "url": "https://en.bloomingbit.io/feed/news/123346"
   },
@@ -494,7 +494,7 @@
    "label": "Fear & Greed (CMC)",
    "value": 36,
    "fmt": "int",
-   "asof": "Nov 1 (43 a week ago)",
+   "asof": "Nov 2 (43 a week ago)",
    "source": "CoinMarketCap",
    "url": "https://coinmarketcap.com/charts/fear-and-greed-index/"
   },
@@ -511,20 +511,26 @@
  "news": [
   {
    "head": "ETF outflows",
-   "text": "Spot ETH ETFs had net outflows of −$155.85M on Oct 30, a fifth straight day of outflows and the biggest daily outflow since Oct 7. BlackRock's ETHA had the largest outflow ($76.64M).",
-   "source": "Bloomingbit (SoSoValue data), Oct 30",
-   "url": "https://en.bloomingbit.io/feed/news/123346"
+   "text": "Spot ETH ETFs had net outflows in all five weeks ending in October, about −$1.65B for the month, the largest monthly outflow since they launched (previous record −$1.42B, Nov 2025). Oct 30 alone: −$155.85M. Total net assets fell from $17.60B to $13.22B during October.",
+   "source": "CoinGabbar (SoSoValue data), Nov 2",
+   "url": "https://coingabbar.com/en/ethereum-news-prediction-eth-etf-outflows-whale-buys-dip"
   },
   {
    "head": "Large holders",
-   "text": "Reported this week: the biggest ETH holders sold about 160,000 ETH while exchange balances rose about 100,000 ETH.",
-   "source": "24/7 Wall St, Oct 29",
-   "url": "https://247wallst.com/investing/cryptocurrency/2026/10/29/ethereum-analysis-exchanges-took-in-100000-eth-this-week-as-big-holders-sold-is-2000-next/"
+   "text": "Lookonchain reported one wallet spent $62.97M over five hours to buy 27,553 ETH at about $2,286, after earlier buying 16,658 ETH with 37.96M USDC. Earlier in the week (Oct 29 report) the biggest holders sold about 160,000 ETH.",
+   "source": "CoinGabbar (Lookonchain data), Nov 2",
+   "url": "https://www.coingabbar.com/en/ethereum-news-today-whales-pando-thorchain-binance-eth-update"
+  },
+  {
+   "head": "THORChain halt",
+   "text": "A one-block Ethereum reorg on Oct 31 (11:34 UTC) dropped a deposit THORChain had already credited; its solvency checker halted ETH swaps and node operators then halted ten chains as a precaution. THORChain says it was not an Ethereum protocol hack; the user returned the funds.",
+   "source": "CoinGabbar (THORChain on X), Nov 2",
+   "url": "https://www.coingabbar.com/en/ethereum-news-today-whales-pando-thorchain-binance-eth-update"
   },
   {
    "head": "Binance hack",
-   "text": "About $6.3B was stolen from Binance on Oct 29. On Nov 1 Binance began reopening withdrawals in phases, starting with bitcoin, then ETH, USDT, USDC, BNB and XRP. It says it has covered about 95% of the affected amount from its own funds and that users won't bear the losses; about $3B is frozen.",
-   "source": "CoinDesk, Nov 1",
+   "text": "About $6.3B was stolen from Binance on Oct 29. On Nov 1 Binance restored withdrawals for BTC; ETH, USDT and USDC on Ethereum; BNB, USDT and USDC on BSC; XRP; and ETH and USDC on Base, with more to return in phases. It says it has covered about 95% of the affected amount from its own funds; about $3B is frozen.",
+   "source": "CoinDesk, Nov 1; Binance on X via CoinGabbar, Nov 2",
    "url": "https://www.coindesk.com/markets/2026/11/01/binance-opens-crypto-withdrawals-in-phases-starting-with-bitcoin-following-usd6-3-billion-hack"
   },
   {
@@ -550,7 +556,7 @@
   {
    "token": "USDG",
    "group": "Stable",
-   "price": "$0.99967 (CMC, Nov 1). Market cap $2.93B",
+   "price": "$0.99974 (CMC, Nov 2). Market cap $2.92B",
    "news": "Issued by Paxos.",
    "fee": 0.003,
    "onchain": "0.000441 WETH",
@@ -572,7 +578,7 @@
   {
    "token": "GLD",
    "group": "Stock",
-   "price": "Gold Dec futures (GLD tracks gold): $3,884.90, −3.6% on Oct 30, a 51-week low.",
+   "price": "Gold Dec futures (GLD tracks gold): $3,884.90, −3.6% on Oct 30, a 51-week low. (Oct 30 close, last trading day)",
    "news": "—",
    "fee": 0.01,
    "onchain": "0.157378 WETH",
@@ -583,7 +589,7 @@
   {
    "token": "QQQ",
    "group": "Stock",
-   "price": "Nasdaq-100 index (QQQ tracks it): −3.5% on Oct 30 to 28,384.85. Nasdaq Composite −5.2% in October.",
+   "price": "Nasdaq-100 index (QQQ tracks it): −3.5% on Oct 30 to 28,384.85. Nasdaq Composite −5.2% in October. (Oct 30 close, last trading day)",
    "news": "—",
    "fee": 0.003,
    "onchain": "0.306683 WETH",
@@ -594,7 +600,7 @@
   {
    "token": "NVDA",
    "group": "Stock",
-   "price": "$204.64, −4.2% on Oct 30; −11.4% in October",
+   "price": "$204.64, −4.2% on Oct 30; −11.4% in October (Oct 30 close, last trading day)",
    "news": "Next earnings Nov 17 per Earnings Whispers (other calendars list Nov 18).",
    "fee": 0.003,
    "onchain": "0.090276 WETH",
@@ -605,7 +611,7 @@
   {
    "token": "TSLA",
    "group": "Stock",
-   "price": "$399.82, −0.9% on Oct 30; +12.9% in October",
+   "price": "$399.82, −0.9% on Oct 30; +12.9% in October (Oct 30 close, last trading day)",
    "news": "—",
    "fee": 0.003,
    "onchain": "0.176345 WETH",
@@ -616,7 +622,7 @@
   {
    "token": "META",
    "group": "Stock",
-   "price": "$614.87, −1.6% on Oct 30; −15.3% in October",
+   "price": "$614.87, −1.6% on Oct 30; −15.3% in October (Oct 30 close, last trading day)",
    "news": "—",
    "fee": 0.003,
    "onchain": "0.271136 WETH",
@@ -627,7 +633,7 @@
   {
    "token": "GOOGL",
    "group": "Stock",
-   "price": "$279.99, −1.4% on Oct 30; −17.2% in October",
+   "price": "$279.99, −1.4% on Oct 30; −17.2% in October (Oct 30 close, last trading day)",
    "news": "—",
    "fee": 0.01,
    "onchain": "0.125544 WETH",
@@ -638,7 +644,7 @@
   {
    "token": "RDDT",
    "group": "Stock",
-   "price": "About $90–92 on Oct 30, −29%, a 52-week low",
+   "price": "About $90–92 on Oct 30, −29%, a 52-week low (Oct 30 close, last trading day)",
    "news": "Q3 revenue $895M (+53% y/y). Q4 guidance $1.00–1.03B vs $1.05B expected.",
    "fee": 0.01,
    "onchain": "0.041014 WETH",
@@ -649,7 +655,7 @@
   {
    "token": "COIN",
    "group": "Stock",
-   "price": "About $142.50–143.54 on Oct 30, −11% (closed $160.59 on Oct 29)",
+   "price": "About $142.50–143.54 on Oct 30, −11% (closed $160.59 on Oct 29) (Oct 30 close, last trading day)",
    "news": "Q3 revenue $1.16B vs $1.21B expected. Price targets cut: Barclays to $120, Wells Fargo to $174.",
    "fee": 0.003,
    "onchain": "0.064599 WETH",
@@ -660,7 +666,7 @@
   {
    "token": "MSTR",
    "group": "Stock",
-   "price": "About $125.25–130.51 on Oct 30, −8% to −12%",
+   "price": "About $125.25–130.51 on Oct 30, −8% to −12% (Oct 30 close, last trading day)",
    "news": "Holds 848,517 BTC (company, Q3 results).",
    "fee": 0.01,
    "onchain": "0.059015 WETH",
@@ -671,8 +677,8 @@
   {
    "token": "PONS",
    "group": "Meme",
-   "price": "$0.2453 (CMC, Nov 1). 24h +8.0%, 7d +7.5%, 30d -53.7%. Market cap $164.7M",
-   "news": "Since launch (Jul 13, 2026): 3.85M swaps, 890,693 WETH volume, 156,715 traders; 12 tokens claim the PONS ticker, this is the most traded (RobinX, Nov 1). ~102.7K holders; top 10 wallets hold 55.5% (CMC holder data).",
+   "price": "$0.2300 (CMC, Nov 2). 24h -6.1%, 7d -3.4%, 30d -46.3%. Market cap $154.4M",
+   "news": "Since launch (Jul 13, 2026): 3.85M swaps, 891,522 WETH volume, 157,454 traders; FDV $230.8M (Nov 2, 10:22 UTC); 12 tokens claim the PONS ticker, this is the most traded (RobinX, Nov 2). ~102.7K holders; top 10 wallets hold 55.5% (CMC holder data).",
    "fee": 0.003,
    "onchain": "0.000108 WETH",
    "source": "CoinMarketCap",
@@ -682,8 +688,8 @@
   {
    "token": "CASHCAT",
    "group": "Meme",
-   "price": "$0.0954 (CMC, Nov 1). 24h +4.3%, 7d +4.1%, 30d -45.7%. Market cap $95.4M",
-   "news": "Since launch: 5.39M swaps, 1,157,884 WETH volume, 122,451 traders; FDV $94.8M (Nov 1, 11:21 UTC); 12 tokens claim the CASHCAT ticker, this is the most traded. Contract has no owner, mint, pause or blacklist functions (RobinX, Nov 1). ~111K holders; top 10 wallets hold 37.1% (CMC holder data).",
+   "price": "$0.1000 (CMC, Nov 2). 24h +4.9%, 7d +7.9%, 30d -36.0%. Market cap $100.0M",
+   "news": "Since launch: 5.40M swaps, 1,159,471 WETH volume, 122,516 traders; FDV $99.6M (Nov 2, 10:22 UTC); 12 tokens claim the CASHCAT ticker, this is the most traded. Contract has no owner, mint, pause or blacklist functions (RobinX, Nov 2). ~111K holders; top 10 wallets hold 37.1% (CMC holder data).",
    "fee": 0.003,
    "onchain": "41.7339 WETH per 1M",
    "source": "CoinMarketCap",
@@ -693,8 +699,8 @@
   {
    "token": "VIRTUAL",
    "group": "Meme",
-   "price": "$0.5951 (CMC, Nov 1). 24h +2.8%, 7d -3.0%, 30d -26.7%. Market cap $392.2M",
-   "news": "Bridged token. On Robinhood Chain since Aug 3, 2026: 2.62M swaps, 267,034 WETH volume, 121,203 traders; 12 tokens claim the VIRTUAL ticker, this is the most traded (RobinX, Nov 1).",
+   "price": "$0.5863 (CMC, Nov 2). 24h -1.4%, 7d -5.1%, 30d -25.6%. Market cap $386.4M",
+   "news": "Bridged token. On Robinhood Chain since Aug 3, 2026: 2.62M swaps, 267,252 WETH volume, 121,279 traders; 12 tokens claim the VIRTUAL ticker, this is the most traded (RobinX, Nov 2).",
    "fee": 0.003,
    "onchain": "0.000263 WETH",
    "source": "CoinMarketCap",
@@ -704,8 +710,8 @@
   {
    "token": "AI",
    "group": "Meme",
-   "price": "$0.0661 (CMC, Nov 1). 24h +7.5%, 7d +17.6%, 30d -57.8%. Market cap $66.1M",
-   "news": "Since launch (Jul 31, 2026): 2.19M swaps, 401,056 WETH volume, 106,402 traders; FDV $65.9M (Nov 1, 11:21 UTC); 12 tokens claim the AI ticker, this is the most traded (RobinX, Nov 1).",
+   "price": "$0.0633 (CMC, Nov 2). 24h -4.3%, 7d +6.9%, 30d -54.2%. Market cap $63.3M",
+   "news": "Since launch (Jul 31, 2026): 2.20M swaps, 401,526 WETH volume, 106,923 traders; FDV $63.2M (Nov 2, 10:22 UTC); 12 tokens claim the AI ticker, this is the most traded (RobinX, Nov 2).",
    "fee": 0.01,
    "onchain": "29.3893 WETH per 1M",
    "source": "CoinMarketCap",
@@ -715,8 +721,8 @@
   {
    "token": "MANCER",
    "group": "Meme",
-   "price": "$0.001770 (CMC, Nov 1). 24h +6.9%, 7d +44.6%, 30d -20.2%. Market cap $1.6M",
-   "news": "Since launch (Aug 7, 2026): 168,486 swaps, 20,535 WETH volume, 19,889 traders; FDV $4.42M (Nov 1, 11:21 UTC); 12 tokens claim the MANCER ticker, this is the most traded (RobinX, Nov 1). Launched Books with Clutch Markets and an iOS beta around Oct 29–30 (@MancerXYZ on X).",
+   "price": "$0.001657 (CMC, Nov 2). 24h -6.4%, 7d +33.7%, 30d -23.4%. Market cap $1.5M",
+   "news": "Since launch (Aug 7, 2026): 168,714 swaps, 20,544 WETH volume, 19,903 traders; FDV $4.15M (Nov 2, 10:22 UTC); 12 tokens claim the MANCER ticker, this is the most traded (RobinX, Nov 2). Launched Books with Clutch Markets and an iOS beta around Oct 29–30 (@MancerXYZ on X).",
    "fee": 0.01,
    "onchain": "0.7808 WETH per 1M",
    "source": "CoinMarketCap",
@@ -758,18 +764,6 @@
   }
  ],
  "events": [
-  {
-   "id": "e3",
-   "date": "2026-11-01",
-   "when_utc": "Sun Nov 1",
-   "when_et": "—",
-   "event": "Strategy's STRC switches to daily dividends",
-   "tokens": "MSTR",
-   "source": "SEC 8-K",
-   "url": "https://www.sec.gov/Archives/edgar/data/0001050446/000105044626000047/mstr-20261029x8kxex9912.htm",
-   "short": "STRC daily dividends",
-   "key": false
-  },
   {
    "id": "e11",
    "date": "2026-11-02",
@@ -1029,9 +1023,17 @@
   {
    "term": "Rebuilt room",
    "def": "The room worked out from every card returned on Robinhood Chain this week: a token is backed when chairs holding more than half the voting weight put something on it, and its share is the chair-weighted average of all cards. $TMF held comes from the fund's own books. Checked against ballot captures; it can differ from the ballot page by a few tenths of a point."
+  },
+  {
+   "term": "Chain reorg",
+   "def": "When a blockchain replaces its most recent block(s) with a different version, so transactions in the dropped block may not count."
   }
  ],
  "updates": [
+  {
+   "date": "Nov 2",
+   "text": "Morning refresh (outside facts only; rooms update themselves from the chain). ETH, USDG, meme prices and Fear & Greed (36) refreshed from CoinMarketCap (Nov 2, 11:43 UTC). RobinX lifetime trading facts refreshed for PONS, CASHCAT, VIRTUAL, AI and MANCER. News: October was spot ETH ETFs' biggest monthly outflow (about −$1.65B); Binance's Nov 1 withdrawal restorations listed; THORChain halt added; whale purchase reported by Lookonchain. Events: past items removed. Stock closes unchanged (last trading day Oct 30). On-chain at 10:55 UTC, ARGON's room backs NVDA again (7.16%); the other four rooms back nothing yet."
+  },
   {
    "date": "Nov 1",
    "text": "New: every fund's room is now rebuilt from on-chain cards every 30 minutes (chairs, $TMF held, what's backed, vetoed or has no cards). It matched all 11 ballot captures this week on chairs and on what's backed. Tonight no fund backs a token: ARGON's NVDA slipped under half of chair weight and is headed to WETH."
