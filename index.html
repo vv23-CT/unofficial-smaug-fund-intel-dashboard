@@ -61,7 +61,7 @@
 .leg{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:12.5px;color:var(--muted)}
 .leg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
 .leg b{color:var(--fg);font-weight:600}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);padding-top:10px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);padding-top:10px}
 .stat{display:flex;flex-direction:column;gap:1px;padding:0 6px}
 .stat+.stat{border-left:1px solid var(--line)}
 .stat span{font-size:11.5px;color:var(--muted)}
@@ -264,6 +264,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="stat"><span>Chairs</span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></div>
 <div class="stat"><span>$TMF held</span><b id="stTmf">—</b></div>
 <div class="stat"><span>Backed</span><b id="stBacked">—</b></div>
+<div class="stat" id="stNavBox" title="What the fund is worth in WETH (fund desk navInWeth, on-chain)"><span>Fund size (WETH)</span><b id="stNav">—</b></div>
 </div>
 </section>
 <div class="swipehint">Swipe the card or tap a fund above</div>
@@ -380,7 +381,7 @@ function select(id,dx){SEL=id;const f=FI[id];
  const st=$('#fcStack'),lg=$('#fcLeg');st.replaceChildren();lg.replaceChildren();
  parts.forEach(([l,v,fill])=>{const d=el('div');d.style.width=(v*100)+'%';d.style.background=fill;st.append(d);const s=el('span');const i=el('i');i.style.background=fill;s.append(i,l+' ');s.append(el('b',null,P(v)));lg.append(s);});
  st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+P(v)).join(', '));
- const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-chair floor: the dials move at the bell':'Below the 25-chair floor';$('#stTmf').textContent=P(f.tmf_held);$('#stBacked').textContent=b.length+' of '+D.tokens.length;
+ const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-chair floor: the dials move at the bell':'Below the 25-chair floor';$('#stTmf').textContent=P(f.tmf_held);$('#stBacked').textContent=b.length+' of '+D.tokens.length;$('#stNav').textContent=f.nav_weth!=null?f.nav_weth.toFixed(2):'—';
  try{localStorage.setItem('tfi-fund',id)}catch(e){}try{history.replaceState(null,'','#'+id)}catch(e){}
  drawWeek();drawTok();drawGrid();}
 
@@ -476,6 +477,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    if(c.prices)(d.tokens||[]).forEach(t=>{const p=c.prices[t.token];if(!p)return;const m=/per 1M/.test(t.onchain||'');
      t.onchain=(m?(p*1e6).toFixed(4):p.toFixed(6))+' WETH'+(m?' per 1M':'');t.onchain_asof_utc=c.asof_utc;});
    (d.funds||[]).forEach(f=>{const x=c.funds[f.id];if(!x)return;if(!f.turnout||c.asof_utc>f.turnout.asof_utc)f.turnout={enrolled:x.enrolled,voted:x.voted,enrolled_weight:x.enrolled_weight,asof_utc:c.asof_utc,epoch:c.epoch};
+     if(x.room&&x.room.nav_weth!=null)f.nav_weth=x.room.nav_weth; /* fund size in WETH, on-chain */
      /* the room itself, rebuilt from on-chain cards, when it is newer than the last ballot capture (same week only) */
      const r=x.room;if(r&&r.tmf_held!=null&&c.epoch===d.week&&(!f.asof_utc||c.asof_utc>f.asof_utc)){
       f.chairs=r.chairs;f.tmf_held=r.tmf_held;f.room_weth=r.room_weth;f.room_tokens=r.room_tokens;f.status=Object.assign({},f.status,r.status);
