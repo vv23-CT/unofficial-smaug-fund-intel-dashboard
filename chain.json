@@ -1,10 +1,10 @@
 {
- "asof_utc": "2026-11-02T01:09:59Z",
- "block": 103823920,
+ "asof_utc": "2026-11-02T01:19:16Z",
+ "block": 103829392,
  "epoch": 2,
  "closes_utc": "2026-11-06T20:00:00.000Z",
  "week_start_block": 101990391,
- "source": "Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf",
+ "source": "Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth",
  "url": "https://robinhoodchain.blockscout.com/address/0xa1de85247d30eb67c83d010f9240ae81a8d744fe",
  "ballot": "0xa1de85247d30eb67c83d010f9240ae81a8d744fe",
  "dividend_office": "0xf658b4abdafc6c8d652742d563e9d9ab8b454475",
@@ -13,25 +13,25 @@
  "cards_read": 321,
  "cards_undecoded": 0,
  "prices": {
-  "COIN": 0.0645534,
+  "COIN": 0.064476,
   "MSTR": 0.0590743,
-  "META": 0.270973,
-  "SGOV": 0.0449572,
-  "GOOGL": 0.125482,
-  "QQQ": 0.306683,
+  "META": 0.270784,
+  "SGOV": 0.0448898,
+  "GOOGL": 0.125369,
+  "QQQ": 0.306285,
   "NVDA": 0.0907288,
   "GLD": 0.15733,
-  "TSLA": 0.176486,
+  "TSLA": 0.17638,
   "RDDT": 0.0411414,
   "STONKBROKER": 0.00000307697,
   "MANCER": 7.3214e-7,
   "DERP": 8.94766e-9,
   "APE": 0.0000533089,
-  "PONS": 0.000104331,
-  "CASHCAT": 0.0000413807,
-  "USDG": 0.000440273,
-  "AI": 0.0000266193,
-  "VIRTUAL": 0.000260922
+  "PONS": 0.00010455,
+  "CASHCAT": 0.0000414967,
+  "USDG": 0.000439657,
+  "AI": 0.0000264336,
+  "VIRTUAL": 0.000260766
  },
  "funds": {
   "argon": {
@@ -64,7 +64,15 @@
      "AI": "vetoed",
      "VIRTUAL": "vetoed"
     }
-   }
+   },
+   "history": [
+    {
+     "asof_utc": "2026-11-02T01:19:16Z",
+     "chairs": 105,
+     "tmf_held": 0.3489,
+     "backs": {}
+    }
+   ]
   },
   "bogle": {
    "enrolled": 233,
@@ -96,7 +104,15 @@
      "AI": "vetoed",
      "VIRTUAL": "vetoed"
     }
-   }
+   },
+   "history": [
+    {
+     "asof_utc": "2026-11-02T01:19:16Z",
+     "chairs": 58,
+     "tmf_held": 0.3007,
+     "backs": {}
+    }
+   ]
   },
   "smaug": {
    "enrolled": 307,
@@ -128,7 +144,15 @@
      "AI": "vetoed",
      "VIRTUAL": "vetoed"
     }
-   }
+   },
+   "history": [
+    {
+     "asof_utc": "2026-11-02T01:19:16Z",
+     "chairs": 74,
+     "tmf_held": 0.3411,
+     "backs": {}
+    }
+   ]
   },
   "midas": {
    "enrolled": 257,
@@ -160,7 +184,15 @@
      "AI": "vetoed",
      "VIRTUAL": "vetoed"
     }
-   }
+   },
+   "history": [
+    {
+     "asof_utc": "2026-11-02T01:19:16Z",
+     "chairs": 80,
+     "tmf_held": 0.3282,
+     "backs": {}
+    }
+   ]
   },
   "vladd": {
    "enrolled": 293,
@@ -192,7 +224,16 @@
      "AI": "vetoed",
      "VIRTUAL": "vetoed"
     }
-   }
+   },
+   "history": [
+    {
+     "asof_utc": "2026-11-02T01:19:16Z",
+     "chairs": 102,
+     "tmf_held": 0.4009,
+     "backs": {}
+    }
+   ]
   }
- }
+ },
+ "archive": []
 }
