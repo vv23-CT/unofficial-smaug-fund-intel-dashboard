@@ -52,5 +52,5 @@ jobs:
             TITLE="Week $EPOCH: $FUND now backs $TOKEN"
             if gh issue list --state all --search "\"$TITLE\" in:title" --json title --jq '.[].title' | grep -qxF "$TITLE"; then continue; fi
             if [ -n "$FILL" ]; then NOTE="A fill time from $FILL is on file; send a fresh capture if it may have changed."; else NOTE="No fill time on file for $TOKEN in $FUND yet."; fi
-            gh issue create --title "$TITLE" --body "$FUND's room now backs $TOKEN at $SHARE% of the fund (rebuilt from on-chain cards). $NOTE Please send a Match the room capture of $FUND (with every section expanded) so the dashboard can show how many Fridays $TOKEN takes to fill. Close this issue once it's done."
+            gh issue create --assignee vv23-CT --title "$TITLE" --body "@vv23-CT $FUND's room now backs $TOKEN at $SHARE% of the fund (rebuilt from on-chain cards). $NOTE Please send a Match the room capture of $FUND (with every section expanded) so the dashboard can show how many Fridays $TOKEN takes to fill. Close this issue once it's done."
           done

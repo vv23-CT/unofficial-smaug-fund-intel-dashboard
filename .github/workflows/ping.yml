@@ -1,0 +1,32 @@
+name: "Ping vv"
+
+# GitHub doesn't notify you about your own actions, and the scheduled Claude runs open
+# their pull requests as vv. So the bot comments with a mention, which does notify him.
+on:
+  pull_request:
+    types: [opened]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mention vv on a new update pull request
+        if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'auto/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          TITLE: ${{ github.event.pull_request.title }}
+        run: gh pr comment "$PR" -R "$GITHUB_REPOSITORY" --body "@vv23-CT $TITLE is ready. Merge it to put it live, or close it to skip."
+      - name: Test ping (run by hand)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          URL=$(gh issue create -R "$GITHUB_REPOSITORY" --assignee vv23-CT --title "Test ping from the dashboard" --body "@vv23-CT This is a test: if you got a notification for this, heads-ups and update pull requests will reach you too. Nothing to do; it closes itself.")
+          gh issue close "$URL" -R "$GITHUB_REPOSITORY"
