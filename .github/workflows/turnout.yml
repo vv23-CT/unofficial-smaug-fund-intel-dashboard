@@ -51,6 +51,18 @@ jobs:
           git commit -m "Chain reading $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0; sleep 10; done
           exit 1
+      - name: Bell-day morning note (Fridays 8:30-10 AM ET, once)
+        id: bellday
+        run: node tools/bellday_note.mjs || echo 'Bell-day note skipped'
+      - name: Send vv the bell-day note (GitHub notification)
+        if: steps.bellday.outputs.note == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          T="${{ steps.bellday.outputs.note_title }}"
+          if gh issue list -R "$GITHUB_REPOSITORY" --state all --search "\"$T\" in:title" --json title -q '.[].title' | grep -qxF "$T"; then echo "Already sent"; exit 0; fi
+          URL=$(gh issue create -R "$GITHUB_REPOSITORY" --assignee vv23-CT --title "$T" --body-file /tmp/bellday.txt)
+          gh issue close "$URL" -R "$GITHUB_REPOSITORY"
       - name: Send vv the recap (GitHub notification)
         if: steps.recap.outputs.recap == '1'
         env:
