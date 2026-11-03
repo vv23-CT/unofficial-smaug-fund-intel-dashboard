@@ -160,6 +160,17 @@ try {
 const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
 const etDay = iso => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date(iso));
 const rooms = await roomsFor(epoch);
+// --- when cards came in: half-hour UTC buckets per fund, this week only (counts per chair, changed cards included).
+// Cards never change once mined, so only cards newer than the last reading need their block's time looked up.
+const ctSame = prev && prev.epoch === epoch;
+const ctThrough = ctSame ? prev.card_times_block || 0 : 0;
+const cardTimes = Object.fromEntries(FUNDS.map(f => [f, { ...((ctSame && prev.funds?.[f]?.card_times) || {}) }]));
+{ const fresh = cards.filter(c => c.epoch === epoch && c.block > ctThrough && c.block <= block);
+  const blocks = [...new Set(fresh.map(c => c.block))];
+  const bts = new Map(await pool(blocks, 8, async b => [b, parseInt((await rpc('eth_getBlockByNumber', ['0x' + b.toString(16), false])).timestamp, 16)]));
+  for (const c of fresh) { const f = FUNDS[c.fund]; if (!f || !bts.get(c.block)) continue;
+    const d = new Date(bts.get(c.block) * 1000); d.setUTCMinutes(d.getUTCMinutes() < 30 ? 0 : 30, 0, 0);
+    const k = d.toISOString().slice(0, 16); cardTimes[f][k] = (cardTimes[f][k] || 0) + c.seats.length; } }
 const funds = {};
 for (const [i, f] of FUNDS.entries()) {
   const enrolled = await num(OFFICE, SEL.enrolledCount, i), voted = await num(BALLOT, SEL.chairsVoted, i, epoch), enrolled_weight = await num(OFFICE, SEL.totalWeight, i);
@@ -177,7 +188,7 @@ for (const [i, f] of FUNDS.entries()) {
   const row = { asof_utc: now, chairs: r.chairs, tmf_held, backs: r.room_tokens };
   const L = history[history.length - 1], same = L && Object.keys(L.backs).sort().join() === Object.keys(r.room_tokens).sort().join();
   if (L && same && etDay(L.asof_utc) === etDay(now)) history[history.length - 1] = row; else history.push(row);
-  funds[f] = { enrolled, voted, enrolled_weight, room, history };
+  funds[f] = { enrolled, voted, enrolled_weight, room, history, card_times: cardTimes[f] };
 }
 
 // --- after the bell: last week's final rooms, rebuilt from all of that week's cards ---
@@ -199,7 +210,7 @@ for (const f of FUNDS) { const was = prev?.funds?.[f]?.room; const nowR = funds[
   if (before) for (const t of after) if (!before.includes(t)) { const fill = newWeek ? null : (DATA.funds || []).find(x => x.id === f)?.fills?.[t];
     alerts.push({ fund: f.toUpperCase(), token: t, share: nowR.room_tokens[t], fill_on_file: fill ? fill.asof : null }); } }
 const out = {
-  asof_utc: now, block, epoch, closes_utc: closes, week_start_block: startBlock,
+  asof_utc: now, block, epoch, closes_utc: closes, week_start_block: startBlock, card_times_block: block,
   source: 'Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth',
   url: 'https://robinhoodchain.blockscout.com/address/' + BALLOT, ballot: BALLOT, dividend_office: OFFICE, desk: DESK,
   method: 'Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.',

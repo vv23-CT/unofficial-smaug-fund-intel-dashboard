@@ -67,6 +67,36 @@
 .stat span{font-size:11.5px;color:var(--muted)}
 .stat b{font:400 20px/1.15 var(--serif);font-variant-numeric:tabular-nums}
 .stat em{font-style:normal;font-size:11px;color:var(--good-t);font-weight:600}
+button.stbtn{font:inherit;color:inherit;text-align:left;cursor:pointer;appearance:none;-webkit-appearance:none}
+button.stbtn .car{font-style:normal;font-size:10px;display:inline-block;transition:transform .15s}
+button.stbtn[aria-expanded="true"]{outline:2px solid var(--house);outline-offset:-2px}
+button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
+.ct{margin-top:8px;padding:8px 10px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card2)}
+.ct-top{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;margin-bottom:6px}
+.ct-h{font-size:12px;color:var(--muted)}.ct-h b{color:var(--fg)}
+.ct-x{font:inherit;font-size:12px;line-height:1;background:none;border:1px solid var(--line);border-radius:6px;color:var(--muted);padding:4px 7px;cursor:pointer}
+.ct-k{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--muted);margin-top:6px}
+.ct-k i{flex:0 1 140px;height:8px;border-radius:99px;background:linear-gradient(90deg,#fff1b3,#ffc95c,#f5844c,#d9455f,#8a2a7a,#3d2266)}
+.ct-g{display:grid;gap:3px;font-size:10.5px}
+.ct-g>div{height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.ct-g .l{justify-content:flex-start;color:var(--muted);background:none!important}
+.ct-g .hd{height:auto;flex-direction:column;line-height:1.15;color:var(--muted);background:none!important;padding-bottom:2px}
+.ct-g .hd small{font-size:9.5px}
+.ct-g .c{border:1px solid var(--line)}
+.ct-g .fut{border:1px dashed var(--line);background:none}
+.ct-g .off{background:none;border:0}
+.ct-f{font-size:12px;margin-top:6px}
+.ct-g .c{color:#3b2a14;font-weight:600}
+@media (min-width:900px){
+ .body>.ct{grid-column:2;margin:0 0 4px;padding:14px 16px 14px;box-shadow:0 2px 0 var(--edge)}
+ .body>.ct .ct-h{font-size:13.5px}
+ .body>.ct .ct-g{gap:5px;font-size:13px}
+ .body>.ct .ct-g .l{font-size:12.5px}
+ .body>.ct .ct-g>div{height:42px;border-radius:5px}
+ .body>.ct .ct-g .hd{font-size:12.5px}.body>.ct .ct-g .hd small{font-size:11px}
+ .body>.ct .ct-k i{flex-basis:220px;height:10px}
+ .body>.ct .ct-f{font-size:13.5px}
+}
 .swipehint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:-4px}
 /* view tabs */
 .vtabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
@@ -262,11 +292,12 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="leg" id="fcLeg"></div>
 <div class="turn" id="fcTurn" hidden><div class="tu-top"><span class="tu-l">Turnout</span><b id="tuPct">—</b><span id="tuTxt">—</span></div><div class="tu-bar" role="img" id="tuBar"><i id="tuFill"></i><span id="tuFloor" title="25-chair floor"></span></div><div class="tu-src" id="tuSrc"></div></div>
 <div class="stats">
-<div class="stat"><span>Chairs</span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></div>
+<button class="stat stbtn" type="button" id="stChairsBtn" aria-expanded="false" aria-controls="ctBox"><span>Chairs <i class="car" aria-hidden="true">▾</i></span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></button>
 <div class="stat"><span>$TMF held</span><b id="stTmf">—</b></div>
 <div class="stat"><span>Backed</span><b id="stBacked">—</b></div>
 <div class="stat" id="stNavBox" title="What the fund is worth in WETH (fund desk navInWeth, on-chain)"><span>Fund size (WETH)</span><b id="stNav">—</b></div>
 </div>
+<div class="ct" id="ctBox" hidden><div class="ct-top"><div class="ct-h" id="ctH"></div><button class="ct-x" type="button" id="ctX" aria-label="Close">✕</button></div><div class="ct-g" id="ctG" role="table"></div><div class="ct-k" aria-hidden="true"><span>fewer</span><i></i><span>more</span></div><div class="ct-f" id="ctF"></div><div class="tu-src" id="ctSrc"></div></div>
 </section>
 <div class="swipehint">Swipe the card or tap a fund above</div>
 <div class="vtabs" role="tablist" aria-label="Sections">
@@ -385,7 +416,7 @@ function select(id,dx){SEL=id;const f=FI[id];
  st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+P(v)).join(', '));
  const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-chair floor: the dials move at the bell':'Below the 25-chair floor';$('#stTmf').textContent=P(f.tmf_held);$('#stBacked').textContent=b.length+' of '+D.tokens.length;$('#stNav').textContent=f.nav_weth!=null?f.nav_weth.toFixed(2):'—';
  try{localStorage.setItem('tfi-fund',id)}catch(e){}try{history.replaceState(null,'','#'+id)}catch(e){}
- drawWeek();drawTok();drawGrid();}
+ drawWeek();drawTok();drawGrid();drawCardTimes();}
 
 /* views */
 $$('.vtab').forEach(t=>t.addEventListener('click',()=>{const sc=document.getElementById('scroll'),vt=document.querySelector('.vtabs');if(sc&&vt&&sc.scrollTop>vt.offsetTop-12)sc.scrollTop=vt.offsetTop-12;VIEW=t.dataset.v;$$('.vtab').forEach(x=>x.setAttribute('aria-selected',String(x===t)));$$('.view').forEach(v=>v.hidden=v.dataset.view!==VIEW);}));
@@ -417,6 +448,38 @@ function drawFundHist(){const A=ARCH().filter(a=>a.funds[SEL]),box=$('#fhBox');i
   tr.append(wk,el('td',null,Object.keys(y.room_tokens||{}).length?backsTxt(y.room_tokens):'All to WETH'),el('td','n',VOT(y)),el('td','n',NAV(y)));tb.append(tr);});
  const mb=$('#fhMore');mb.hidden=A.length<=N;mb.textContent=FH_ALL?'Show the last '+N+' weeks':'Show all '+A.length+' weeks';mb.onclick=()=>{FH_ALL=!FH_ALL;drawFundHist();};
  $('#fhN').textContent='Each bell\'s final room, rebuilt from that week\'s on-chain cards. Chairs voted is out of enrolled chairs; WETH is the fund\'s size at the last reading before the bell; — means not recorded that week.';}
+/* When the room decides: cards returned this week by U.S. market session, from each card's on-chain time (chain.json funds[].card_times, half-hour UTC buckets) */
+let CT_OPEN=false;
+/* warm-to-deep heat scale (pale yellow to orange, coral, magenta, violet) */
+const HEAT_STOPS=['#fff1b3','#ffc95c','#f5844c','#d9455f','#8a2a7a','#3d2266'];
+const HEAT=t=>{if(t<=0)return['transparent',false];const x=Math.min(1,t)*(HEAT_STOPS.length-1),i=Math.min(HEAT_STOPS.length-2,Math.floor(x)),f=x-i;return['color-mix(in srgb,'+HEAT_STOPS[i+1]+' '+Math.round(f*100)+'%,'+HEAT_STOPS[i]+')',x>=2.6];};
+/* on wide screens the grid opens in the right column, larger; on phones it opens under the boxes */
+const WIDE=matchMedia('(min-width:900px)');
+function placeCT(){const box=$('#ctBox');if(WIDE.matches){const vt=document.querySelector('.body>.vtabs');if(box.parentElement!==vt.parentElement)vt.before(box);}else{const st=document.querySelector('#fcard .stats');if(box.previousElementSibling!==st)st.after(box);}}
+function drawCardTimes(){placeCT();const box=$('#ctBox'),btn=$('#stChairsBtn');btn.setAttribute('aria-expanded',CT_OPEN?'true':'false');box.hidden=!CT_OPEN;if(!CT_OPEN)return;
+ const H=(D.ct||{})[SEL],f=FI[SEL],g=$('#ctG');g.replaceChildren();
+ const end=D.closes_utc?new Date(D.closes_utc):null;if(!end){$('#ctH').textContent='Card times aren\'t available yet.';$('#ctF').textContent='';return;}
+ const start=new Date(end.getTime()-7*864e5),now=new Date(),HALF=18e5;
+ const etP=d=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(d).map(x=>[x.type,x.value]));return{day:p.year+'-'+p.month+'-'+p.day,min:(+p.hour%24)*60+ +p.minute};};
+ const prevDay=k=>{const d=new Date(k+'T12:00:00Z');d.setUTCDate(d.getUTCDate()-1);return d.toISOString().slice(0,10);};
+ /* U.S. market sessions, Eastern time: pre-market 4–9:30 AM, market 9:30 AM–4 PM, after hours 4–8 PM, overnight 8 PM–4 AM (counted with the evening it starts) */
+ const sess=t=>{const {day,min}=etP(t);if(min<240)return[prevDay(day),3];if(min<570)return[day,0];if(min<960)return[day,1];if(min<1200)return[day,2];return[day,3];};
+ const days=[],inW={},past={};for(let t=start.getTime();t<end.getTime();t+=HALF){const [k,r]=sess(new Date(t));if(!days.includes(k))days.push(k);inW[k+'|'+r]=1;if(t<=now.getTime())past[k+'|'+r]=1;}
+ const cell={};let tot=0,last24=0;Object.entries(H||{}).forEach(([k,n])=>{const t=new Date(k.length>13?k+':00Z':k+':00:00Z');if(t<start||t>=end)return;const [d,r]=sess(t);const key=d+'|'+r;cell[key]=(cell[key]||0)+n;tot+=n;if(now-t<864e5)last24+=n;});
+ const max=Math.max(1,...Object.values(cell));
+ g.style.gridTemplateColumns=(WIDE.matches?'96px':'68px')+' repeat('+days.length+',minmax(0,1fr))';
+ g.append(el('div','hd'));days.forEach(k=>{const d=new Date(k+'T12:00:00Z'),h=el('div','hd');h.append(new Intl.DateTimeFormat(undefined,{weekday:'short',timeZone:'UTC'}).format(d));h.append(el('small',null,String(d.getUTCDate())));g.append(h);});
+ const rows=['Pre-market','Market','After hours','Overnight'];
+ rows.forEach((b,r)=>{g.append(el('div','l',b));days.forEach(k=>{const key=k+'|'+r,n=cell[key]||0;
+  if(!inW[key]){g.append(el('div','off'));return;}
+  if(!past[key]){g.append(el('div','fut'));return;}
+  const c=el('div','c',n?String(n):'');const [bg,dark]=HEAT(n?n/max:0);c.style.background=bg;if(dark)c.style.color='#fff';c.title=b+': '+n+(n===1?' card':' cards');g.append(c);});});
+ const busiest=Object.entries(cell).sort((a,b)=>b[1]-a[1])[0];
+ $('#ctH').replaceChildren();$('#ctH').append(el('b',null,f.name+': when cards came in'),' · this week, by U.S. market session (Eastern time) · darker = more');
+ const ft=$('#ctF');ft.replaceChildren();
+ if(!H||!tot){ft.textContent='No card times recorded yet this week.';}
+ else{ft.append(el('b',null,'Last 24 hours: '+last24+(last24===1?' card':' cards')+'.'));if(busiest){const [k,r]=busiest[0].split('|');const d=new Date(k+'T12:00:00Z');ft.append(' Busiest so far: '+new Intl.DateTimeFormat(undefined,{weekday:'long',timeZone:'UTC'}).format(d)+' '+['pre-market','market hours','after hours','overnight'][+r]+' ('+busiest[1]+').');}}
+ const src=$('#ctSrc');src.replaceChildren('Pre-market 4–9:30 AM · Market 9:30 AM–4 PM · After hours 4–8 PM · Overnight 8 PM–4 AM, counted with the evening it starts. Same clock times on weekends and holidays, when markets are closed. Each card\'s on-chain time; changed cards count too, so it can add up to more than chairs voted. ');src.append(link('Ballot contract',(D.chain||{}).url));}
 function drawWeek(){drawBell();drawFundHist();const f=FI[SEL],H=f.history||[],ol=$('#wkList');ol.replaceChildren();
  H.slice().reverse().forEach((s,ri)=>{const i=H.length-1-ri,prev=i?H[i-1]:null;const li=el('li');
   const w=el('div','w',s.asof_utc?fmtDay.format(new Date(s.asof_utc)):s.asof.split(',')[0]);w.append(el('small',null,s.asof_utc?fmtTime.format(new Date(s.asof_utc)):(s.asof.split(', ')[1]||'')));if(s.chain)w.append(el('small','oc','on-chain'));
@@ -455,6 +518,9 @@ function drawGrid(){const tb=$('#grid tbody');tb.replaceChildren();
  $$('#grid [data-f]').forEach(c=>c.classList.toggle('sel',c.dataset.f===SEL));
  $('#gToggle').textContent=ALL?'Show only backed tokens':'Show all '+D.tokens.length+' tokens';}
 $('#gToggle').addEventListener('click',()=>{ALL=!ALL;drawGrid();});
+$('#stChairsBtn').addEventListener('click',e=>{e.stopPropagation();CT_OPEN=!CT_OPEN;drawCardTimes();});
+$('#ctX').addEventListener('click',()=>{CT_OPEN=false;drawCardTimes();$('#stChairsBtn').focus();});
+WIDE.addEventListener&&WIDE.addEventListener('change',drawCardTimes);
 
 /* more */
 const u=D.updates[0];$('#chgDate').textContent=u.date;$('#chg').textContent=u.text;
@@ -486,7 +552,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    const mk=c.market;if(mk&&mk.eth_usd&&mk.asof_utc){const at=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(mk.asof_utc));
      const setT=(id,v,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=at;t.source=mk.source;t.url=mk.url;if(label)t.label=label;}};
      setT('eth',mk.eth_usd,'ETH price (on-chain)');const ce=(c.changes||{}).ETH;if(ce&&ce.d7!=null)setT('eth_1w',ce.d7,'ETH, last 7 days (on-chain)');}
-   d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
+   d.ct=Object.fromEntries(Object.entries(c.funds||{}).map(([k,x])=>[k,x.card_times||null]));d.ct_week=c.epoch;d.closes_utc=c.closes_utc;d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
    if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
    if(c.prices)(d.tokens||[]).forEach(t=>{const p=c.prices[t.token];if(!p)return;const m=/per 1M/.test(t.onchain||'');
