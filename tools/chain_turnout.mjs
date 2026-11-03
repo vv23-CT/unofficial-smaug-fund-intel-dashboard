@@ -100,13 +100,17 @@ async function roomsFor(ep) {
   const res = {};
   for (const [i, f] of FUNDS.entries()) {
     const rows = [...last.keys()].filter(k => k.startsWith(i + ':')).map(k => [last.get(k), wCache.get(k.split(':')[1])]);
-    const T = rows.reduce((x, r) => x + r[1], 0); const room_tokens = {}, status = {};
+    const T = rows.reduce((x, r) => x + r[1], 0); const room_tokens = {}, status = {}, support_by = {}, avg_card = {}, chairs_for = {}, flip_min = {};
     for (let s = 2; s < tokens.length; s++) {
       const support = T ? rows.filter(([c]) => (c.bps[s] || 0) > 0).reduce((x, [, w]) => x + w, 0) / T : 0;
+      if (support > 0) { chairs_for[tokens[s]] = rows.filter(([c]) => (c.bps[s] || 0) > 0).length; support_by[tokens[s]] = +support.toFixed(4); avg_card[tokens[s]] = +(rows.reduce((x, [c, w]) => x + (c.bps[s] || 0) * w, 0) / T / 10000).toFixed(4); }
+      // fewest chairs that already voted (heaviest first) that would need to add this token to pass 50%; counts only
+      if (T && support <= 0.5) { const need = T / 2 - support * T; const ws = rows.filter(([c]) => !((c.bps[s] || 0) > 0)).map(([, w]) => w).sort((a, b) => b - a);
+        let x = 0, n = 0; for (const w of ws) { if (x > need) break; x += w; n++; } flip_min[tokens[s]] = x > need ? n : null; }
       if (support > 0.5) { status[tokens[s]] = 'backed'; room_tokens[tokens[s]] = +(rows.reduce((x, [c, w]) => x + (c.bps[s] || 0) * w, 0) / T / 10000).toFixed(4); }
       else status[tokens[s]] = support > 0 ? 'vetoed' : 'no_cards';
     }
-    res[f] = { chairs: rows.length, room_tokens, status };
+    res[f] = { chairs: rows.length, room_tokens, status, support: support_by, avg_card, chairs_for, flip_min, voted_weight: T };
   }
   return res;
 }
@@ -181,7 +185,7 @@ for (const [i, f] of FUNDS.entries()) {
   // Fridays to fill, as the ballot words it: a quarter of the fund divided by the desk's per-Friday limit for that token
   const navW = Number(nav) / 1e18, fills = {};
   for (const [t, dpt] of Object.entries(depth)) fills[t] = Math.ceil((navW / 4) / dpt);
-  const room = { chairs: r.chairs, tmf_held, room_weth, room_tokens: r.room_tokens, status: r.status, nav_weth: +navW.toFixed(4), fills };
+  const room = { chairs: r.chairs, tmf_held, room_weth, room_tokens: r.room_tokens, status: r.status, support: r.support, avg_card: r.avg_card, chairs_for: r.chairs_for, voted_weight: r.voted_weight, flip_min: r.flip_min, nav_weth: +navW.toFixed(4), fills };
   if (r.chairs !== voted) room.note = `cards read ${r.chairs}, contract count ${voted}`;
   // "This week" timeline: one row per day (kept current), plus a new row whenever what the room backs changes
   const history = prev && prev.epoch === epoch ? (prev.funds?.[f]?.history || []).slice() : [];

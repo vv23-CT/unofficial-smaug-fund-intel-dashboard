@@ -134,6 +134,16 @@ button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 .tbtn:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
 .tbtn b{font-size:14px}
 .tbtn .px{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tsb{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-top:-2px}
+.tsb-b{position:relative;height:7px;border-radius:99px;background:var(--pale)}
+.tsb-b i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--house);opacity:.75}
+.tsb-b i.ok{background:var(--fg);opacity:1}
+.tsb-b em{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--bad,#b8443a)}
+.tsb-v{font-size:11px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);display:flex;flex-direction:column;line-height:1.15;min-width:52px}
+.tsb-n{grid-column:1/-1;font-size:11.5px;color:var(--muted);margin-top:-3px}.tsb-n b{color:var(--fg);font-weight:600}.tsb-n b.ok{color:var(--good-t)}
+.tsb-b .gap{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--bad,#b8443a) 35%,transparent) 0 3px,transparent 3px 6px)}
+.tsbk{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);margin:2px 0 8px}
+.tsbk .tsb-b{width:60px}
 .st{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
 .st.b{background:var(--fg);color:var(--panel)}
 .st.v{color:var(--muted);font-weight:500;box-shadow:inset 0 0 0 1px var(--line)}
@@ -154,6 +164,15 @@ table.g tr.sum td{font-size:11.5px;color:var(--muted)}
 .cell{display:inline-block;padding:2px 5px;border-radius:6px;font-weight:700}
 .cell.b{background:var(--fg);color:var(--panel)}
 .cell.v,.cell.n{color:var(--muted);font-weight:400}
+.cell.vs{color:var(--muted);font-weight:600;box-shadow:inset 0 0 0 1px var(--line);font-size:.92em}
+.sup{margin:6px 0 8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card2)}
+.sup p{margin:0;font-size:12.5px}.sup p+p{margin-top:4px}
+.sup .sbar{position:relative;height:10px;border-radius:99px;background:var(--pale);margin:6px 0 2px;overflow:visible}
+.sup .sbar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--muted)}
+.sup .sbar i.ok{background:var(--fg)}
+.sup .sbar b{position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;background:var(--bad,#b8443a)}
+.sup ul.need{margin:4px 0 2px;padding-left:18px;font-size:12.5px}.sup ul.need li+li{margin-top:2px}
+.sup .sl{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted)}
 .toggle{cursor:pointer;align-self:flex-start;font-size:12.5px;font-weight:700;background:none;border:0;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
 /* more */
 .acc{border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
@@ -324,13 +343,14 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 </section>
 <section class="view" data-view="tokens" hidden>
 <div class="chips" id="tchips"><button class="chip" type="button" data-g="" aria-pressed="true">All 19</button><button class="chip" type="button" data-g="Stock" aria-pressed="false">Stocks</button><button class="chip" type="button" data-g="Stable" aria-pressed="false">Stable</button><button class="chip" type="button" data-g="Meme" aria-pressed="false">Memes</button></div>
+<div class="tsbk" id="tsbKey" hidden><span class="tsb-b"><i style="width:40%"></i><em></em></span><span id="tsbKeyT"></span></div>
 <div class="tl" id="tokList"></div>
 <p class="note">Tap a token for its price, news and source. Backed tokens are listed first.</p>
 </section>
 <section class="view" data-view="all" hidden>
 <div class="gwrap"><table class="g" id="grid"><thead><tr id="gHead"><th>Token</th></tr></thead><tbody></tbody></table></div>
 <button class="toggle" type="button" id="gToggle">Show all 19 tokens</button>
-<p class="note"><span class="cell b">7.87%</span> backed · – vetoed (has cards, under half the weight) · · no cards yet. The top row shows chairs voting.</p>
+<p class="note"><span class="cell b">7.87%</span> backed: its share of the fund · <span class="cell vs">42%</span> vetoed: the share of chair weight that put something on it (backing needs over 50%) · · no cards yet. The top rows show chairs voting.</p>
 </section>
 <section class="view" data-view="more" hidden>
 <div class="acc">
@@ -500,11 +520,42 @@ function drawWeek(){drawBell();drawFundHist();const f=FI[SEL],H=f.history||[],ol
  $('#wkNote').textContent=(H.length<2?'One reading so far this week; each new one adds a row. ':'Newest first. ')+'Rows marked on-chain are rebuilt every 30 minutes from the cards on Robinhood Chain; the others are from the '+f.name+' ballot page.';}
 
 const ORDER={backed:0,vetoed:1,no_cards:2};
+/* room support: share of the room's chair weight that put anything on a token (over 50% = backed), from this week's on-chain cards */
+const SUP=(f,t)=>f.support&&f.support[t]!=null?f.support[t]:null;
+const CF=(f,t)=>f.chairs_for?(f.chairs_for[t]||0):null;
+const PS=v=>(v*100).toFixed(v>=.995||v<.1?1:0).replace(/\.0$/,'')+'%';
+function supBox(f,t,s){const v=SUP(f,t),a=f.avg_card&&f.avg_card[t],b=el('div','sup');
+ const nc=CF(f,t);if(nc!=null){const q=el('p');q.append(el('b',null,nc+' of '+f.chairs+' chairs'),' that voted put something on '+t+' ('+PS(nc/f.chairs)+' of chairs voted).');b.append(q);}
+ const p=el('p');p.append(el('b',null,PS(v)+' of chair weight'),(nc!=null?': ':' of '+f.name+'\'s chair weight put something on '+t+'. ')+(s==='backed'?'over 50%, so it\'s backed. ':'backing needs over 50%. ')+'Weight is what decides: chairs with more weight count for more.');b.append(p);
+ const bar=el('div','sbar');const i=el('i',v>.5?'ok':null);i.style.width=Math.min(100,v*100)+'%';bar.append(i,el('b'));bar.setAttribute('role','img');bar.setAttribute('aria-label',PS(v)+' support; the 50% line is marked');b.append(bar);
+ const sl=el('div','sl');sl.append(el('span',null,'0%'),el('span',null,'50%'),el('span',null,'100%'));b.append(sl);
+ if(s!=='backed'&&v<=.5){const T=f.voted_weight,E=f.enrolled_weight,left=E&&T?E-T:null,gap=.5-v;
+  const h=el('p','m');h.append(el('b',null,'What it would take to pass 50%:'));b.append(h);
+  const u=el('ul','need');
+  const fm=f.flip_min?f.flip_min[t]:null;const li1=el('li');li1.append('Chairs that already voted, holding ',el('b',null,PS(gap)+' of the voted weight'),', add '+t+' to their cards'+(fm?'. That\'s at least '+fm+(fm===1?' chair':' chairs')+' (fewer only if the heaviest ones switch); or':'; or'));u.append(li1);
+  if(left!=null&&left>0){const x=T*(1-2*v),pl=x/left;const li2=el('li');
+   if(pl<=1)li2.append('Chairs that haven\'t voted yet, holding ',el('b',null,PS(pl)+' of the weight still to vote'),', all put something on '+t+'.');
+   else li2.append('Chairs that haven\'t voted yet couldn\'t do it alone: it would take more weight than is left to vote ('+PS(pl)+').');u.append(li2);}
+  b.append(u);b.append(el('p','m','Exact math from this reading\'s on-chain weights, assuming nothing else changes. Chairs carry different weights, so this is weight, not a head count.'));}
+ if(a!=null&&s!=='backed')b.append(el('p','m','Average card: '+P(a)+' of the fund (every chair\'s card weighted, zeros included).'));
+ return b;}
 function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
+ $('#tsbKey').hidden=!f.support;$('#tsbKeyT').textContent=f.chairs_for?'Chairs that voted for it, of '+f.chairs+'. The bar is their chair weight, which decides; past the red line (50%) it\'s backed. "More chairs" is the fewest chairs that already voted that could still tip it.':'Bars: share of '+f.name+'\'s chair weight that put something on each token. Red mark = 50%; over it, the token is backed.';
  D.tokens.filter(r=>!G||r.group===G).slice().sort((a,b)=>ORDER[f.status[a.token]]-ORDER[f.status[b.token]]).forEach(r=>{const s=f.status[r.token];
   const row=el('div','trow');const bt=el('button','tbtn');bt.type='button';bt.setAttribute('aria-expanded','false');
   bt.append(el('b',null,r.token),el('span','px',r.onchain),el('span','st '+(s==='backed'?'b':s==='vetoed'?'v':'n'),s==='backed'?P(f.room_tokens[r.token]):s==='vetoed'?'vetoed':'no cards'));
-  const d=el('div','tdet');d.append(el('p',null,r.price));if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token],fv=(D.fdv||{})[r.token];d.append(el('p','m','On-chain ≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3))+(()=>{const g=(D.chg||{})[r.token]||{},f=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%',x=[];if(g.h24!=null)x.push('24h '+f(g.h24));if(g.d7!=null)x.push('7d '+f(g.d7));return x.length?' ('+x.join(', ')+')':'';})()+' · on-chain, valued in USDG on TMF\u2019s price desk'));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
+  if(SUP(f,r.token)!=null||f.support){const v=SUP(f,r.token)||0,sb=el('span','tsb');const bar=el('span','tsb-b');const i=el('i',s==='backed'?'ok':null);i.style.width=Math.min(100,v*100)+'%';bar.append(i,el('em'));const nc=CF(f,r.token);
+  /* the gap to the 50% line, shown on the bar itself (hatched) and as one short line under the count */
+  if(s!=='backed'&&v<.5){const gp=el('span','gap');gp.style.left=Math.min(100,v*100)+'%';gp.style.width=Math.max(0,50-v*100)+'%';bar.insertBefore(gp,bar.lastChild);}
+  const lab=el('span','tsb-v');lab.append(el('span',null,nc!=null?nc+' of '+f.chairs:(v?PS(v):'0%')));
+  const gpt=50-v*100,fmtp=g=>(g<1?g.toFixed(1):String(Math.round(g)))+'%';
+  sb.append(bar,lab);
+  /* one plain line under the bar: how far from 50%, and the fewest chairs that already voted that could close it */
+  const fm=f.flip_min?f.flip_min[r.token]:undefined,nt=el('span','tsb-n');
+  if(s==='backed'&&gpt<0)nt.append(el('b','ok','Passed by '+fmtp(-gpt)));
+  else if(gpt>0){nt.append(el('b',null,fmtp(gpt)+' to go'));if(fm)nt.append(' · at least '+fm+' more '+(fm===1?'chair':'chairs'));}
+  if(nt.childNodes.length)sb.append(nt);sb.title=(nc!=null?nc+' of '+f.chairs+' chairs voted ('+PS(nc/f.chairs)+') put something on '+r.token+'; ':'')+PS(v)+' of chair weight (over 50% backs it)';bt.append(sb);}
+  const d=el('div','tdet');d.append(el('p',null,r.price));if(SUP(f,r.token)!=null)d.append(supBox(f,r.token,s));if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token],fv=(D.fdv||{})[r.token];d.append(el('p','m','On-chain ≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3))+(()=>{const g=(D.chg||{})[r.token]||{},f=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%',x=[];if(g.h24!=null)x.push('24h '+f(g.h24));if(g.d7!=null)x.push('7d '+f(g.d7));return x.length?' ('+x.join(', ')+')':'';})()+' · on-chain, valued in USDG on TMF\u2019s price desk'));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
   const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?(fl.n<=1?' · a quarter of '+f.name+' fills in one Friday':' · ~'+fl.n+' Fridays to fill a quarter of '+f.name):f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
   const dx=(D.dex||{})[r.token];if(dx){const mon=v=>v==null?'—':v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':v>=1e3?'$'+(v/1e3).toFixed(0)+'K':'$'+Math.round(v);
    const pr=dx.price_usd==null?'—':dx.price_usd>=1?'$'+dx.price_usd.toFixed(2):'$'+dx.price_usd.toPrecision(3);
@@ -524,7 +575,7 @@ function drawGrid(){const tb=$('#grid tbody');tb.replaceChildren();
  const anyB=t=>FUNDS.some(f=>f.status[t]==='backed');
  const rows=ALL?D.tokens:D.tokens.filter(r=>anyB(r.token));
  rows.forEach(r=>{const tr=el('tr');tr.append(el('td',null,r.token));FUNDS.forEach(f=>{const s=f.status[r.token];const td=el('td');td.dataset.f=f.id;
-  td.append(s==='backed'?el('span','cell b',P(f.room_tokens[r.token])):el('span','cell '+(s==='vetoed'?'v':'n'),s==='vetoed'?'–':'·'));tr.append(td);});tb.append(tr);});
+  td.append(s==='backed'?el('span','cell b',P(f.room_tokens[r.token])):s==='vetoed'&&SUP(f,r.token)!=null?Object.assign(el('span','cell vs',PS(SUP(f,r.token))),{title:PS(SUP(f,r.token))+' of '+f.name+'\'s chair weight put something on '+r.token+' (needs over 50%)'}):el('span','cell '+(s==='vetoed'?'v':'n'),s==='vetoed'?'–':'·'));tr.append(td);});tb.append(tr);});
  $$('#grid [data-f]').forEach(c=>c.classList.toggle('sel',c.dataset.f===SEL));
  $('#gToggle').textContent=ALL?'Show only backed tokens':'Show all '+D.tokens.length+' tokens';}
 $('#gToggle').addEventListener('click',()=>{ALL=!ALL;drawGrid();});
@@ -571,7 +622,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
      if(x.room&&x.room.nav_weth!=null)f.nav_weth=x.room.nav_weth; /* fund size in WETH, on-chain */
      /* the room itself, rebuilt from on-chain cards, when it is newer than the last ballot capture (same week only) */
      const r=x.room;if(r&&r.tmf_held!=null&&c.epoch===d.week&&(!f.asof_utc||c.asof_utc>f.asof_utc)){
-      f.chairs=r.chairs;f.tmf_held=r.tmf_held;f.room_weth=r.room_weth;f.room_tokens=r.room_tokens;f.status=Object.assign({},f.status,r.status);
+      f.chairs=r.chairs;f.tmf_held=r.tmf_held;f.room_weth=r.room_weth;f.room_tokens=r.room_tokens;f.status=Object.assign({},f.status,r.status);f.support=r.support||null;f.avg_card=r.avg_card||null;f.chairs_for=r.chairs_for||null;f.voted_weight=r.voted_weight||null;f.flip_min=r.flip_min||null;f.enrolled_weight=x.enrolled_weight||null;
       f.capture_asof_utc=f.asof_utc;f.asof_utc=c.asof_utc;f.room_src='chain';}
      /* Fridays to fill from the price desk's per-Friday limit (same formula the ballot prints) */
      if(r&&r.fills&&c.epoch===d.week){f.fills={};Object.entries(r.fills).forEach(([t,n])=>{f.fills[t]={n,asof_utc:c.asof_utc,chain:true};});f.not_in_capture=[];}
