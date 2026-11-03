@@ -86,6 +86,16 @@ button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 .ct-g .fut{border:1px dashed var(--line);background:none}
 .ct-g .off{background:none;border:0}
 .ct-f{font-size:12px;margin-top:6px}
+@media (max-width:899px){
+ .ct{margin:10px -6px 0;padding:10px 8px 12px}
+ .ct-h{font-size:13px}
+ .ct-g{gap:4px;font-size:13px}
+ .ct-g>div{height:36px;border-radius:5px}
+ .ct-g .l{font-size:12px;line-height:1.1}
+ .ct-g .hd{font-size:12px}.ct-g .hd small{font-size:11px}
+ .ct-f{font-size:13px}
+ .ct-k i{height:9px}
+}
 .ct-g .c{color:#3b2a14;font-weight:600}
 @media (min-width:900px){
  .body>.ct{grid-column:2;margin:0 0 4px;padding:14px 16px 14px;box-shadow:0 2px 0 var(--edge)}
@@ -467,9 +477,9 @@ function drawCardTimes(){placeCT();const box=$('#ctBox'),btn=$('#stChairsBtn');b
  const days=[],inW={},past={};for(let t=start.getTime();t<end.getTime();t+=HALF){const [k,r]=sess(new Date(t));if(!days.includes(k))days.push(k);inW[k+'|'+r]=1;if(t<=now.getTime())past[k+'|'+r]=1;}
  const cell={};let tot=0,last24=0;Object.entries(H||{}).forEach(([k,n])=>{const t=new Date(k.length>13?k+':00Z':k+':00:00Z');if(t<start||t>=end)return;const [d,r]=sess(t);const key=d+'|'+r;cell[key]=(cell[key]||0)+n;tot+=n;if(now-t<864e5)last24+=n;});
  const max=Math.max(1,...Object.values(cell));
- g.style.gridTemplateColumns=(WIDE.matches?'96px':'68px')+' repeat('+days.length+',minmax(0,1fr))';
+ g.style.gridTemplateColumns=(WIDE.matches?'96px':'62px')+' repeat('+days.length+',minmax(0,1fr))';
  g.append(el('div','hd'));days.forEach(k=>{const d=new Date(k+'T12:00:00Z'),h=el('div','hd');h.append(new Intl.DateTimeFormat(undefined,{weekday:'short',timeZone:'UTC'}).format(d));h.append(el('small',null,String(d.getUTCDate())));g.append(h);});
- const rows=['Pre-market','Market','After hours','Overnight'];
+ const rows=WIDE.matches?['Pre-market','Market','After hours','Overnight']:['Pre-market','Market','After hours','Over-night'];
  rows.forEach((b,r)=>{g.append(el('div','l',b));days.forEach(k=>{const key=k+'|'+r,n=cell[key]||0;
   if(!inW[key]){g.append(el('div','off'));return;}
   if(!past[key]){g.append(el('div','fut'));return;}
