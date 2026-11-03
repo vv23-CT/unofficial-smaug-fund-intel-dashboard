@@ -1,5 +1,5 @@
 // CoinMarketCap figures for the page, on the free Basic plan (key in the repo secret CMC_API_KEY).
-// Two calls a reading (quotes for 10 coins + Fear & Greed) = about 3,000 of the 15,000 monthly credits.
+// Two calls a reading (quotes for 11 coins + Fear & Greed) = about 3,000 of the 15,000 monthly credits.
 // Saves only the few numbers the page shows, each with its CoinMarketCap link (no bulk data).
 // Writes cmc.json. Without a key, or if CoinMarketCap fails, it leaves the last cmc.json as it is.
 import fs from 'node:fs';
@@ -7,7 +7,7 @@ const K = process.env.CMC_API_KEY;
 if (!K) { console.log('No CMC_API_KEY; skipped'); process.exit(0); }
 const H = { 'X-CMC_PRO_API_KEY': K, Accept: 'application/json' };
 const B = 'https://pro-api.coinmarketcap.com';
-const IDS = { 1: 'BTC', 1027: 'ETH', 33793: 'USDG', 40938: 'PONS', 40809: 'CASHCAT', 29420: 'VIRTUAL', 40925: 'AI', 41990: 'MANCER', 40978: 'STONKBROKER', 18876: 'APE' };
+const IDS = { 1: 'BTC', 1027: 'ETH', 33793: 'USDG', 40938: 'PONS', 40809: 'CASHCAT', 29420: 'VIRTUAL', 40925: 'AI', 41990: 'MANCER', 40978: 'STONKBROKER', 18876: 'APE', 4705: 'PAXG' }; // PAXG: PAX Gold, one troy ounce of gold per token (gold tile)
 const iso = d => new Date(d).toISOString().replace(/\.\d+Z$/, 'Z');
 const r2 = (x, n = 2) => x == null ? null : +x.toFixed(n);
 try {

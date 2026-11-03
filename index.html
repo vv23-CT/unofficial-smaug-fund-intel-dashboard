@@ -621,7 +621,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    /* ETH in USD from the chain every reading: valued in USDG (a dollar token) on TMF's price desk */
    const mk=c.market;if(mk&&mk.eth_usd&&mk.asof_utc){const at=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(mk.asof_utc));
      const setT=(id,v,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=at;t.source=mk.source;t.url=mk.url;if(label)t.label=label;}};
-     setT('eth',mk.eth_usd,'ETH price (on-chain)');const ce=(c.changes||{}).ETH;if(ce&&ce.d7!=null)setT('eth_1w',ce.d7,'ETH, last 7 days (on-chain)');}
+     setT('eth',mk.eth_usd,'ETH price (on-chain)');const cq=(c.changes||{}).QQQ;{const t=(d.market||[]).find(r=>r.id==='nasdaq');if(t&&cq&&cq.h24!=null){t.value=cq.h24;t.fmt='pct';t.label='QQQ token, last 24h (on-chain)';t.asof=at+' · tracks the Nasdaq-100 fund';t.source=mk.source;t.url=mk.url;}}const ce=(c.changes||{}).ETH;if(ce&&ce.d7!=null)setT('eth_1w',ce.d7,'ETH, last 7 days (on-chain)');}
    d.ct=Object.fromEntries(Object.entries(c.funds||{}).map(([k,x])=>[k,x.card_times||null]));d.ct_week=c.epoch;d.closes_utc=c.closes_utc;d.cprices=c.prices||{};d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
    if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
@@ -672,6 +672,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    const setM=(id,v,asof,url,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=asof;t.source='CoinMarketCap';t.url=url;if(label)t.label=label;}};
    const B=X.quotes.BTC;if(B)setM('btc',B.price,at(B.asof_utc),B.url,'BTC price');
    if(X.fng)setM('fng',X.fng.value,at(X.fng.asof_utc)+' · '+X.fng.label,X.fng.url,'Fear & Greed (CMC)');
+   const G=X.quotes.PAXG;if(G){const t=(d.market||[]).find(r=>r.id==='gold');if(t){t.value=G.price;t.fmt='usd0';t.label='Gold (PAX Gold, 1 oz token)';t.asof=at(G.asof_utc)+(G.ch24!=null?' · 24h '+pc(G.ch24):'');t.source='CoinMarketCap';t.url=G.url;}}
    (d.tokens||[]).forEach(t=>{const q=X.quotes[t.token];if(!q)return;
      const ch=[['24h',q.ch24],['7d',q.ch7],['30d',q.ch30]].filter(x=>x[1]!=null).map(x=>x[0]+' '+pc(x[1])).join(', ');
      t.price=px(q.price)+' (CMC, '+at(q.asof_utc)+')'+(t.token==='USDG'?'':'. '+ch)+(q.mcap?'. Market cap '+big(q.mcap):'');t.source='CoinMarketCap';t.url=q.url;});
