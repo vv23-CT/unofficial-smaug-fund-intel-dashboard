@@ -263,8 +263,7 @@ html,body{height:100%;overflow:hidden}
 .stat b span{font:inherit;color:inherit;letter-spacing:0}
 .stat em{font-size:12px;vertical-align:1px}
 
-.hd .sub .nxt{flex-basis:100%}
-.hd .sub .nxt::before{content:'↻ ';}
+.hd .sub .nxt #nxt::before{content:'↻ ';}
 #evs small.res{display:block;color:var(--fg);font-weight:600}
 /* turnout, read from the chain */
 .oc{color:var(--muted);font-size:11px}
@@ -314,7 +313,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="scroll" id="scroll" tabindex="0" aria-label="Dashboard content">
 <header class="hd">
 <h1>What each room is backing</h1>
-<div class="sub"><span id="wk">Week 2</span><span aria-hidden="true">·</span><span class="upd">Updated <time id="updTime">—</time></span><span class="nxt" id="nxtWrap" hidden><span id="nxt"></span></span></div>
+<div class="sub"><span id="wk">Week 2</span><span class="nxt" id="nxtWrap" hidden><span aria-hidden="true">·</span> <span id="nxt"></span></span></div>
 </header>
 <main class="body">
 <section class="fcard" id="fcard" aria-live="polite">
@@ -417,7 +416,7 @@ $('#wk').textContent='Week '+D.week;
  (function nextUpd(){if(!D.chain_asof_utc)return;const last=Date.parse(D.chain_asof_utc),now=Date.now();/* readings come about every 31 minutes (29-minute timer plus start-up) */
   let nx=last+31*60000;if(nx<now)nx=now+60000;const late=now-last>75*60000;$('#nxtWrap').hidden=false;
   $('#nxt').textContent=late?'Next update running late':'Next update about '+fmtTime.format(new Date(nx)).replace(/ [A-Z]{2,5}$/,'');
-  setTimeout(nextUpd,60000);})();stamp($('#updTime'),D.updated_utc,(D.updates[0]||{}).date);$('#sbUpd').textContent='Updated '+(D.updated_utc?new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(D.updated_utc)):(D.updates[0]||{}).date);
+  setTimeout(nextUpd,60000);})();if($('#updTime'))stamp($('#updTime'),D.updated_utc,(D.updates[0]||{}).date);$('#sbUpd').textContent='Updated '+(D.updated_utc?new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(D.updated_utc)):(D.updates[0]||{}).date);
 
 /* fund switcher */
 FUNDS.forEach(f=>{const b=el('button','fbtn');b.type='button';b.setAttribute('role','tab');b.dataset.f=f.id;const hc=HOUSE[f.id]||['#453629','#fff'];b.style.setProperty('--fh',hc[0]);b.style.setProperty('--fhi',hc[1]);const sw=el('i','sw');sw.setAttribute('aria-hidden','true');b.append(sw,el('span',null,f.name));
