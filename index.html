@@ -61,7 +61,7 @@
 .leg{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:12.5px;color:var(--muted)}
 .leg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
 .leg b{color:var(--fg);font-weight:600}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);padding-top:10px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);padding-top:10px}
 .stat{display:flex;flex-direction:column;gap:1px;padding:0 6px}
 .stat+.stat{border-left:1px solid var(--line)}
 .stat span{font-size:11.5px;color:var(--muted)}
@@ -327,7 +327,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="turn" id="fcTurn" hidden><div class="tu-top"><span class="tu-l">Turnout</span><b id="tuPct">—</b><span id="tuTxt">—</span></div><div class="tu-bar" role="img" id="tuBar"><i id="tuFill"></i><span id="tuFloor" title="25-chair floor"></span></div><div class="tu-src" id="tuSrc"></div></div>
 <div class="stats">
 <button class="stat stbtn" type="button" id="stChairsBtn" aria-expanded="false" aria-controls="ctBox"><span>Chairs <i class="car" aria-hidden="true">▾</i></span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></button>
-<div class="stat"><span>$TMF held</span><b id="stTmf">—</b></div>
+
 <div class="stat"><span>Backed</span><b id="stBacked">—</b></div>
 <div class="stat" id="stNavBox" title="What the fund is worth in WETH (fund desk navInWeth, on-chain)"><span>Fund size (WETH)</span><b id="stNav">—</b></div>
 </div>
@@ -448,7 +448,7 @@ function select(id,dx){SEL=id;const f=FI[id];
  const st=$('#fcStack'),lg=$('#fcLeg');st.replaceChildren();lg.replaceChildren();
  parts.forEach(([l,v,fill])=>{const d=el('div');d.style.width=(v*100)+'%';d.style.background=fill;st.append(d);const s=el('span');const i=el('i');i.style.background=fill;s.append(i,l+' ');s.append(el('b',null,P(v)));lg.append(s);});
  st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+P(v)).join(', '));
- const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-chair floor: the dials move at the bell':'Below the 25-chair floor';$('#stTmf').textContent=P(f.tmf_held);$('#stBacked').textContent=b.length+' of '+D.tokens.length;$('#stNav').textContent=f.nav_weth!=null?f.nav_weth.toFixed(2):'—';
+ const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-chair floor: the dials move at the bell':'Below the 25-chair floor';$('#stBacked').textContent=b.length+' of '+D.tokens.length;$('#stNav').textContent=f.nav_weth!=null?f.nav_weth.toFixed(2):'—';
  try{localStorage.setItem('tfi-fund',id)}catch(e){}try{history.replaceState(null,'','#'+id)}catch(e){}
  drawWeek();drawTok();drawGrid();drawCardTimes();}
 
