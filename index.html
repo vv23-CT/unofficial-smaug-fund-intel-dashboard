@@ -109,7 +109,7 @@ button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 }
 .swipehint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:-4px}
 /* view tabs */
-.vtabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.vtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--line)}
 .vtab{cursor:pointer;border:0;background:transparent;padding:9px 2px;font-size:13.5px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent}
 .vtab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--fg)}
 .vtab:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
@@ -328,16 +328,21 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="stats">
 <button class="stat stbtn" type="button" id="stChairsBtn" aria-expanded="false" aria-controls="ctBox"><span>Chairs <i class="car" aria-hidden="true">▾</i></span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></button>
 
-<div class="stat"><span>Backed</span><b id="stBacked">—</b></div>
+<button class="stat stbtn" type="button" id="stBackedBtn" aria-expanded="false" aria-controls="tkBox"><span>Backed <i class="car" aria-hidden="true">▾</i></span><b id="stBacked">—</b></button>
 <div class="stat" id="stNavBox" title="What the fund is worth in WETH (fund desk navInWeth, on-chain)"><span>Fund size (WETH)</span><b id="stNav">—</b></div>
+</div>
+<div class="ct tk" id="tkBox" hidden><div class="ct-top"><div class="ct-h" id="tkH"></div><button class="ct-x" type="button" id="tkX" aria-label="Close">✕</button></div>
+<div class="chips" id="tchips"><button class="chip" type="button" data-g="" aria-pressed="true">All 19</button><button class="chip" type="button" data-g="Stock" aria-pressed="false">Stocks</button><button class="chip" type="button" data-g="Stable" aria-pressed="false">Stable</button><button class="chip" type="button" data-g="Meme" aria-pressed="false">Memes</button></div>
+<div class="tsbk" id="tsbKey" hidden><span class="tsb-b"><i style="width:40%"></i><em></em></span><span id="tsbKeyT"></span></div>
+<div class="tl" id="tokList"></div>
+<p class="note">Most support first: the share of chair weight that put something on each token. Tap a token for its price, news and source.</p>
 </div>
 <div class="ct" id="ctBox" hidden><div class="ct-top"><div class="ct-h" id="ctH"></div><button class="ct-x" type="button" id="ctX" aria-label="Close">✕</button></div><div class="ct-g" id="ctG" role="table"></div><div class="ct-k" aria-hidden="true"><span>fewer</span><i></i><span>more</span></div><div class="ct-f" id="ctF"></div><div class="tu-src" id="ctSrc"></div></div>
 </section>
 <div class="swipehint">Swipe the card or tap a fund above</div>
 <div class="vtabs" role="tablist" aria-label="Sections">
 <button class="vtab" role="tab" type="button" data-v="week" aria-selected="true">This week</button>
-<button class="vtab" role="tab" type="button" data-v="tokens" aria-selected="false">Tokens</button>
-<button class="vtab" role="tab" type="button" data-v="all" aria-selected="false">All funds</button>
+<button class="vtab" role="tab" type="button" data-v="all" aria-selected="false">Compare funds</button>
 <button class="vtab" role="tab" type="button" data-v="more" aria-selected="false">More</button>
 </div>
 <section class="view" data-view="week">
@@ -345,12 +350,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <ol class="wk" id="wkList"></ol>
 <p class="note" id="wkNote"></p>
 </section>
-<section class="view" data-view="tokens" hidden>
-<div class="chips" id="tchips"><button class="chip" type="button" data-g="" aria-pressed="true">All 19</button><button class="chip" type="button" data-g="Stock" aria-pressed="false">Stocks</button><button class="chip" type="button" data-g="Stable" aria-pressed="false">Stable</button><button class="chip" type="button" data-g="Meme" aria-pressed="false">Memes</button></div>
-<div class="tsbk" id="tsbKey" hidden><span class="tsb-b"><i style="width:40%"></i><em></em></span><span id="tsbKeyT"></span></div>
-<div class="tl" id="tokList"></div>
-<p class="note">Tap a token for its price, news and source. Backed tokens are listed first.</p>
-</section>
+
 <section class="view" data-view="all" hidden>
 <div class="gwrap"><table class="g" id="grid"><thead><tr id="gHead"><th>Token</th></tr></thead><tbody></tbody></table></div>
 <button class="toggle" type="button" id="gToggle">Show all 19 tokens</button>
@@ -494,7 +494,9 @@ const HEAT_STOPS=['#fff1b3','#ffc95c','#f5844c','#d9455f','#8a2a7a','#3d2266'];
 const HEAT=t=>{if(t<=0)return['transparent',false];const x=Math.min(1,t)*(HEAT_STOPS.length-1),i=Math.min(HEAT_STOPS.length-2,Math.floor(x)),f=x-i;return['color-mix(in srgb,'+HEAT_STOPS[i+1]+' '+Math.round(f*100)+'%,'+HEAT_STOPS[i]+')',x>=2.6];};
 /* on wide screens the grid opens in the right column, larger; on phones it opens under the boxes */
 const WIDE=matchMedia('(min-width:900px)');
-function placeCT(){const box=$('#ctBox');if(WIDE.matches){const vt=document.querySelector('.body>.vtabs');if(box.parentElement!==vt.parentElement)vt.before(box);}else{const st=document.querySelector('#fcard .stats');if(box.previousElementSibling!==st)st.after(box);}}
+function placeCT(){['#ctBox','#tkBox'].forEach(q=>{const box=$(q);if(WIDE.matches){const vt=document.querySelector('.body>.vtabs');if(box.parentElement!==vt.parentElement||box.nextElementSibling!==vt)vt.before(box);}else{const st=document.querySelector('#fcard .stats');if(box.previousElementSibling!==st)st.after(box);}});}
+let TK_OPEN=false;
+function drawTkBox(){placeCT();const box=$('#tkBox'),btn=$('#stBackedBtn');btn.setAttribute('aria-expanded',TK_OPEN?'true':'false');box.hidden=!TK_OPEN;}
 function drawCardTimes(){placeCT();const box=$('#ctBox'),btn=$('#stChairsBtn');btn.setAttribute('aria-expanded',CT_OPEN?'true':'false');box.hidden=!CT_OPEN;if(!CT_OPEN)return;
  const H=(D.ct||{})[SEL],f=FI[SEL],g=$('#ctG');g.replaceChildren();
  const end=D.closes_utc?new Date(D.closes_utc):null;if(!end){$('#ctH').textContent='Card times aren\'t available yet.';$('#ctF').textContent='';return;}
@@ -550,7 +552,8 @@ function supBox(f,t,s){const v=SUP(f,t),a=f.avg_card&&f.avg_card[t],b=el('div','
  return b;}
 function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
  $('#tsbKey').hidden=!f.support;$('#tsbKeyT').textContent=f.chairs_for?'Chairs that voted for it, of '+f.chairs+'. The bar is their chair weight, which decides; past the red line (50%) it\'s backed. "More chairs" is the fewest chairs that already voted that could still tip it.':'Bars: share of '+f.name+'\'s chair weight that put something on each token. Red mark = 50%; over it, the token is backed.';
- D.tokens.filter(r=>!G||r.group===G).slice().sort((a,b)=>ORDER[f.status[a.token]]-ORDER[f.status[b.token]]).forEach(r=>{const s=f.status[r.token];
+ $('#tkH').replaceChildren(el('b',null,f.name+': all '+D.tokens.length+' tokens'),' · most support first');
+ D.tokens.filter(r=>!G||r.group===G).slice().sort((a,b)=>(SUP(f,b.token)||0)-(SUP(f,a.token)||0)||ORDER[f.status[a.token]]-ORDER[f.status[b.token]]).forEach(r=>{const s=f.status[r.token];
   const row=el('div','trow');const bt=el('button','tbtn');bt.type='button';bt.setAttribute('aria-expanded','false');
   bt.append(el('b',null,r.token),el('span','px',r.onchain),el('span','st '+(s==='backed'?'b':s==='vetoed'?'v':'n'),s==='backed'?P(f.room_tokens[r.token]):s==='vetoed'?'vetoed':'no cards'));
   if(SUP(f,r.token)!=null||f.support){const v=SUP(f,r.token)||0,sb=el('span','tsb');const bar=el('span','tsb-b');const i=el('i',s==='backed'?'ok':null);i.style.width=Math.min(100,v*100)+'%';bar.append(i,el('em'));const nc=CF(f,r.token);
@@ -595,9 +598,11 @@ function drawGrid(){const tb=$('#grid tbody');tb.replaceChildren();
  $$('#grid [data-f]').forEach(c=>c.classList.toggle('sel',c.dataset.f===SEL));
  $('#gToggle').textContent=ALL?'Show only backed tokens':'Show all '+D.tokens.length+' tokens';}
 $('#gToggle').addEventListener('click',()=>{ALL=!ALL;drawGrid();});
-$('#stChairsBtn').addEventListener('click',e=>{e.stopPropagation();CT_OPEN=!CT_OPEN;drawCardTimes();});
+$('#stChairsBtn').addEventListener('click',e=>{e.stopPropagation();CT_OPEN=!CT_OPEN;if(CT_OPEN){TK_OPEN=false;drawTkBox();}drawCardTimes();});
+$('#stBackedBtn').addEventListener('click',e=>{e.stopPropagation();TK_OPEN=!TK_OPEN;if(TK_OPEN){CT_OPEN=false;drawCardTimes();}drawTkBox();});
+$('#tkX').addEventListener('click',()=>{TK_OPEN=false;drawTkBox();$('#stBackedBtn').focus();});
 $('#ctX').addEventListener('click',()=>{CT_OPEN=false;drawCardTimes();$('#stChairsBtn').focus();});
-WIDE.addEventListener&&WIDE.addEventListener('change',drawCardTimes);
+WIDE.addEventListener&&WIDE.addEventListener('change',()=>{drawCardTimes();drawTkBox();});
 
 /* more */
 const u=D.updates[0];$('#chgDate').textContent=u.date;$('#chg').textContent=u.text;
