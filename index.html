@@ -74,6 +74,7 @@ button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 .ct{margin-top:8px;padding:8px 10px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card2)}
 .ct-top{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;margin-bottom:6px}
 .ct-h{font-size:12px;color:var(--muted)}.ct-h b{color:var(--fg)}
+.tk-act{display:flex;gap:6px;flex:none}.tk-copy{font-weight:600;color:var(--fg)!important}
 .ct-x{font:inherit;font-size:12px;line-height:1;background:none;border:1px solid var(--line);border-radius:6px;color:var(--muted);padding:4px 7px;cursor:pointer}
 .ct-k{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--muted);margin-top:6px}
 .ct-k i{flex:0 1 140px;height:8px;border-radius:99px;background:linear-gradient(90deg,#fff1b3,#ffc95c,#f5844c,#d9455f,#8a2a7a,#3d2266)}
@@ -331,7 +332,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <button class="stat stbtn" type="button" id="stBackedBtn" aria-expanded="false" aria-controls="tkBox"><span>Backed <i class="car" aria-hidden="true">▾</i></span><b id="stBacked">—</b></button>
 <div class="stat" id="stNavBox" title="What the fund is worth in WETH (fund desk navInWeth, on-chain)"><span>Fund size (WETH)</span><b id="stNav">—</b></div>
 </div>
-<div class="ct tk" id="tkBox" hidden><div class="ct-top"><div class="ct-h" id="tkH"></div><button class="ct-x" type="button" id="tkX" aria-label="Close">✕</button></div>
+<div class="ct tk" id="tkBox" hidden><div class="ct-top"><div class="ct-h" id="tkH"></div><span class="tk-act"><button class="ct-x tk-copy" type="button" id="tkCopy" aria-label="Copy a short summary to share">Copy</button><button class="ct-x" type="button" id="tkX" aria-label="Close">✕</button></span></div>
 <div class="chips" id="tchips"><button class="chip" type="button" data-g="" aria-pressed="true">All 19</button><button class="chip" type="button" data-g="Stock" aria-pressed="false">Stocks</button><button class="chip" type="button" data-g="Stable" aria-pressed="false">Stable</button><button class="chip" type="button" data-g="Meme" aria-pressed="false">Memes</button></div>
 <div class="tsbk" id="tsbKey" hidden><span class="tsb-b"><i style="width:40%"></i><em></em></span><span id="tsbKeyT"></span></div>
 <div class="tl" id="tokList"></div>
@@ -600,6 +601,17 @@ function drawGrid(){const tb=$('#grid tbody');tb.replaceChildren();
 $('#gToggle').addEventListener('click',()=>{ALL=!ALL;drawGrid();});
 $('#stChairsBtn').addEventListener('click',e=>{e.stopPropagation();CT_OPEN=!CT_OPEN;if(CT_OPEN){TK_OPEN=false;drawTkBox();}drawCardTimes();});
 $('#stBackedBtn').addEventListener('click',e=>{e.stopPropagation();TK_OPEN=!TK_OPEN;if(TK_OPEN){CT_OPEN=false;drawCardTimes();}drawTkBox();});
+/* Copy: a short, shareable summary of the open fund's room (facts only, with time and link) */
+function shareText(){const f=FI[SEL],rows=D.tokens.map(r=>[r.token,SUP(f,r.token)||0,f.status[r.token]]).sort((a,b)=>b[1]-a[1]);
+ const b=rows.filter(x=>x[2]==='backed'),near=rows.filter(x=>x[2]!=='backed'&&x[1]>0).slice(0,3),g=v=>{const x=50-v*100;return(x<1?x.toFixed(1):String(Math.round(x)))+'%';};
+ const L=[f.name+' room · Week '+D.week+' (on-chain, '+local(f.asof_utc||(D.chain||{}).asof_utc)+')'];
+ L.push(b.length?'Backed: '+b.map(x=>x[0]+' '+P(f.room_tokens[x[0]])).join(', '):'Backed: nothing yet (all to WETH)');
+ if(near.length){L.push('Closest to passing 50% of chair weight:');near.forEach(([t,v])=>{const fm=f.flip_min?f.flip_min[t]:null;L.push('• '+t+' '+PS(v)+' · '+g(v)+' to go'+(fm?' · at least '+fm+' more '+(fm===1?'chair':'chairs'):''));});}
+ if(D.closes_utc)L.push('Bell: '+bellDay(D.closes_utc));
+ return L.join('\n');}
+$('#tkCopy').addEventListener('click',async()=>{const t=shareText(),btn=$('#tkCopy');let ok=false;
+ try{await navigator.clipboard.writeText(t);ok=true;}catch(e){try{const ta=el('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.append(ta);ta.select();ok=document.execCommand('copy');ta.remove();}catch(e2){}}
+ btn.textContent=ok?'Copied ✓':'Copy failed';setTimeout(()=>{btn.textContent='Copy';},2000);});
 $('#tkX').addEventListener('click',()=>{TK_OPEN=false;drawTkBox();$('#stBackedBtn').focus();});
 $('#ctX').addEventListener('click',()=>{CT_OPEN=false;drawCardTimes();$('#stChairsBtn').focus();});
 WIDE.addEventListener&&WIDE.addEventListener('change',()=>{drawCardTimes();drawTkBox();});
