@@ -156,9 +156,32 @@ try {
     const top = mine.slice().sort((x, y) => (y.liquidity?.usd || 0) - (x.liquidity?.usd || 0))[0];
     dex[a.symbol] = { price_usd: Number(top.priceUsd) || null, change_24h: top.priceChange?.h24 ?? null,
       volume_24h: Math.round(mine.reduce((t, p) => t + (p.volume?.h24 || 0), 0)), liquidity_usd: Math.round(mine.reduce((t, p) => t + (p.liquidity?.usd || 0), 0)),
-      market_cap: top.marketCap ?? null, fdv: top.fdv ?? null, pools: mine.length, url: top.url || ('https://dexscreener.com/robinhood/' + a.address) };
+      market_cap: top.marketCap ?? null, fdv: top.fdv ?? null, pools: mine.length, url: top.url || ('https://dexscreener.com/robinhood/' + a.address),
+      first_pool_utc: (() => { const t = Math.min(...mine.map(p => p.pairCreatedAt || Infinity)); return isFinite(t) ? new Date(t).toISOString().replace(/\.\d+Z$/, 'Z') : null; })() };
   }
 } catch (e) { console.log('DexScreener skipped:', String(e).slice(0, 100)); }
+
+// --- contract facts for the chain's own tokens, read from their on-chain code (facts only; no addresses saved) ---
+// Looks for the 4-byte function selectors in the token's code (and its implementation, if it is a proxy or a minimal clone).
+const FACT_SIGS = { owner: ['owner()', 'getOwner()'], mint: ['mint(address,uint256)', 'mint(uint256)', 'mint(address)'], pause: ['pause()', 'paused()'],
+  blacklist: ['blacklist(address)', 'addToBlacklist(address)', 'isBlacklisted(address)', 'setBlacklist(address,bool)', 'blacklistAddress(address,bool)', 'isBlackListed(address)'],
+  upgrade: ['upgradeTo(address)', 'upgradeToAndCall(address,bytes)'] };
+const token_facts = {};
+for (const a of reg.filter(r => DEX_TOKENS.includes(r.symbol))) {
+  try {
+    const code = (await rpc('eth_getCode', [a.address, 'latest'])).toLowerCase();
+    let impl = null, kind = null;
+    const clone = code.length <= 2 + 2 * 60 ? code.match(/73([0-9a-f]{40})5af4/) : null; // minimal proxy clones (EIP-1167 and the shorter PUSH0 form)
+    if (clone) { impl = '0x' + clone[1]; kind = 'clone'; }
+    else { const slot = await rpc('eth_getStorageAt', [a.address, '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc', 'latest']);
+      if (slot && BigInt(slot) !== 0n) { impl = '0x' + slot.slice(26); kind = 'proxy'; } }
+    const all = code + (impl ? (await rpc('eth_getCode', [impl, 'latest'])).toLowerCase() : '');
+    const has = Object.fromEntries(Object.entries(FACT_SIGS).map(([k, sigs]) => [k, sigs.some(g => all.includes('63' + sel(g)))]));
+    let owner_renounced = null;
+    if (has.owner) { try { const o = await raw(a.address, sel('owner()')); owner_renounced = !!o && o !== '0x' && BigInt(o.slice(0, 66)) === 0n; } catch { owner_renounced = null; } }
+    token_facts[a.symbol] = { has, owner_renounced, upgradeable_proxy: kind === 'proxy', minimal_clone: kind === 'clone', first_pool_utc: dex[a.symbol]?.first_pool_utc || null, asof_utc: new Date().toISOString().replace(/\.\d+Z$/, 'Z') };
+  } catch (e) { console.log('token facts skipped for', a.symbol, String(e).slice(0, 80)); }
+}
 
 // --- per fund, this week ---
 const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
@@ -218,7 +241,7 @@ const out = {
   source: 'Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth',
   url: 'https://robinhoodchain.blockscout.com/address/' + BALLOT, ballot: BALLOT, dividend_office: OFFICE, desk: DESK,
   method: 'Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.',
-  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, dex, changes, price_hist: hist, funds, archive,
+  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, dex, token_facts, changes, price_hist: hist, funds, archive,
 };
 // Always save the reading (even if no count moved) so the page's "Updated" time shows the latest check.
 fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
