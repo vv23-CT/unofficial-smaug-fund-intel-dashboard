@@ -1,0 +1,15 @@
+name: "Swaps probe (test only)"
+on:
+  push:
+    branches: [swaps-test]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: node tools/swaps_probe.mjs
