@@ -536,6 +536,9 @@ const ORDER={backed:0,vetoed:1,no_cards:2};
 const SUP=(f,t)=>f.support&&f.support[t]!=null?f.support[t]:null;
 const CF=(f,t)=>f.chairs_for?(f.chairs_for[t]||0):null;
 const PS=v=>(v*100).toFixed(v>=.995||v<.1?1:0).replace(/\.0$/,'')+'%';
+/* weight a token still needs from new cards that add it (same count as the ballot): W*(1-2s); chairs = that / this room's average voted chair weight, rounded up */
+const NEED=(f,t)=>{const W=f.voted_weight,v=SUP(f,t);if(!W||v==null||v>=.5||!f.chairs)return null;const w=Math.round(W*(1-2*v)),avg=W/f.chairs;return{w,n:Math.ceil(w/avg),avg:Math.round(avg)};};
+const WN=n=>n>=10000?(n/1000).toFixed(1).replace(/\.0$/,'')+'k':n.toLocaleString('en-US');
 function supBox(f,t,s){const v=SUP(f,t),a=f.avg_card&&f.avg_card[t],b=el('div','sup');
  const nc=CF(f,t);if(nc!=null){const q=el('p');q.append(el('b',null,nc+' of '+f.chairs+' chairs'),' that voted put something on '+t+' ('+PS(nc/f.chairs)+' of chairs voted).');b.append(q);}
  const p=el('p');p.append(el('b',null,PS(v)+' of chair weight'),(nc!=null?': ':' of '+f.name+'\'s chair weight put something on '+t+'. ')+(s==='backed'?'over 50%, so it\'s backed. ':'backing needs over 50%. ')+'Weight is what decides: chairs with more weight count for more.');b.append(p);
@@ -544,15 +547,14 @@ function supBox(f,t,s){const v=SUP(f,t),a=f.avg_card&&f.avg_card[t],b=el('div','
  if(s!=='backed'&&v<=.5){const T=f.voted_weight,E=f.enrolled_weight,left=E&&T?E-T:null,gap=.5-v;
   const h=el('p','m');h.append(el('b',null,'What it would take to pass 50%:'));b.append(h);
   const u=el('ul','need');
-  const fm=f.flip_min?f.flip_min[t]:null;const li1=el('li');li1.append('Chairs that already voted, holding ',el('b',null,PS(gap)+' of the voted weight'),', add '+t+' to their cards'+(fm?'. That\'s at least '+fm+(fm===1?' chair':' chairs')+' (fewer only if the heaviest ones switch); or':'; or'));u.append(li1);
-  if(left!=null&&left>0){const x=T*(1-2*v),pl=x/left;const li2=el('li');
-   if(pl<=1)li2.append('Chairs that haven\'t voted yet, holding ',el('b',null,PS(pl)+' of the weight still to vote'),', all put something on '+t+'.');
-   else li2.append('Chairs that haven\'t voted yet couldn\'t do it alone: it would take more weight than is left to vote ('+PS(pl)+').');u.append(li2);}
+  const fm=f.flip_min?f.flip_min[t]:null,nd=NEED(f,t);
+  if(nd){const li2=el('li');li2.append('Chairs that haven\'t voted yet add ',el('b',null,'+'+nd.w.toLocaleString('en-US')+' weight'),' with '+t+' on their cards. That\'s ',el('b',null,'about '+nd.n+(nd.n===1?' chair':' chairs')),' at this room\'s average of '+nd.avg+' weight per chair (the same count the ballot shows)'+(left!=null&&nd.w>left?'. That\'s more weight than is left to vote ('+left.toLocaleString('en-US')+'), so it can\'t pass this week':'')+'.');u.append(li2);}
+
   b.append(u);b.append(el('p','m','Exact math from this reading\'s on-chain weights, assuming nothing else changes. Chairs carry different weights, so this is weight, not a head count.'));}
  if(a!=null&&s!=='backed')b.append(el('p','m','Average card: '+P(a)+' of the fund (every chair\'s card weighted, zeros included).'));
  return b;}
 function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
- $('#tsbKey').hidden=!f.support;$('#tsbKeyT').textContent=f.chairs_for?'Chairs that voted for it, of '+f.chairs+'. The bar is their chair weight, which decides; past the red line (50%) it\'s backed. "More chairs" is the fewest chairs that already voted that could still tip it.':'Bars: share of '+f.name+'\'s chair weight that put something on each token. Red mark = 50%; over it, the token is backed.';
+ $('#tsbKey').hidden=!f.support;$('#tsbKeyT').textContent=f.chairs_for?'Chairs that voted for it, of '+f.chairs+'. The bar is their chair weight, which decides; past the red line (50%) it\'s backed. "Needs" is the weight new cards must add to pass it, and about how many chairs that is at this room\'s average weight (the same count the ballot shows).':'Bars: share of '+f.name+'\'s chair weight that put something on each token. Red mark = 50%; over it, the token is backed.';
  $('#tkH').replaceChildren(el('b',null,f.name+': all '+D.tokens.length+' tokens'),' · most support first');
  D.tokens.filter(r=>!G||r.group===G).slice().sort((a,b)=>(SUP(f,b.token)||0)-(SUP(f,a.token)||0)||ORDER[f.status[a.token]]-ORDER[f.status[b.token]]).forEach(r=>{const s=f.status[r.token];
   const row=el('div','trow');const bt=el('button','tbtn');bt.type='button';bt.setAttribute('aria-expanded','false');
@@ -566,7 +568,7 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
   /* one plain line under the bar: how far from 50%, and the fewest chairs that already voted that could close it */
   const fm=f.flip_min?f.flip_min[r.token]:undefined,nt=el('span','tsb-n');
   if(s==='backed'&&gpt<0)nt.append(el('b','ok','Passed by '+fmtp(-gpt)));
-  else if(gpt>0){nt.append(el('b',null,fmtp(gpt)+' to go'));if(fm)nt.append(' · at least '+fm+' more '+(fm===1?'chair':'chairs'));}
+  else if(gpt>0){nt.append(el('b',null,fmtp(gpt)+' to go'));const nd=NEED(f,r.token);if(nd)nt.append(' · needs +'+WN(nd.w)+' weight · about '+nd.n+' '+(nd.n===1?'chair':'chairs'));}
   if(nt.childNodes.length)sb.append(nt);sb.title=(nc!=null?nc+' of '+f.chairs+' chairs voted ('+PS(nc/f.chairs)+') put something on '+r.token+'; ':'')+PS(v)+' of chair weight (over 50% backs it)';bt.append(sb);}
   const d=el('div','tdet');if(r.price)d.append(el('p',null,r.price));if(SUP(f,r.token)!=null)d.append(supBox(f,r.token,s));if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token],fv=(D.fdv||{})[r.token];d.append(el('p','m','On-chain ≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3))+(()=>{const g=(D.chg||{})[r.token]||{},f=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%',x=[];if(g.h24!=null)x.push('24h '+f(g.h24));if(g.d7!=null)x.push('7d '+f(g.d7));return x.length?' ('+x.join(', ')+')':'';})()+' · on-chain, valued in USDG on TMF\u2019s price desk'));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
   const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?(fl.n<=1?' · a quarter of '+f.name+' fills in one Friday':' · ~'+fl.n+' Fridays to fill a quarter of '+f.name):f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
@@ -606,7 +608,7 @@ function shareText(){const f=FI[SEL],rows=D.tokens.map(r=>[r.token,SUP(f,r.token
  const b=rows.filter(x=>x[2]==='backed'),near=rows.filter(x=>x[2]!=='backed'&&x[1]>0).slice(0,3),g=v=>{const x=50-v*100;return(x<1?x.toFixed(1):String(Math.round(x)))+'%';};
  const L=[f.name+' room · Week '+D.week+' (on-chain, '+local(f.asof_utc||(D.chain||{}).asof_utc)+')'];
  L.push(b.length?'Backed: '+b.map(x=>x[0]+' '+P(f.room_tokens[x[0]])).join(', '):'Backed: nothing yet (all to WETH)');
- if(near.length){L.push('Closest to passing 50% of chair weight:');near.forEach(([t,v])=>{const fm=f.flip_min?f.flip_min[t]:null;L.push('• '+t+' '+PS(v)+' · '+g(v)+' to go'+(fm?' · at least '+fm+' more '+(fm===1?'chair':'chairs'):''));});}
+ if(near.length){L.push('Closest to passing 50% of chair weight:');near.forEach(([t,v])=>{const fm=f.flip_min?f.flip_min[t]:null;const nd=NEED(f,t);L.push('• '+t+' '+PS(v)+' · '+g(v)+' to go'+(nd?' · needs +'+WN(nd.w)+' weight · about '+nd.n+' '+(nd.n===1?'chair':'chairs'):''));});}
  if(D.closes_utc)L.push('Bell: '+bellDay(D.closes_utc));
  return L.join('\n');}
 $('#tkCopy').addEventListener('click',async()=>{const t=shareText(),btn=$('#tkCopy');let ok=false;
