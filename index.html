@@ -116,7 +116,7 @@ button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 }
 .swipehint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:-4px}
 /* view tabs */
-.vtabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.vtabs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.55fr) minmax(0,.85fr) minmax(0,.85fr);border-bottom:1px solid var(--line)}
 .vtab{cursor:pointer;border:0;background:transparent;padding:9px 2px;font-size:13.5px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
 @media (max-width:400px){.vtab{font-size:12.5px;padding:9px 0}}
 .vtab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--fg)}
@@ -639,7 +639,7 @@ function supBox(f,t,s){const v=SUP(f,t),a=f.avg_card&&f.avg_card[t],b=el('div','
  return b;}
 /* News tab: up to 3 dated, linked items per token, written by the GitHub reader (news.json) */
 let NG='';
-function drawNews(){const box=$('#nwList');box.replaceChildren();const N=D.news,T=(N&&N.tokens)||{};
+function drawNews(){const box=$('#nwList');box.replaceChildren();const N=D.tokennews,T=(N&&N.tokens)||{};
  $('#nwIntro').textContent=N?'Latest from official filings and named news outlets, up to 3 items per token. Every item links to its original source. Nothing here is rated or interpreted.':'News has not loaded yet. Please refresh.';
  const age=s=>{const h=(Date.now()-new Date(s))/36e5;return h<1?'under an hour ago':h<48?Math.round(h)+' hours ago':Math.round(h/24)+' days ago';};
  const KL={filing:'OFFICIAL FILING',news:'NEWS',macro:'MACRO CONTEXT'};
@@ -821,7 +821,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
      t.price=px(q.price)+' (CMC, '+at(q.asof_utc)+')'+(t.token==='USDG'?'':'. '+ch)+(q.mcap?'. Market cap '+big(q.mcap):'');t.source='CoinMarketCap';t.url=q.url;});
    return d;}))
  /* Latest news per token (written by the GitHub reader, 4 times a day) */
- .then(d=>(window.__NEWS__?Promise.resolve(window.__NEWS__):fetch('news.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)).then(N=>{d.news=N&&N.tokens?N:null;return d;}))
+ .then(d=>(window.__NEWS__?Promise.resolve(window.__NEWS__):fetch('news.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)).then(N=>{d.tokennews=N&&N.tokens?N:null;return d;}))
  .then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
 
 </script>
