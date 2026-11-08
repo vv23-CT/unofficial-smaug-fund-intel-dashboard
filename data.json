@@ -953,7 +953,7 @@
    "def": "The fund's own token. The fund never sells it, and it isn't part of the split."
   },
   {
-   "term": "Seat / chair",
+   "term": "Seat",
    "def": "One vote in a fund. Each Seat casts one card per week."
   },
   {
@@ -1002,7 +1002,7 @@
   },
   {
    "term": "This week so far",
-   "def": "A fund's timeline for the week: one point per ballot capture, showing chairs, what the room backs and $TMF held."
+   "def": "A fund's timeline for the week: one point per ballot capture, showing seats, what the room backs and $TMF held."
   },
   {
    "term": "ISM PMI",
@@ -1018,11 +1018,11 @@
   },
   {
    "term": "Turnout",
-   "def": "Chairs that have voted this week out of the fund's enrolled Seats, read from the Ballot and DividendOffice contracts on Robinhood Chain."
+   "def": "Seats that have voted this week out of the fund's enrolled Seats, read from the Ballot and DividendOffice contracts on Robinhood Chain."
   },
   {
    "term": "Rebuilt room",
-   "def": "The room worked out from every card returned on Robinhood Chain this week: a token is backed when chairs holding more than half the voting weight put something on it, and its share is the chair-weighted average of all cards. $TMF held comes from the fund's own books. Checked against ballot captures; it can differ from the ballot page by a few tenths of a point."
+   "def": "The room worked out from every card returned on Robinhood Chain this week: a token is backed when seats holding more than half the voting weight put something on it, and its share is the seat-weighted average of all cards. $TMF held comes from the fund's own books. Checked against ballot captures; it can differ from the ballot page by a few tenths of a point."
   },
   {
    "term": "Chain reorg",
@@ -1032,7 +1032,7 @@
  "updates": [
   {
    "date": "Nov 6",
-   "text": "Week 2 bell (Fri, Nov 6, 3:00 PM ET): ARGON backed NVDA 7.91% (fills in one Friday) · 171 of 272 enrolled chairs (63%) · $TMF held 24.84%. BOGLE backed STONKBROKER 8.22% (~5 Fridays to fill a quarter of the fund) · 139 of 247 enrolled chairs (56%) · $TMF held 22.52%. SMAUG backed QQQ 8.17% (fills in one Friday) · 247 of 326 enrolled chairs (76%) · $TMF held 24.24%. MIDAS backed nothing: all to WETH · 156 of 264 enrolled chairs (59%) · $TMF held 23.38%. VLADD backed nothing: all to WETH · 197 of 308 enrolled chairs (64%) · $TMF held 29.83%. Rebuilt from on-chain cards (Robinhood Chain, Ballot contract)."
+   "text": "Week 2 bell (Fri, Nov 6, 3:00 PM ET): ARGON backed NVDA 7.91% (fills in one Friday) · 171 of 272 enrolled seats (63%) · $TMF held 24.84%. BOGLE backed STONKBROKER 8.22% (~5 Fridays to fill a quarter of the fund) · 139 of 247 enrolled seats (56%) · $TMF held 22.52%. SMAUG backed QQQ 8.17% (fills in one Friday) · 247 of 326 enrolled seats (76%) · $TMF held 24.24%. MIDAS backed nothing: all to WETH · 156 of 264 enrolled seats (59%) · $TMF held 23.38%. VLADD backed nothing: all to WETH · 197 of 308 enrolled seats (64%) · $TMF held 29.83%. Rebuilt from on-chain cards (Robinhood Chain, Ballot contract)."
   },
   {
    "date": "Nov 2",
@@ -1040,11 +1040,11 @@
   },
   {
    "date": "Nov 1",
-   "text": "New: every fund's room is now rebuilt from on-chain cards every 30 minutes (chairs, $TMF held, what's backed, vetoed or has no cards). It matched all 11 ballot captures this week on chairs and on what's backed. Tonight no fund backs a token: ARGON's NVDA slipped under half of chair weight and is headed to WETH."
+   "text": "New: every fund's room is now rebuilt from on-chain cards every 30 minutes (seats, $TMF held, what's backed, vetoed or has no cards). It matched all 11 ballot captures this week on seats and on what's backed. Tonight no fund backs a token: ARGON's NVDA slipped under half of seat weight and is headed to WETH."
   },
   {
    "date": "Nov 1",
-   "text": "New: turnout for every fund, read from public contracts on Robinhood Chain (5:19pm ET). ARGON 105 of 264 enrolled chairs have voted (40%), BOGLE 58 of 233 (25%), SMAUG 72 of 307 (23%), MIDAS 80 of 257 (31%), VLADD 101 of 293 (34%). 416 of 1,354 enrolled chairs overall (31%)."
+   "text": "New: turnout for every fund, read from public contracts on Robinhood Chain (5:19pm ET). ARGON 105 of 264 enrolled seats have voted (40%), BOGLE 58 of 233 (25%), SMAUG 72 of 307 (23%), MIDAS 80 of 257 (31%), VLADD 101 of 293 (34%). 416 of 1,354 enrolled seats overall (31%)."
   },
   {
    "date": "Nov 1",
@@ -1068,11 +1068,11 @@
   },
   {
    "date": "Oct 31",
-   "text": "Ballot (8:15am ET): 46 chairs voting (floor 25). $TMF held 36.19%, WETH 63%. All 19 tokens still 0% and vetoed so far. On-chain prices refreshed; fill estimates APE ~115, DERP ~512, SGOV ~44 Fridays. ETH and meme prices refreshed from CoinMarketCap (12:15 UTC)."
+   "text": "Ballot (8:15am ET): 46 seats voting (floor 25). $TMF held 36.19%, WETH 63%. All 19 tokens still 0% and vetoed so far. On-chain prices refreshed; fill estimates APE ~115, DERP ~512, SGOV ~44 Fridays. ETH and meme prices refreshed from CoinMarketCap (12:15 UTC)."
   },
   {
    "date": "Oct 31",
-   "text": "Renamed to Unofficial SMAUG Fund Intel Dashboard. Ballot screenshot (Oct 31): 44 chairs voting, past the 25 floor, so the dials move at the bell. $TMF held 35.67%, WETH 64%. All 19 tokens still 0% and vetoed so far. On-chain prices and fill estimates refreshed (SGOV ~43, STONKBROKER ~27, APE ~114, DERP ~507 Fridays). Meme prices from CoinMarketCap and lifetime trading facts from RobinX added."
+   "text": "Renamed to Unofficial SMAUG Fund Intel Dashboard. Ballot screenshot (Oct 31): 44 seats voting, past the 25 floor, so the dials move at the bell. $TMF held 35.67%, WETH 64%. All 19 tokens still 0% and vetoed so far. On-chain prices and fill estimates refreshed (SGOV ~43, STONKBROKER ~27, APE ~114, DERP ~507 Fridays). Meme prices from CoinMarketCap and lifetime trading facts from RobinX added."
   },
   {
    "date": "Oct 31",

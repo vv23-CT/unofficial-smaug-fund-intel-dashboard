@@ -27,7 +27,7 @@ The clock is `.github/workflows/tick.yml`: it waits 29 minutes on the `reader-ti
   - `history`: this week's timeline (one row a day, plus a row whenever what the room backs changes).
 - `prices` (WETH per token, TMF's price desk `priceInWeth`), `depth` (per-Friday limit), `market.eth_usd` (ETH valued in USDG on the price desk), `usd` (token prices in USD), `changes {TOKEN: {h24, d7}}` and `price_hist` (hourly WETH prices, last 8 days).
 - `dex {TOKEN: {price_usd, change_24h, volume_24h, liquidity_usd, market_cap, fdv, pools, url}}` from DexScreener's free API, for the meme tokens.
-- `archive`: at each bell, every fund's final room for the week (chairs, room_tokens, $TMF held, enrolled, fills).
+- `archive`: at each bell, every fund's final room for the week (seats, room_tokens, $TMF held, enrolled, fills).
 
 ## econ.json (official U.S. government data)
 - `schedule.jobs`, `schedule.cpi` (BLS release dates), `schedule.fomc` (Federal Reserve meeting decision dates); `schedule_utc`.

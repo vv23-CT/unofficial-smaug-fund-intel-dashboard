@@ -338,9 +338,9 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 </div><img class="portrait" id="fcPic" alt="" width="92" height="108"></div>
 <div class="stack" id="fcStack" role="img" aria-label="Room split"></div>
 <div class="leg" id="fcLeg"></div>
-<div class="turn" id="fcTurn" hidden><div class="tu-top"><span class="tu-l">Turnout</span><b id="tuPct">—</b><span id="tuTxt">—</span></div><div class="tu-bar" role="img" id="tuBar"><i id="tuFill"></i><span id="tuFloor" title="25-chair floor"></span></div><div class="tu-src" id="tuSrc"></div></div>
+<div class="turn" id="fcTurn" hidden><div class="tu-top"><span class="tu-l">Turnout</span><b id="tuPct">—</b><span id="tuTxt">—</span></div><div class="tu-bar" role="img" id="tuBar"><i id="tuFill"></i><span id="tuFloor" title="25-seat floor"></span></div><div class="tu-src" id="tuSrc"></div></div>
 <div class="stats">
-<button class="stat stbtn" type="button" id="stChairsBtn" aria-expanded="false" aria-controls="ctBox"><span>Chairs <i class="car" aria-hidden="true">▾</i></span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></button>
+<button class="stat stbtn" type="button" id="stChairsBtn" aria-expanded="false" aria-controls="ctBox"><span>Seats <i class="car" aria-hidden="true">▾</i></span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></button>
 
 <button class="stat stbtn" type="button" id="stBackedBtn" aria-expanded="false" aria-controls="tkBox"><span>Backed <i class="car" aria-hidden="true">▾</i></span><b id="stBacked">—</b></button>
 <div class="stat" id="stNavBox" title="What the fund is worth in WETH (fund desk navInWeth, on-chain)"><span>Fund size (WETH)</span><b id="stNav">—</b></div>
@@ -349,7 +349,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="chips" id="tchips"><button class="chip" type="button" data-g="" aria-pressed="true">All 19</button><button class="chip" type="button" data-g="Stock" aria-pressed="false">Stocks</button><button class="chip" type="button" data-g="Stable" aria-pressed="false">Stable</button><button class="chip" type="button" data-g="Meme" aria-pressed="false">Memes</button></div>
 <div class="tsbk" id="tsbKey" hidden><span class="tsb-b"><i style="width:40%"></i><em></em></span><span id="tsbKeyT"></span></div>
 <div class="tl" id="tokList"></div>
-<p class="note">Most support first: the share of chair weight that put something on each token. Tap a token for its price, news and source.</p>
+<p class="note">Most support first: the share of seat weight that put something on each token. Tap a token for its price, news and source.</p>
 </div>
 <div class="ct" id="ctBox" hidden><div class="ct-top"><div class="ct-h" id="ctH"></div><button class="ct-x" type="button" id="ctX" aria-label="Close">✕</button></div><div class="ct-g" id="ctG" role="table"></div><div class="ct-k" aria-hidden="true"><span>fewer</span><i></i><span>more</span></div><div class="ct-f" id="ctF"></div><div class="tu-src" id="ctSrc"></div></div>
 </section>
@@ -368,7 +368,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <section class="view" data-view="all" hidden>
 <div class="gwrap"><table class="g" id="grid"><colgroup><col class="tk"><col span="5"></colgroup><thead><tr id="gHead"><th>Token</th></tr></thead><tbody></tbody></table></div>
 <button class="toggle" type="button" id="gToggle">Show all 19 tokens</button>
-<p class="note"><span class="cell b">7.87%</span> backed: its share of the fund · <span class="cell vs">42%</span> vetoed: the share of chair weight that put something on it (backing needs over 50%) · · no cards yet. The top rows show chairs voting.</p>
+<p class="note"><span class="cell b">7.87%</span> backed: its share of the fund · <span class="cell vs">42%</span> vetoed: the share of seat weight that put something on it (backing needs over 50%) · · no cards yet. The top rows show seats voting.</p>
 </section>
 <section class="view" data-view="more" hidden>
 <div class="acc">
@@ -453,9 +453,9 @@ function select(id,dx){SEL=id;const f=FI[id];
  /* turnout from the chain */
  const T=f.turnout;const tw=T&&(!f.asof_utc||T.asof_utc>=f.asof_utc);
  const tb=$('#fcTurn');if(T&&T.enrolled){tb.hidden=false;const pct=T.voted/T.enrolled;
-  $('#tuPct').textContent=Math.round(pct*100)+'%';$('#tuTxt').textContent=T.voted+' of '+T.enrolled+' enrolled chairs voted';
+  $('#tuPct').textContent=Math.round(pct*100)+'%';$('#tuTxt').textContent=T.voted+' of '+T.enrolled+' enrolled seats voted';
   $('#tuFill').style.width=Math.min(100,pct*100)+'%';$('#tuFloor').style.left=Math.min(100,f.floor/T.enrolled*100)+'%';
-  $('#tuBar').setAttribute('aria-label',T.voted+' of '+T.enrolled+' enrolled chairs voted, '+Math.round(pct*100)+' percent; the 25-chair floor is marked');
+  $('#tuBar').setAttribute('aria-label',T.voted+' of '+T.enrolled+' enrolled seats voted, '+Math.round(pct*100)+' percent; the 25-seat floor is marked');
   const s=$('#tuSrc');s.replaceChildren('On-chain · '+(T.epoch&&T.epoch!==D.week?'week '+T.epoch+' · ':'')+'as of '+local(T.asof_utc)+' · ');s.append(link('Ballot contract',(D.chain||{}).url));}
  else tb.hidden=true;
  const pic=$('#fcPic');if(PICS[id]){pic.onload=()=>{pic.style.setProperty('--pw',pic.naturalWidth/2);pic.style.setProperty('--ph',pic.naturalHeight/2);};pic.src=PICS[id];pic.hidden=false;const s=(window.__SEATS__||{})[id];pic.alt=s?f.name+' Seat '+s:'';pic.title=s?f.name+' Seat '+s:'';}else pic.hidden=true;
@@ -464,7 +464,7 @@ function select(id,dx){SEL=id;const f=FI[id];
  const st=$('#fcStack'),lg=$('#fcLeg');st.replaceChildren();lg.replaceChildren();
  parts.forEach(([l,v,fill])=>{const d=el('div');d.style.width=(v*100)+'%';d.style.background=fill;st.append(d);const s=el('span');const i=el('i');i.style.background=fill;s.append(i,l+' ');s.append(el('b',null,P(v)));lg.append(s);});
  st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+P(v)).join(', '));
- const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-chair floor: the dials move at the bell':'Below the 25-chair floor';$('#stBacked').textContent=b.length+' of '+D.tokens.length;$('#stNav').textContent=f.nav_weth!=null?f.nav_weth.toFixed(2):'—';
+ const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-seat floor: the dials move at the bell':'Below the 25-seat floor';$('#stBacked').textContent=b.length+' of '+D.tokens.length;$('#stNav').textContent=f.nav_weth!=null?f.nav_weth.toFixed(2):'—';
  try{localStorage.setItem('tfi-fund',id)}catch(e){}try{history.replaceState(null,'','#'+id)}catch(e){}
  drawWeek();drawTok();drawGrid();drawCardTimes();}
 
@@ -479,14 +479,14 @@ let BR_ALL=false,FH_ALL=false;
 function drawBell(){const A=ARCH(),lb=$('#lastBell'),box=$('#brBox'),br=$('#br');
  if(!A.length){lb.hidden=true;box.hidden=true;return;}
  const a=A[0],x=a.funds[SEL];lb.hidden=!x;
- if(x){const sm=$('#lbSum');sm.replaceChildren();const t=el('div');t.append('Last bell · Week '+a.week+': ');t.append(el('b',null,backsTxt(x.room_tokens)));t.append(' · '+x.chairs+' chairs');const n=A.filter(q=>q.funds[SEL]).length;sm.append(t,el('small',null,'Final room at the bell, '+bellDay(a.bell_utc)+', rebuilt from on-chain cards'),el('span','lb-more',n>1?'Week by week ('+n+' weeks)':'Week by week'));}
+ if(x){const sm=$('#lbSum');sm.replaceChildren();const t=el('div');t.append('Last bell · Week '+a.week+': ');t.append(el('b',null,backsTxt(x.room_tokens)));t.append(' · '+x.chairs+' seats');const n=A.filter(q=>q.funds[SEL]).length;sm.append(t,el('small',null,'Final room at the bell, '+bellDay(a.bell_utc)+', rebuilt from on-chain cards'),el('span','lb-more',n>1?'Week by week ('+n+' weeks)':'Week by week'));}
  box.hidden=false;$('#brSum').textContent=A.length+(A.length===1?' week':' weeks');br.replaceChildren();
  A.forEach((a,i)=>{const w=el('div','brw');if(i>0&&!BR_ALL)w.hidden=true;w.append(el('h4',null,'Week '+a.week+' · bell '+bellDay(a.bell_utc)));
-  const tb=el('table','br');const hr=el('tr');['Fund','Backed at the bell','Chairs voted','$TMF held'].forEach(s=>hr.append(el('th',null,s)));tb.append(hr);
+  const tb=el('table','br');const hr=el('tr');['Fund','Backed at the bell','Seats voted','$TMF held'].forEach(s=>hr.append(el('th',null,s)));tb.append(hr);
   FUNDS.forEach(f=>{const y=a.funds[f.id];if(!y)return;const tr=el('tr',f.id===SEL?'sel':null);tr.append(el('td',null,f.name),el('td',null,backsTxt(y.room_tokens)),el('td','n',VOT(y)),el('td','n',y.tmf_held_last_reading!=null?P(y.tmf_held_last_reading):'—'));tb.append(tr);});
   w.append(tb);br.append(w);});
  if(A.length>1){const bt=el('button','toggle',BR_ALL?'Show only the last bell':'Show '+(A.length-1)+' older '+(A.length===2?'week':'weeks'));bt.type='button';bt.onclick=()=>{BR_ALL=!BR_ALL;drawBell();};br.append(bt);}
- const n=el('p','brnote');n.append('Rebuilt from every card returned that week on Robinhood Chain (a token is backed when chairs with more than half the voting weight put something on it). Chairs voted is out of enrolled chairs; enrolled and $TMF held are from the last reading before the bell. ');n.append(link('Ballot contract',(D.chain||{}).url));br.append(n);}
+ const n=el('p','brnote');n.append('Rebuilt from every card returned that week on Robinhood Chain (a token is backed when seats with more than half the voting weight put something on it). Seats voted is out of enrolled seats; enrolled and $TMF held are from the last reading before the bell. ');n.append(link('Ballot contract',(D.chain||{}).url));br.append(n);}
 const VOT=y=>y.enrolled_last_reading?y.chairs+' of '+y.enrolled_last_reading:String(y.chairs);
 const NAV=y=>y.nav_weth_last_reading!=null?y.nav_weth_last_reading.toFixed(2):'—';
 /* backed tokens at a bell, each with its on-chain price move vs ETH since that bell (archive prices_weth vs the latest reading) */
@@ -497,12 +497,12 @@ function backsCell(a,y){const td=el('td'),bk=Object.entries(y.room_tokens||{}).s
  if(bk.some(([t])=>(a.prices_weth||{})[t]))td.append(el('small',null,'vs ETH since the bell'));return td;}
 /* This fund, week by week: one row per past bell for the selected fund (chain.json archive) */
 function drawFundHist(){const A=ARCH().filter(a=>a.funds[SEL]);if(!A.length)return;
- const tb=$('#fhT');tb.replaceChildren();const hr=el('tr');['Week','Backed at the bell','Chairs voted','WETH'].forEach(s=>hr.append(el('th',null,s)));tb.append(hr);
+ const tb=$('#fhT');tb.replaceChildren();const hr=el('tr');['Week','Backed at the bell','Seats voted','WETH'].forEach(s=>hr.append(el('th',null,s)));tb.append(hr);
  const N=4,show=FH_ALL?A:A.slice(0,N);
  show.forEach(a=>{const y=a.funds[SEL],tr=el('tr');const wk=el('td',null,'Week '+a.week);wk.append(el('small',null,a.bell_utc?new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric'}).format(new Date(a.bell_utc)):''));
   tr.append(wk,backsCell(a,y),el('td','n',VOT(y)),el('td','n',NAV(y)));tb.append(tr);});
  const mb=$('#fhMore');mb.hidden=A.length<=N;mb.textContent=FH_ALL?'Show the last '+N+' weeks':'Show all '+A.length+' weeks';mb.onclick=()=>{FH_ALL=!FH_ALL;drawFundHist();};
- $('#fhN').textContent='Each bell\'s final room, rebuilt from that week\'s on-chain cards. Chairs voted is out of enrolled chairs; WETH is the fund\'s size at the last reading before the bell; — means not recorded that week.';}
+ $('#fhN').textContent='Each bell\'s final room, rebuilt from that week\'s on-chain cards. Seats voted is out of enrolled seats; WETH is the fund\'s size at the last reading before the bell; — means not recorded that week.';}
 /* When the room decides: cards returned this week by U.S. market session, from each card's on-chain time (chain.json funds[].card_times, half-hour UTC buckets) */
 let CT_OPEN=false;
 /* warm-to-deep heat scale (pale yellow to orange, coral, magenta, violet) */
@@ -536,37 +536,37 @@ function drawCardTimes(){placeCT();const box=$('#ctBox'),btn=$('#stChairsBtn');b
  const ft=$('#ctF');ft.replaceChildren();
  if(!H||!tot){ft.textContent='No card times recorded yet this week.';}
  else{ft.append(el('b',null,'Last 24 hours: '+last24+(last24===1?' card':' cards')+'.'));if(busiest){const [k,r]=busiest[0].split('|');const d=new Date(k+'T12:00:00Z');ft.append(' Busiest so far: '+new Intl.DateTimeFormat(undefined,{weekday:'long',timeZone:'UTC'}).format(d)+' '+['pre-market','market hours','after hours','overnight'][+r]+' ('+busiest[1]+').');}}
- const src=$('#ctSrc');src.replaceChildren('Pre-market 4–9:30 AM · Market 9:30 AM–4 PM · After hours 4–8 PM · Overnight 8 PM–4 AM, counted with the evening it starts. Same clock times on weekends and holidays, when markets are closed. Each card\'s on-chain time; changed cards count too, so it can add up to more than chairs voted. ');src.append(link('Ballot contract',(D.chain||{}).url));}
+ const src=$('#ctSrc');src.replaceChildren('Pre-market 4–9:30 AM · Market 9:30 AM–4 PM · After hours 4–8 PM · Overnight 8 PM–4 AM, counted with the evening it starts. Same clock times on weekends and holidays, when markets are closed. Each card\'s on-chain time; changed cards count too, so it can add up to more than seats voted. ');src.append(link('Ballot contract',(D.chain||{}).url));}
 function drawWeek(){drawBell();drawFundHist();const f=FI[SEL],H=f.history||[],ol=$('#wkList');ol.replaceChildren();
  H.slice().reverse().forEach((s,ri)=>{const i=H.length-1-ri,prev=i?H[i-1]:null;const li=el('li');
   const w=el('div','w',s.asof_utc?fmtDay.format(new Date(s.asof_utc)):s.asof.split(',')[0]);w.append(el('small',null,s.asof_utc?fmtTime.format(new Date(s.asof_utc)):(s.asof.split(', ')[1]||'')));if(s.chain)w.append(el('small','oc','on-chain'));
   const bk=Object.entries(s.backs).sort((a,b)=>b[1]-a[1]);const b=el('div','b',bk.length?bk.map(([k,v])=>k+' '+P(v)).join(', '):'Nothing backed');
   if(prev){const pb=Object.keys(prev.backs),nb=bk.map(x=>x[0]);const add=nb.filter(k=>!pb.includes(k)),rem=pb.filter(k=>!nb.includes(k));if(add.length)b.append(' ',el('span','chg','+ '+add.join(', ')));if(rem.length)b.append(' ',el('span','chg','− '+rem.join(', ')));}
-  const c=el('div','c',s.chairs+' chairs');if(prev&&s.chairs!==prev.chairs)c.append(el('small',null,(s.chairs>prev.chairs?'+':'')+(s.chairs-prev.chairs)));
+  const c=el('div','c',s.chairs+' seats');if(prev&&s.chairs!==prev.chairs)c.append(el('small',null,(s.chairs>prev.chairs?'+':'')+(s.chairs-prev.chairs)));
   li.append(w,b,c);ol.append(li);});
  $('#wkNote').textContent=(H.length<2?'One reading so far this week; each new one adds a row. ':'Newest first. ')+'Rows marked on-chain are rebuilt every 30 minutes from the cards on Robinhood Chain; the others are from the '+f.name+' ballot page.';}
 
 const ORDER={backed:0,vetoed:1,no_cards:2};
-/* room support: share of the room's chair weight that put anything on a token (over 50% = backed), from this week's on-chain cards */
+/* room support: share of the room's seat weight that put anything on a token (over 50% = backed), from this week's on-chain cards */
 const SUP=(f,t)=>f.support&&f.support[t]!=null?f.support[t]:null;
 const CF=(f,t)=>f.chairs_for?(f.chairs_for[t]||0):null;
 const PS=v=>(v*100).toFixed(v>=.995||v<.1?1:0).replace(/\.0$/,'')+'%';
-/* weight a token still needs from new cards that add it (same count as the ballot): W*(1-2s); chairs = that / this room's average voted chair weight, rounded up */
+/* weight a token still needs from new cards that add it (same count as the ballot): W*(1-2s); seats = that / this room's average voted seat weight, rounded up */
 const NEED=(f,t)=>{const W=f.voted_weight,v=SUP(f,t);if(!W||v==null||v>=.5||!f.chairs)return null;const w=Math.round(W*(1-2*v)),avg=W/f.chairs;return{w,n:Math.ceil(w/avg),avg:Math.round(avg)};};
 const WN=n=>n>=10000?(n/1000).toFixed(1).replace(/\.0$/,'')+'k':n.toLocaleString('en-US');
 function supBox(f,t,s){const v=SUP(f,t),a=f.avg_card&&f.avg_card[t],b=el('div','sup');
  const nc=CF(f,t);const q=el('p');
- if(nc!=null)q.append(el('b',null,nc+' of the '+f.chairs+' chairs'),' that have voted put something on '+t+', holding ',el('b',null,PS(v)+' of the voted weight'),'. ');
- else q.append(el('b',null,PS(v)+' of '+f.name+'\u2019s chair weight'),' put something on '+t+'. ');
- q.append(s==='backed'?'Backing needs over 50%, so it\u2019s backed. ':'Backing needs over 50%. ','Weight decides: chairs with more weight count for more.');b.append(q);
+ if(nc!=null)q.append(el('b',null,nc+' of the '+f.chairs+' seats'),' that have voted put something on '+t+', holding ',el('b',null,PS(v)+' of the voted weight'),'. ');
+ else q.append(el('b',null,PS(v)+' of '+f.name+'\u2019s seat weight'),' put something on '+t+'. ');
+ q.append(s==='backed'?'Backing needs over 50%, so it\u2019s backed. ':'Backing needs over 50%. ','Weight decides: seats with more weight count for more.');b.append(q);
  /* How settled is this, counting the weight that has not voted yet? All on-chain, this reading only. */
  {const VW=f.voted_weight,EW=f.enrolled_weight;
   if(VW&&EW&&EW>=VW){const left=EW-VW,forW=Math.round(v*VW),N=x=>x.toLocaleString('en-US');
    let tag,vd,cls='';
    if(left<=0){tag=s==='backed'?'SETTLED':'NO MORE VOTES';cls=s==='backed'?'ok':'no';
-    vd=s==='backed'?'Every enrolled chair has voted, so this is settled.':'Every enrolled chair has voted.';}
+    vd=s==='backed'?'Every enrolled seat has voted, so this is settled.':'Every enrolled seat has voted.';}
    else if(v>.5){const X=Math.round(2*forW-VW);
-    if(X>left){tag='SETTLED';cls='ok';vd='Even if every chair still to vote leaves '+t+' out, it stays over 50%.';}
+    if(X>left){tag='SETTLED';cls='ok';vd='Even if every seat still to vote leaves '+t+' out, it stays over 50%.';}
     else{tag='NOT SETTLED';vd='It would take '+N(X)+' more weight voting without '+t+' to end its backing. '+N(left)+' has yet to vote.';}}
    else{const w=Math.round(VW*(1-2*v));
     if(w>left){tag='CAN\u2019T PASS';cls='no';vd='It would need +'+N(w)+', and only '+N(left)+' is left to vote.';}
@@ -579,13 +579,13 @@ function supBox(f,t,s){const v=SUP(f,t),a=f.avg_card&&f.avg_card[t],b=el('div','
   const h=el('p','m');h.append(el('b',null,'What it would take to pass 50%:'));b.append(h);
   const u=el('ul','need');
   const fm=f.flip_min?f.flip_min[t]:null,nd=NEED(f,t);
-  if(nd){const li2=el('li');li2.append('Chairs that haven\'t voted yet add ',el('b',null,'+'+nd.w.toLocaleString('en-US')+' weight'),' with '+t+' on their cards. That\'s ',el('b',null,'about '+nd.n+(nd.n===1?' chair':' chairs')),' at this room\'s average of '+nd.avg+' weight per chair (the same count the ballot shows)'+(left!=null&&nd.w>left?'. That\'s more weight than is left to vote ('+left.toLocaleString('en-US')+'), so it can\'t pass this week':'')+'.');u.append(li2);}
+  if(nd){const li2=el('li');li2.append('Seats that haven\'t voted yet add ',el('b',null,'+'+nd.w.toLocaleString('en-US')+' weight'),' with '+t+' on their cards. That\'s ',el('b',null,'about '+nd.n+(nd.n===1?' seat':' seats')),' at this room\'s average of '+nd.avg+' weight per seat (the same count the ballot shows)'+(left!=null&&nd.w>left?'. That\'s more weight than is left to vote ('+left.toLocaleString('en-US')+'), so it can\'t pass this week':'')+'.');u.append(li2);}
 
-  b.append(u);b.append(el('p','m','Exact math from this reading\'s on-chain weights, assuming nothing else changes. Chairs carry different weights, so this is weight, not a head count.'));}
- if(a!=null&&s!=='backed')b.append(el('p','m','Average card: '+P(a)+' of the fund (every chair\'s card weighted, zeros included).'));
+  b.append(u);b.append(el('p','m','Exact math from this reading\'s on-chain weights, assuming nothing else changes. Seats carry different weights, so this is weight, not a head count.'));}
+ if(a!=null&&s!=='backed')b.append(el('p','m','Average card: '+P(a)+' of the fund (every seat\'s card weighted, zeros included).'));
  return b;}
 function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
- $('#tsbKey').hidden=!f.support;$('#tsbKeyT').textContent=f.chairs_for?'Chairs that voted for it, of '+f.chairs+'. The bar is their chair weight, which decides; past the red line (50%) it\'s backed. "Needs" is the weight new cards must add to pass it, and about how many chairs that is at this room\'s average weight (the same count the ballot shows).':'Bars: share of '+f.name+'\'s chair weight that put something on each token. Red mark = 50%; over it, the token is backed.';
+ $('#tsbKey').hidden=!f.support;$('#tsbKeyT').textContent=f.chairs_for?'Seats that voted for it, of '+f.chairs+'. The bar is their seat weight, which decides; past the red line (50%) it\'s backed. "Needs" is the weight new cards must add to pass it, and about how many seats that is at this room\'s average weight (the same count the ballot shows).':'Bars: share of '+f.name+'\'s seat weight that put something on each token. Red mark = 50%; over it, the token is backed.';
  $('#tkH').replaceChildren(el('b',null,f.name+': all '+D.tokens.length+' tokens'),' · most support first');
  D.tokens.filter(r=>!G||r.group===G).slice().sort((a,b)=>(SUP(f,b.token)||0)-(SUP(f,a.token)||0)||ORDER[f.status[a.token]]-ORDER[f.status[b.token]]).forEach(r=>{const s=f.status[r.token];
   const row=el('div','trow');const bt=el('button','tbtn');bt.type='button';bt.setAttribute('aria-expanded','false');
@@ -596,11 +596,11 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
   const lab=el('span','tsb-v');lab.append(el('span',null,nc!=null?nc+' of '+f.chairs:(v?PS(v):'0%')));
   const gpt=50-v*100,fmtp=g=>(g<1?g.toFixed(1):String(Math.round(g)))+'%';
   sb.append(bar,lab);
-  /* one plain line under the bar: how far from 50%, and the fewest chairs that already voted that could close it */
+  /* one plain line under the bar: how far from 50%, and the fewest seats that already voted that could close it */
   const fm=f.flip_min?f.flip_min[r.token]:undefined,nt=el('span','tsb-n');
   if(s==='backed'&&gpt<0)nt.append(el('b','ok',fmtp(-gpt)+' clear of the line'));
-  else if(gpt>0){nt.append(el('b',null,fmtp(gpt)+' to go'));const nd=NEED(f,r.token);if(nd)nt.append(' · needs +'+WN(nd.w)+' weight · about '+nd.n+' '+(nd.n===1?'chair':'chairs'));}
-  if(nt.childNodes.length)sb.append(nt);sb.title=(nc!=null?nc+' of '+f.chairs+' chairs voted ('+PS(nc/f.chairs)+') put something on '+r.token+'; ':'')+PS(v)+' of chair weight (over 50% backs it)';bt.append(sb);}
+  else if(gpt>0){nt.append(el('b',null,fmtp(gpt)+' to go'));const nd=NEED(f,r.token);if(nd)nt.append(' · needs +'+WN(nd.w)+' weight · about '+nd.n+' '+(nd.n===1?'seat':'seats'));}
+  if(nt.childNodes.length)sb.append(nt);sb.title=(nc!=null?nc+' of '+f.chairs+' seats voted ('+PS(nc/f.chairs)+') put something on '+r.token+'; ':'')+PS(v)+' of seat weight (over 50% backs it)';bt.append(sb);}
   const d=el('div','tdet');if(r.price)d.append(el('p',null,r.price));if(SUP(f,r.token)!=null)d.append(supBox(f,r.token,s));const FACTS=[];if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token];FACTS.push('≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3)));const g=(D.chg||{})[r.token]||{},gf=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%';if(g.h24!=null)FACTS.push('24h '+gf(g.h24));if(g.d7!=null)FACTS.push('7d '+gf(g.d7));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
   if(s==='backed'&&f.nav_weth&&f.room_tokens[r.token]!=null){const sh=f.room_tokens[r.token],amt=sh*f.nav_weth;
    d.append(el('p','m',P(sh)+' of '+f.name+'\u2019s fund size ('+f.nav_weth.toFixed(2)+' WETH) \u2248 '+(amt>=1?amt.toFixed(2):amt.toPrecision(2))+' WETH.'));}
@@ -627,12 +627,12 @@ function setVTH(){const t=document.querySelector('.body>.vtabs');if(!t)return;co
 function drawGrid(){setVTH();const tb=$('#grid tbody');tb.replaceChildren();
  const row=(lab,fn,cls)=>{const tr=el('tr','sum');tr.append(el('td',null,lab));FUNDS.forEach(f=>{const td=el('td',cls||null,fn(f));td.dataset.f=f.id;tr.append(td);});tb.append(tr);};
  const hasT=FUNDS.every(f=>f.turnout&&f.turnout.enrolled);
- row('Chairs voted',f=>String(f.turnout&&f.turnout.asof_utc>=(f.asof_utc||'')?f.turnout.voted:f.chairs));
+ row('Seats voted',f=>String(f.turnout&&f.turnout.asof_utc>=(f.asof_utc||'')?f.turnout.voted:f.chairs));
  if(hasT){row('Enrolled',f=>String(f.turnout.enrolled));row('Turnout',f=>Math.round(f.turnout.voted/f.turnout.enrolled*100)+'%','tu');}
  const anyB=t=>FUNDS.some(f=>f.status[t]==='backed');
  const rows=ALL?D.tokens:D.tokens.filter(r=>anyB(r.token));
  rows.forEach(r=>{const tr=el('tr');tr.append(el('td',r.token.length>8?'long':null,r.token));FUNDS.forEach(f=>{const s=f.status[r.token];const td=el('td');td.dataset.f=f.id;
-  td.append(s==='backed'?Object.assign(el('span','cell b',PG(f.room_tokens[r.token])),{title:P(f.room_tokens[r.token])+' of '+f.name}):s==='vetoed'&&SUP(f,r.token)!=null?Object.assign(el('span','cell vs',PS(SUP(f,r.token))),{title:PS(SUP(f,r.token))+' of '+f.name+'\'s chair weight put something on '+r.token+' (needs over 50%)'}):el('span','cell '+(s==='vetoed'?'v':'n'),s==='vetoed'?'–':'·'));tr.append(td);});tb.append(tr);});
+  td.append(s==='backed'?Object.assign(el('span','cell b',PG(f.room_tokens[r.token])),{title:P(f.room_tokens[r.token])+' of '+f.name}):s==='vetoed'&&SUP(f,r.token)!=null?Object.assign(el('span','cell vs',PS(SUP(f,r.token))),{title:PS(SUP(f,r.token))+' of '+f.name+'\'s seat weight put something on '+r.token+' (needs over 50%)'}):el('span','cell '+(s==='vetoed'?'v':'n'),s==='vetoed'?'–':'·'));tr.append(td);});tb.append(tr);});
  $$('#grid [data-f]').forEach(c=>c.classList.toggle('sel',c.dataset.f===SEL));
  $('#gToggle').textContent=ALL?'Show only backed tokens':'Show all '+D.tokens.length+' tokens';}
 $('#gToggle').addEventListener('click',()=>{ALL=!ALL;drawGrid();});
@@ -643,7 +643,7 @@ function shareText(){const f=FI[SEL],rows=D.tokens.map(r=>[r.token,SUP(f,r.token
  const b=rows.filter(x=>x[2]==='backed'),near=rows.filter(x=>x[2]!=='backed'&&x[1]>0).slice(0,3),g=v=>{const x=50-v*100;return(x<1?x.toFixed(1):String(Math.round(x)))+'%';};
  const L=[f.name+' room · Week '+D.week+' (on-chain, '+local(f.asof_utc||(D.chain||{}).asof_utc)+')'];
  L.push(b.length?'Backed: '+b.map(x=>x[0]+' '+P(f.room_tokens[x[0]])).join(', '):'Backed: nothing yet (all to WETH)');
- if(near.length){L.push('Closest to passing 50% of chair weight:');near.forEach(([t,v])=>{const fm=f.flip_min?f.flip_min[t]:null;const nd=NEED(f,t);L.push('• '+t+' '+PS(v)+' · '+g(v)+' to go'+(nd?' · needs +'+WN(nd.w)+' weight · about '+nd.n+' '+(nd.n===1?'chair':'chairs'):''));});}
+ if(near.length){L.push('Closest to passing 50% of seat weight:');near.forEach(([t,v])=>{const fm=f.flip_min?f.flip_min[t]:null;const nd=NEED(f,t);L.push('• '+t+' '+PS(v)+' · '+g(v)+' to go'+(nd?' · needs +'+WN(nd.w)+' weight · about '+nd.n+' '+(nd.n===1?'seat':'seats'):''));});}
  if(D.closes_utc)L.push('Bell: '+bellDay(D.closes_utc));
  return L.join('\n');}
 $('#tkCopy').addEventListener('click',async()=>{const t=shareText(),btn=$('#tkCopy');let ok=false;

@@ -21,7 +21,7 @@ if (E.cpi?.release_date === today) L.push(`CPI (BLS, ${E.cpi.month || E.cpi.peri
 if (L.length > 2) L.push('');
 L.push(`Rooms right now (on-chain, as of ${et(new Date(C.asof_utc), { hour: 'numeric', minute: '2-digit' })} ET):`);
 for (const [id, f] of Object.entries(C.funds)) { const r = f.room || {}, b = Object.entries(r.room_tokens || {}).sort((a, c) => c[1] - a[1]);
-  L.push(`- ${id.toUpperCase()}: ${b.length ? b.map(([t, v]) => t + ' ' + P(v)).join(', ') : 'nothing backed (all WETH)'} · ${f.voted} of ${f.enrolled} chairs voted`); }
+  L.push(`- ${id.toUpperCase()}: ${b.length ? b.map(([t, v]) => t + ' ' + P(v)).join(', ') : 'nothing backed (all WETH)'} · ${f.voted} of ${f.enrolled} seats voted`); }
 L.push('', 'Live page: https://vv23-ct.github.io/unofficial-tmf-fund-intel-dashboard/');
 fs.writeFileSync('/tmp/bellday.txt', L.join('\n'));
 console.log(L.join('\n'));

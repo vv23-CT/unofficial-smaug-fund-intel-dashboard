@@ -23,7 +23,7 @@ if (a && !(d.updates || []).some(u => (u.text || '').startsWith(`Week ${a.week} 
     const x = a.funds[f]; if (!x) return null;
     const b = Object.entries(x.room_tokens || {}).sort((p, q) => q[1] - p[1]);
     let s = f.toUpperCase() + ' ' + (b.length ? 'backed ' + b.map(([t, v]) => { const n = x.fills?.[t]; return t + ' ' + pct(v) + (n == null ? '' : n <= 1 ? ' (fills in one Friday)' : ` (~${n} Fridays to fill a quarter of the fund)`); }).join(', ') : 'backed nothing: all to WETH');
-    s += ' · ' + x.chairs + (x.enrolled_last_reading ? ` of ${x.enrolled_last_reading} enrolled chairs (${Math.round(x.chairs / x.enrolled_last_reading * 100)}%)` : ' chairs');
+    s += ' · ' + x.chairs + (x.enrolled_last_reading ? ` of ${x.enrolled_last_reading} enrolled seats (${Math.round(x.chairs / x.enrolled_last_reading * 100)}%)` : ' seats');
     if (x.tmf_held_last_reading != null) s += ' · $TMF held ' + pct(x.tmf_held_last_reading);
     const y = prevA?.funds?.[f];
     if (y) { const was = Object.keys(y.room_tokens || {}), now = b.map(([t]) => t);
