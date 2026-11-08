@@ -111,7 +111,8 @@ button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 .swipehint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:-4px}
 /* view tabs */
 .vtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--line)}
-.vtab{cursor:pointer;border:0;background:transparent;padding:9px 2px;font-size:13.5px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent}
+.vtab{cursor:pointer;border:0;background:transparent;padding:9px 2px;font-size:13.5px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+@media (max-width:400px){.vtab{font-size:12.5px;padding:9px 0}}
 .vtab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--fg)}
 .vtab:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
 .view{display:flex;flex-direction:column;gap:10px}
@@ -154,15 +155,19 @@ button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 .tdet p{margin:0 0 5px}.tdet .m{color:var(--muted)}
 .tdet .src{font-size:12px;color:var(--muted)}
 /* all funds grid */
-.gwrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
-table.g{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
-table.g th{font-size:11px;font-weight:700;padding:7px 2px;border-bottom:1px solid var(--line);text-align:center}
-table.g th:first-child,table.g td:first-child{text-align:left;padding-left:10px}
-table.g td{padding:6px 2px;border-bottom:1px solid var(--line);text-align:center}
+.gwrap{border:1px solid var(--line);border-radius:12px;overflow:visible;background:var(--card)}
+table.g thead th{position:sticky;top:var(--vth,44px);z-index:2;background:var(--card)}
+table.g{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+table.g col.tk{width:84px}
+table.g td.long{font-size:10.5px;letter-spacing:-.2px}
+@media (max-width:430px){table.g{font-size:11.5px}table.g col.tk{width:82px}table.g td:first-child{font-size:10.5px;padding-left:6px}table.g td.long{font-size:9.8px}table.g .cell{padding:2px 3px}}
+table.g th{font-size:11px;font-weight:700;padding:7px 1px;border-bottom:1px solid var(--line);text-align:center}
+table.g th:first-child,table.g td:first-child{text-align:left;padding-left:8px;padding-right:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table.g td{padding:6px 1px;border-bottom:1px solid var(--line);text-align:center}
 table.g tr:last-child td{border-bottom:0}
 table.g .sel{background:var(--card2)}
 table.g tr.sum td{font-size:11.5px;color:var(--muted)}
-.cell{display:inline-block;padding:2px 5px;border-radius:6px;font-weight:700}
+.cell{display:inline-block;padding:2px 4px;border-radius:6px;font-weight:700}
 .cell.b{background:var(--fg);color:var(--panel)}
 .cell.v,.cell.n{color:var(--muted);font-weight:400}
 .cell.vs{color:var(--muted);font-weight:600;box-shadow:inset 0 0 0 1px var(--line);font-size:.92em}
@@ -353,7 +358,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 </section>
 
 <section class="view" data-view="all" hidden>
-<div class="gwrap"><table class="g" id="grid"><thead><tr id="gHead"><th>Token</th></tr></thead><tbody></tbody></table></div>
+<div class="gwrap"><table class="g" id="grid"><colgroup><col class="tk"><col span="5"></colgroup><thead><tr id="gHead"><th>Token</th></tr></thead><tbody></tbody></table></div>
 <button class="toggle" type="button" id="gToggle">Show all 19 tokens</button>
 <p class="note"><span class="cell b">7.87%</span> backed: its share of the fund · <span class="cell vs">42%</span> vetoed: the share of chair weight that put something on it (backing needs over 50%) · · no cards yet. The top rows show chairs voting.</p>
 </section>
@@ -389,6 +394,8 @@ const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=nu
 const link=(t,u)=>{if(!/^https:\/\//.test(u||''))return document.createTextNode(t);const a=el('a',null,t);a.href=u;a.target='_blank';a.rel='noopener';return a;};
 const nf=d=>new Intl.NumberFormat('en-US',{maximumFractionDigits:d,minimumFractionDigits:d});
 const P=v=>nf(2).format(v*100).replace(/\.?0+$/,'')+'%';
+/* grid cells: one decimal, so all five funds fit on a phone (exact share is in the tooltip and the fund card) */
+const PG=v=>nf(1).format(v*100).replace(/\.0$/,'')+'%';
 const F={usd:v=>'$'+nf(2).format(v),usd0:v=>'$'+nf(0).format(v),pct:v=>(v>0?'+':v<0?'−':'')+nf(1).format(Math.abs(v*100))+'%',usdM:v=>(v<0?'−':'+')+'$'+nf(1).format(Math.abs(v))+'M',usdB:v=>'$'+nf(1).format(v)+'B',int:v=>nf(0).format(v),txt:v=>String(v)};
 const FUNDS=D.funds,FI=Object.fromEntries(FUNDS.map(f=>[f.id,f])),COL=['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c6)'];
 const backed=f=>Object.entries(f.room_tokens).sort((a,b)=>b[1]-a[1]);
@@ -589,15 +596,16 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
 $$('#tchips .chip').forEach(c=>c.addEventListener('click',()=>{G=c.dataset.g;$$('#tchips .chip').forEach(x=>x.setAttribute('aria-pressed',String(x===c)));drawTok();}));
 
 (()=>{const h=$('#gHead');FUNDS.forEach(f=>{const th=el('th',null,f.name.slice(0,3));th.title=f.name;th.dataset.f=f.id;th.style.setProperty('--fh',(HOUSE[f.id]||['#453629'])[0]);h.append(th);});})();
-function drawGrid(){const tb=$('#grid tbody');tb.replaceChildren();
+function setVTH(){const t=document.querySelector('.body>.vtabs');if(!t)return;const cs=getComputedStyle(t);const off=t.offsetHeight+(parseFloat(cs.top)||0);document.documentElement.style.setProperty('--vth',Math.max(0,Math.round(off))+'px');}
+function drawGrid(){setVTH();const tb=$('#grid tbody');tb.replaceChildren();
  const row=(lab,fn,cls)=>{const tr=el('tr','sum');tr.append(el('td',null,lab));FUNDS.forEach(f=>{const td=el('td',cls||null,fn(f));td.dataset.f=f.id;tr.append(td);});tb.append(tr);};
  const hasT=FUNDS.every(f=>f.turnout&&f.turnout.enrolled);
  row('Chairs voted',f=>String(f.turnout&&f.turnout.asof_utc>=(f.asof_utc||'')?f.turnout.voted:f.chairs));
  if(hasT){row('Enrolled',f=>String(f.turnout.enrolled));row('Turnout',f=>Math.round(f.turnout.voted/f.turnout.enrolled*100)+'%','tu');}
  const anyB=t=>FUNDS.some(f=>f.status[t]==='backed');
  const rows=ALL?D.tokens:D.tokens.filter(r=>anyB(r.token));
- rows.forEach(r=>{const tr=el('tr');tr.append(el('td',null,r.token));FUNDS.forEach(f=>{const s=f.status[r.token];const td=el('td');td.dataset.f=f.id;
-  td.append(s==='backed'?el('span','cell b',P(f.room_tokens[r.token])):s==='vetoed'&&SUP(f,r.token)!=null?Object.assign(el('span','cell vs',PS(SUP(f,r.token))),{title:PS(SUP(f,r.token))+' of '+f.name+'\'s chair weight put something on '+r.token+' (needs over 50%)'}):el('span','cell '+(s==='vetoed'?'v':'n'),s==='vetoed'?'–':'·'));tr.append(td);});tb.append(tr);});
+ rows.forEach(r=>{const tr=el('tr');tr.append(el('td',r.token.length>8?'long':null,r.token));FUNDS.forEach(f=>{const s=f.status[r.token];const td=el('td');td.dataset.f=f.id;
+  td.append(s==='backed'?Object.assign(el('span','cell b',PG(f.room_tokens[r.token])),{title:P(f.room_tokens[r.token])+' of '+f.name}):s==='vetoed'&&SUP(f,r.token)!=null?Object.assign(el('span','cell vs',PS(SUP(f,r.token))),{title:PS(SUP(f,r.token))+' of '+f.name+'\'s chair weight put something on '+r.token+' (needs over 50%)'}):el('span','cell '+(s==='vetoed'?'v':'n'),s==='vetoed'?'–':'·'));tr.append(td);});tb.append(tr);});
  $$('#grid [data-f]').forEach(c=>c.classList.toggle('sel',c.dataset.f===SEL));
  $('#gToggle').textContent=ALL?'Show only backed tokens':'Show all '+D.tokens.length+' tokens';}
 $('#gToggle').addEventListener('click',()=>{ALL=!ALL;drawGrid();});
@@ -617,6 +625,7 @@ $('#tkCopy').addEventListener('click',async()=>{const t=shareText(),btn=$('#tkCo
 $('#tkX').addEventListener('click',()=>{TK_OPEN=false;drawTkBox();$('#stBackedBtn').focus();});
 $('#ctX').addEventListener('click',()=>{CT_OPEN=false;drawCardTimes();$('#stChairsBtn').focus();});
 WIDE.addEventListener&&WIDE.addEventListener('change',()=>{drawCardTimes();drawTkBox();});
+addEventListener('resize',setVTH);
 
 /* more */
 const u=D.updates[0];$('#chgDate').textContent=u.date;$('#chg').textContent=u.text;
