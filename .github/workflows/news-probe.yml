@@ -1,0 +1,11 @@
+name: news-probe
+on: workflow_dispatch
+permissions: {contents: read}
+jobs:
+  p:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - run: node tools/news_probe.mjs
