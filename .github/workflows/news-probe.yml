@@ -1,5 +1,7 @@
 name: news-probe
-on: workflow_dispatch
+on:
+  push:
+    branches: [news-probe]
 permissions: {contents: read}
 jobs:
   p:
