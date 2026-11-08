@@ -19,7 +19,7 @@ const CO = {
   TSLA:  { cik: '0001318605', name: /tesla/i },
   RDDT:  { cik: '0001713445', name: /reddit/i },
 };
-// Outlet stories count only when the headline or blurb names the project (exact phrase, never a bare ticker).
+// Outlet stories count only when the headline names the project (exact phrase, never a bare ticker).
 const NAMES = {
   COIN: [/\bCoinbase\b/], MSTR: [/\bMicroStrategy\b/, /\bMSTR\b/],
   VIRTUAL: [/\bVirtuals Protocol\b/], APE: [/\bApeCoin\b/, /\bApe Coin\b/],
@@ -118,7 +118,7 @@ for (const f of FEEDS) {
       const head = text(tag(b, 'title')), blurb = text(tag(b, 'description')), link = safeUrl(text(tag(b, 'link'))), pub = iso(text(tag(b, 'pubDate')));
       if (!head || !link || !pub) continue;
       for (const [t, res] of Object.entries(NAMES)) {
-        if (res.some(r => r.test(head) || r.test(blurb))) { add(t, { id: id(link), headline: head, url: link, publisher: f.pub, domain: f.dom, published_utc: pub, tier: 2, kind: 'news', verification: 'SINGLE CREDIBLE SOURCE' }); n++; }
+        if (res.some(r => r.test(head))) { add(t, { id: id(link), headline: head, url: link, publisher: f.pub, domain: f.dom, published_utc: pub, tier: 2, kind: 'news', verification: 'SINGLE CREDIBLE SOURCE' }); n++; }
       }
     }
     sources[f.id] = { ok: true, items: n, at: now.toISOString() };
@@ -138,7 +138,7 @@ for (const t of names) {
   const history = [...map.values()].sort((a, b) => b.published_utc.localeCompare(a.published_utc)).slice(0, HISTORY);
   tokens[t] = { items: history.slice(0, KEEP), history };
 }
-const out = { asof_utc: now.toISOString(), slot_utc: slot.toISOString(), note: 'Headlines and links only; each item is dated by its publisher and links to the original. Outlet stories are matched on the exact project name, never a ticker alone.', sources, tokens };
+const out = { asof_utc: now.toISOString(), slot_utc: slot.toISOString(), note: 'Headlines and links only; each item is dated by its publisher and links to the original. Outlet stories are matched on the exact project name in the headline, never a ticker alone.', sources, tokens };
 fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
 console.log('News written:', Object.entries(tokens).map(([t, v]) => t + ':' + v.items.length).join(' '));
 for (const [k, v] of Object.entries(sources)) if (!v.ok) console.log('Source problem:', k, v.error || '');

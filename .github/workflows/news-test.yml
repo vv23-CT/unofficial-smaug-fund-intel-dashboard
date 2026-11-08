@@ -1,14 +1,16 @@
 name: news-test
 on:
-  push:
-    branches: [news-preview]
-permissions: {contents: read}
+  workflow_dispatch:
+permissions: {contents: write}
 jobs:
   t:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with: {ref: news-preview}
       - uses: actions/setup-node@v4
         with: {node-version: 20}
-      - run: NEWS_FORCE=1 node tools/news.mjs /tmp/news.json
-      - run: node -e "const n=require('/tmp/news.json');console.log(JSON.stringify(n.sources));for(const [t,v] of Object.entries(n.tokens))for(const i of v.items)console.log('ITEM',t,i.published_utc.slice(0,16),i.publisher,'|',i.headline.slice(0,150),'|',i.url)"
+      - run: NEWS_FORCE=1 node tools/news.mjs news.json
+      - run: |
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add news.json && git commit -qm "Sample news reading (preview branch)" && git push -q origin HEAD:news-preview
