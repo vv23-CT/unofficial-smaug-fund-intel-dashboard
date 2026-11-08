@@ -79,7 +79,7 @@ const dec = h => { try { if (!h || h === '0x') return null; if (h.length === 66)
   const off = Number(BigInt('0x' + h.slice(2, 66))) / 32, n = Number(BigInt('0x' + h.slice(2 + off * 64, 66 + off * 64)));
   return Buffer.from(h.slice(2 + (off + 1) * 64, 2 + (off + 1) * 64 + n * 2), 'hex').toString('utf8'); } catch { return null; } };
 const SEL_NAME = keccak('name()').slice(0, 8);
-for (const t of toks) {
+for (const t of reg) {
   const h = await rpc('eth_call', [{ to: t.address, data: '0x' + SEL_NAME }, 'latest'], true);
   console.log('NAME', t.symbol, '=>', JSON.stringify(typeof h === 'string' ? dec(h) : null));
 }
