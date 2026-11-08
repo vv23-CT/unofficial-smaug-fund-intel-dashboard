@@ -138,11 +138,13 @@ button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--panel);border-color:var(--fg)}
 .tl{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
 .trow{border-bottom:1px solid var(--line)}.trow:last-child{border-bottom:0}
-.tbtn{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:10px 12px;cursor:pointer}
+.tbtn{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px 12px;cursor:pointer}
 .tbtn:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
 .tbtn b{font-size:14px}
-.tbtn .px{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbtn .px{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;min-width:0}
 .tsb{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-top:-2px}
+.tfull{margin:0 0 6px;font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.01em}
+.tplate{display:inline-block;width:max-content;max-width:100%;justify-self:start;padding:3px 8px;border-radius:7px;font-weight:700;letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;box-shadow:inset -2px -2px 0 rgba(0,0,0,.18),inset 2px 2px 0 rgba(255,255,255,.26)}
 .tsb-b{position:relative;height:7px;border-radius:99px;background:var(--pale)}
 .tsb-b i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--house);opacity:.75}
 .tsb-b i.ok{background:var(--fg);opacity:1}
@@ -406,7 +408,14 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
  const show=()=>{const d=cur()==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode');};
  b.addEventListener('click',()=>{const n=cur()==='dark'?'light':'dark';if(n===(mq.matches?'dark':'light')){delete root.dataset.theme;try{localStorage.removeItem('sfi-theme')}catch(e){}}else{root.dataset.theme=n;try{localStorage.setItem('sfi-theme',n)}catch(e){}}show();});
  mq.addEventListener&&mq.addEventListener('change',show);show();})();
+/* Each token wears its own colour, fixed by its place in the registry (hues spread so neighbours differ).
+   Ours, not anyone's logo. The ink is dark enough on every hue to stay readable (5.5:1 or better). */
+let TCOL={};
+function buildTokenColours(list){const n=(list||[]).length||1;TCOL={};(list||[]).forEach((r,i)=>{const h=Math.round(((i*8)%n)*360/n);
+ TCOL[r.token]={bg:'hsl('+h+' 44% 66%)',ink:'hsl('+h+' 60% 12%)',h};});}
+const tcol=t=>TCOL[t]||{bg:'var(--pale)',ink:'var(--fg)'};
 function main(D){
+ buildTokenColours(D.tokens);
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
 const link=(t,u)=>{if(!/^https:\/\//.test(u||''))return document.createTextNode(t);const a=el('a',null,t);a.href=u;a.target='_blank';a.rel='noopener';return a;};
@@ -616,7 +625,8 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
  $('#tkH').replaceChildren(el('b',null,f.name+': all '+D.tokens.length+' tokens'),' · most support first');
  D.tokens.filter(r=>!G||r.group===G).slice().sort((a,b)=>(SUP(f,b.token)||0)-(SUP(f,a.token)||0)||ORDER[f.status[a.token]]-ORDER[f.status[b.token]]).forEach(r=>{const s=f.status[r.token];
   const row=el('div','trow');const bt=el('button','tbtn');bt.type='button';bt.setAttribute('aria-expanded','false');
-  bt.append(el('b',null,r.token),el('span','px',r.onchain),el('span','st '+(s==='backed'?'b':s==='vetoed'?'v':'n'),s==='backed'?P(f.room_tokens[r.token]):s==='vetoed'?'vetoed':'no cards'));
+  const nb=el('b','tplate',r.token);{const c=tcol(r.token);nb.style.background=c.bg;nb.style.color=c.ink;}
+  bt.append(nb,el('span','px',r.onchain),el('span','st '+(s==='backed'?'b':s==='vetoed'?'v':'n'),s==='backed'?P(f.room_tokens[r.token]):s==='vetoed'?'vetoed':'no cards'));
   if(SUP(f,r.token)!=null||f.support){const v=SUP(f,r.token)||0,sb=el('span','tsb');const bar=el('span','tsb-b');const i=el('i',s==='backed'?'ok':null);i.style.width=Math.min(100,v*100)+'%';bar.append(i,el('em'));const nc=CF(f,r.token);
   /* the gap to the 50% line, shown on the bar itself (hatched) and as one short line under the count */
   if(s!=='backed'&&v<.5){const gp=el('span','gap');gp.style.left=Math.min(100,v*100)+'%';gp.style.width=Math.max(0,50-v*100)+'%';bar.insertBefore(gp,bar.lastChild);}
@@ -628,7 +638,8 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
   if(s==='backed'&&gpt<0)nt.append(el('b','ok',fmtp(-gpt)+' clear of the line'));
   else if(gpt>0){nt.append(el('b',null,fmtp(gpt)+' to go'));const nd=NEED(f,r.token);if(nd)nt.append(' · needs +'+WN(nd.w)+' weight · about '+nd.n+' '+(nd.n===1?'seat':'seats'));}
   if(nt.childNodes.length)sb.append(nt);sb.title=(nc!=null?nc+' of '+f.chairs+' seats voted ('+PS(nc/f.chairs)+') put something on '+r.token+'; ':'')+PS(v)+' of seat weight (over 50% backs it)';bt.append(sb);}
-  const d=el('div','tdet');if(r.price)d.append(el('p',null,r.price));if(SUP(f,r.token)!=null)d.append(supBox(f,r.token,s));const FACTS=[];if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token];FACTS.push('≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3)));const g=(D.chg||{})[r.token]||{},gf=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%';if(g.h24!=null)FACTS.push('24h '+gf(g.h24));if(g.d7!=null)FACTS.push('7d '+gf(g.d7));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
+  const d=el('div','tdet');
+  {const nm=(D.tnames||{})[r.token];if(nm&&nm.toUpperCase()!==r.token.toUpperCase())d.append(el('p','tfull',nm));}if(r.price)d.append(el('p',null,r.price));if(SUP(f,r.token)!=null)d.append(supBox(f,r.token,s));const FACTS=[];if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token];FACTS.push('≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3)));const g=(D.chg||{})[r.token]||{},gf=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%';if(g.h24!=null)FACTS.push('24h '+gf(g.h24));if(g.d7!=null)FACTS.push('7d '+gf(g.d7));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
   if(s==='backed'&&f.nav_weth&&f.room_tokens[r.token]!=null){const sh=f.room_tokens[r.token],amt=sh*f.nav_weth;
    d.append(el('p','m',P(sh)+' of '+f.name+'\u2019s fund size ('+f.nav_weth.toFixed(2)+' WETH) \u2248 '+(amt>=1?amt.toFixed(2):amt.toPrecision(2))+' WETH.'));}
   FACTS.push((r.fee*100).toFixed(1).replace('.0','')+'% pool fee');const fl=f.fills[r.token];if(fl)FACTS.push(fl.n<=1?'a quarter of '+f.name+' fills in one Friday':'~'+fl.n+' Fridays to fill a quarter of '+f.name);else if(f.not_in_capture.includes(r.token))FACTS.push('fill not in this capture');
@@ -712,7 +723,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    const mk=c.market;if(mk&&mk.eth_usd&&mk.asof_utc){const at=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(mk.asof_utc));
      const setT=(id,v,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=at;t.source=mk.source;t.url=mk.url;if(label)t.label=label;}};
      setT('eth',mk.eth_usd,'ETH price (on-chain)');const cq=(c.changes||{}).QQQ;{const t=(d.market||[]).find(r=>r.id==='nasdaq');if(t&&cq&&cq.h24!=null){t.value=cq.h24;t.fmt='pct';t.label='QQQ token, last 24h (on-chain)';t.asof=at+' · tracks the Nasdaq-100 fund';t.source=mk.source;t.url=mk.url;}}const ce=(c.changes||{}).ETH;if(ce&&ce.d7!=null)setT('eth_1w',ce.d7,'ETH, last 7 days (on-chain)');}
-   d.mkt=c.market||null;d.ct=Object.fromEntries(Object.entries(c.funds||{}).map(([k,x])=>[k,x.card_times||null]));d.ct_week=c.epoch;d.closes_utc=c.closes_utc;d.cprices=c.prices||{};d.tf=c.token_facts||{};d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
+   d.mkt=c.market||null;d.ct=Object.fromEntries(Object.entries(c.funds||{}).map(([k,x])=>[k,x.card_times||null]));d.ct_week=c.epoch;d.closes_utc=c.closes_utc;d.cprices=c.prices||{};d.tf=c.token_facts||{};d.tnames=c.token_names||{};d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
    if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
    if(c.prices)(d.tokens||[]).forEach(t=>{const p=c.prices[t.token];if(!p)return;const m=/per 1M/.test(t.onchain||'');

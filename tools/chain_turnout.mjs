@@ -166,6 +166,15 @@ try {
 const FACT_SIGS = { owner: ['owner()', 'getOwner()'], mint: ['mint(address,uint256)', 'mint(uint256)', 'mint(address)'], pause: ['pause()', 'paused()'],
   blacklist: ['blacklist(address)', 'addToBlacklist(address)', 'isBlacklisted(address)', 'setBlacklist(address,bool)', 'blacklistAddress(address,bool)', 'isBlackListed(address)'],
   upgrade: ['upgradeTo(address)', 'upgradeToAndCall(address,bytes)'] };
+/* each token's own name(), read from its contract; names never change, so keep the ones already saved */
+const token_names = Object.assign({}, (prev && prev.token_names) || {});
+{ const selName = keccak('name()').slice(0, 8);
+  const want = reg.filter(r => !token_names[r.symbol]);
+  await pool(want, 4, async r => { try { const h = await raw(r.address, selName);
+    const off = Number(BigInt('0x' + h.slice(2, 66))) / 32, n = Number(BigInt('0x' + h.slice(2 + off * 64, 66 + off * 64)));
+    const nm = Buffer.from(h.slice(2 + (off + 1) * 64, 2 + (off + 1) * 64 + n * 2), 'hex').toString('utf8').trim();
+    if (nm) token_names[r.symbol] = nm.replace(/\s*[•·]\s*Robinhood Token\s*$/i, '').trim();
+  } catch {} }); }
 const token_facts = {};
 for (const a of reg.filter(r => DEX_TOKENS.includes(r.symbol))) {
   try {
@@ -241,7 +250,7 @@ const out = {
   source: 'Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth',
   url: 'https://robinhoodchain.blockscout.com/address/' + BALLOT, ballot: BALLOT, dividend_office: OFFICE, desk: DESK,
   method: 'Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.',
-  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, dex, token_facts, changes, price_hist: hist, funds, archive,
+  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, dex, token_facts, token_names, changes, price_hist: hist, funds, archive,
 };
 // Always save the reading (even if no count moved) so the page's "Updated" time shows the latest check.
 fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
