@@ -39,15 +39,17 @@ jobs:
         env:
           CMC_API_KEY: ${{ secrets.CMC_API_KEY }}
         run: node tools/cmc.mjs || echo 'CoinMarketCap step skipped'
+      - name: Latest news per token (only when a new 7 AM / 12 PM / 5 PM / 10 PM ET slot has begun)
+        run: node tools/news.mjs news.json || echo 'News step skipped'
       - name: Bell recap and weekly housekeeping (after a bell only)
         id: recap
         run: node tools/bell_recap.mjs
       - name: Save
         run: |
-          if git diff --quiet -- chain.json og.png index.html data.json econ.json cmc.json && ! git ls-files --others --exclude-standard | grep -q cmc.json && git ls-files --error-unmatch chain.json >/dev/null 2>&1; then echo "No change"; exit 0; fi
+          if git diff --quiet -- chain.json og.png index.html data.json econ.json cmc.json news.json && ! git ls-files --others --exclude-standard | grep -q news.json && ! git ls-files --others --exclude-standard | grep -q cmc.json && git ls-files --error-unmatch chain.json >/dev/null 2>&1; then echo "No change"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add chain.json og.png index.html data.json && (git add econ.json 2>/dev/null || true) && (git add cmc.json 2>/dev/null || true)
+          git add chain.json og.png index.html data.json && (git add econ.json 2>/dev/null || true) && (git add cmc.json 2>/dev/null || true) && (git add news.json 2>/dev/null || true)
           git commit -m "Chain reading $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0; sleep 10; done
           exit 1

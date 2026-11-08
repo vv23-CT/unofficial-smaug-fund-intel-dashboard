@@ -116,7 +116,7 @@ button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 }
 .swipehint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:-4px}
 /* view tabs */
-.vtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.vtabs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.55fr) minmax(0,.85fr) minmax(0,.85fr);border-bottom:1px solid var(--line)}
 .vtab{cursor:pointer;border:0;background:transparent;padding:9px 2px;font-size:13.5px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
 @media (max-width:400px){.vtab{font-size:12.5px;padding:9px 0}}
 .vtab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--fg)}
@@ -143,6 +143,16 @@ button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 .tbtn b{font-size:14px}
 .tbtn .px{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;min-width:0}
 .tsb{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-top:-2px}
+.nwb{grid-template-columns:auto minmax(0,1fr) auto}
+.nwl{display:flex;flex-direction:column;gap:1px;min-width:0}.nwl b{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nwl span{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nwc{font-size:12px;color:var(--muted)}.trow.open .nwc{display:inline-block;transform:rotate(180deg)}
+.nwi{padding:10px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px}.nwi:first-child{border-top:0}
+.nwt{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}
+.nwi .nwh{margin:0;font-size:13.5px;line-height:1.4;color:var(--fg)}.nwi .m{margin:0}.nwi a{font-size:12px;font-weight:700;color:var(--fg)}
+.nwtag{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.6px;background:var(--fg);color:var(--panel)}
+.nwtag.news,.nwtag.macro{background:var(--pale);color:var(--fg)}
+.nwtag.old{background:#a73a31;color:#fff}
+.nwe{margin:0;padding:0 0 4px;font-size:13px;color:var(--fg)}
 .tfull{margin:0 0 6px;font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.01em}
 .tplate{display:inline-block;width:max-content;max-width:100%;justify-self:start;padding:3px 8px;border-radius:7px;font-weight:700;letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;box-shadow:inset -2px -2px 0 rgba(0,0,0,.18),inset 2px 2px 0 rgba(255,255,255,.26)}
 .tsb-b{position:relative;height:7px;border-radius:99px;background:var(--pale)}
@@ -369,6 +379,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="vtabs" role="tablist" aria-label="Sections">
 <button class="vtab" role="tab" type="button" data-v="week" aria-selected="true">This week</button>
 <button class="vtab" role="tab" type="button" data-v="all" aria-selected="false">Compare funds</button>
+<button class="vtab" role="tab" type="button" data-v="news" aria-selected="false">News</button>
 <button class="vtab" role="tab" type="button" data-v="more" aria-selected="false">More</button>
 </div>
 <section class="view" data-view="week">
@@ -381,6 +392,12 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="gwrap"><table class="g" id="grid"><colgroup><col class="tk"><col span="5"></colgroup><thead><tr id="gHead"><th>Token</th></tr></thead><tbody></tbody></table></div>
 <button class="toggle" type="button" id="gToggle">Show all 19 tokens</button>
 <p class="note"><span class="cell b">7.87%</span> backed: its share of the fund · <span class="cell vs">42%</span> vetoed: the share of seat weight that put something on it (backing needs over 50%) · · no cards yet. The top rows show seats voting.</p>
+</section>
+<section class="view" data-view="news" hidden>
+<p class="note" id="nwIntro"></p>
+<div class="chips" id="nchips"><button class="chip" type="button" data-g="" aria-pressed="true">All 19</button><button class="chip" type="button" data-g="Stock" aria-pressed="false">Stocks</button><button class="chip" type="button" data-g="Chain" aria-pressed="false">On-chain</button></div>
+<div class="tl" id="nwList"></div>
+<p class="note" id="nwFoot"></p>
 </section>
 <section class="view" data-view="more" hidden>
 <div class="acc">
@@ -490,7 +507,7 @@ function select(id,dx){SEL=id;const f=FI[id];
  st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+P(v)).join(', '));
  const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-seat floor: the dials move at the bell':'Below the 25-seat floor';$('#stBacked').textContent=b.length+' of '+D.tokens.length;$('#stNav').textContent=f.nav_weth!=null?f.nav_weth.toFixed(2):'—';if(NV_OPEN)drawNavBox();
  try{localStorage.setItem('tfi-fund',id)}catch(e){}try{history.replaceState(null,'','#'+id)}catch(e){}
- drawWeek();drawTok();drawGrid();drawCardTimes();}
+ drawWeek();drawTok();drawNews();drawGrid();drawCardTimes();}
 
 /* views */
 $$('.vtab').forEach(t=>t.addEventListener('click',()=>{const sc=document.getElementById('scroll'),vt=document.querySelector('.vtabs');if(sc&&vt&&sc.scrollTop>vt.offsetTop-12)sc.scrollTop=vt.offsetTop-12;VIEW=t.dataset.v;$$('.vtab').forEach(x=>x.setAttribute('aria-selected',String(x===t)));$$('.view').forEach(v=>v.hidden=v.dataset.view!==VIEW);}));
@@ -620,6 +637,29 @@ function supBox(f,t,s){const v=SUP(f,t),a=f.avg_card&&f.avg_card[t],b=el('div','
   b.append(u);b.append(el('p','m','Exact math from this reading\'s on-chain weights, assuming nothing else changes. Seats carry different weights, so this is weight, not a head count.'));}
  if(a!=null&&s!=='backed')b.append(el('p','m','Average card: '+P(a)+' of the fund (every seat\'s card weighted, zeros included).'));
  return b;}
+/* News tab: up to 3 dated, linked items per token, written by the GitHub reader (news.json) */
+let NG='';
+function drawNews(){const box=$('#nwList');box.replaceChildren();const N=D.tokennews,T=(N&&N.tokens)||{};
+ $('#nwIntro').textContent=N?'Latest from official filings and named news outlets, up to 3 items per token. Every item links to its original source. Nothing here is rated or interpreted.':'News has not loaded yet. Please refresh.';
+ const age=s=>{const h=(Date.now()-new Date(s))/36e5;return h<1?'under an hour ago':h<48?Math.round(h)+' hours ago':Math.round(h/24)+' days ago';};
+ const KL={filing:'OFFICIAL FILING',news:'NEWS',macro:'MACRO CONTEXT'};
+ const items=r=>((T[r.token]||{}).items)||[];
+ D.tokens.filter(r=>!NG||(NG==='Stock'?r.group==='Stock':r.group!=='Stock')).slice().sort((a,b)=>{const x=items(a)[0],y=items(b)[0];return (y?y.published_utc:'').localeCompare(x?x.published_utc:'')||D.tokens.indexOf(a)-D.tokens.indexOf(b);}).forEach(r=>{
+  const its=items(r),row=el('div','trow'),bt=el('button','tbtn nwb');bt.type='button';bt.setAttribute('aria-expanded','false');
+  const nb=el('b','tplate',r.token);{const c=tcol(r.token);nb.style.background=c.bg;nb.style.color=c.ink;}
+  const mid=el('span','nwl');
+  if(its.length){mid.append(el('b',null,its[0].headline),el('span',null,its[0].publisher+' · '+age(its[0].published_utc)));}else mid.append(el('b',null,'No verified news'),el('span',null,'Nothing to show right now'));
+  bt.append(nb,mid,el('span','nwc','▾'));
+  const d=el('div','tdet');
+  if(!its.length){d.append(el('p','nwe','No verified news found for this token. We only show items that name the project or its contract, never a ticker match alone.'));}
+  its.forEach(it=>{const li=el('div','nwi'),top=el('div','nwt');
+   top.append(el('span','nwtag '+it.kind,KL[it.kind]||'NEWS'),local(it.published_utc));
+   if((Date.now()-new Date(it.published_utc))/36e5>48)top.append(el('span','nwtag old','OVER 48 HOURS'));
+   li.append(top,el('p','nwh',it.headline),el('p','m',it.publisher+' · '+(it.tier===1?'primary source':'news outlet')+(it.kind==='macro'?' · context for the whole market, not about '+r.token+' itself':'')),link('Read at source',it.url));d.append(li);});
+  bt.addEventListener('click',()=>{const o=!row.classList.contains('open');row.classList.toggle('open',o);bt.setAttribute('aria-expanded',String(o));});
+  row.append(bt,d);box.append(row);});
+ const bad=Object.entries((N&&N.sources)||{}).filter(([k,v])=>!v.ok).map(([k])=>k);
+ $('#nwFoot').textContent=N?'Last refresh '+local(N.asof_utc)+'. Updates four times a day (7 AM, 12 PM, 5 PM and 10 PM ET). Sources: SEC EDGAR, Federal Reserve, CoinDesk, Decrypt, The Block, Cointelegraph.'+(bad.length?' Not reachable on the last refresh: '+bad.join(', ')+'.':''):'';}
 function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
  $('#tsbKey').hidden=!f.support;$('#tsbKeyT').textContent=f.chairs_for?'Seats that voted for it, of '+f.chairs+'. The bar is their seat weight, which decides; past the red line (50%) it\'s backed. "Needs" is the weight new cards must add to pass it, and about how many seats that is at this room\'s average weight (the same count the ballot shows).':'Bars: share of '+f.name+'\'s seat weight that put something on each token. Red mark = 50%; over it, the token is backed.';
  $('#tkH').replaceChildren(el('b',null,f.name+': all '+D.tokens.length+' tokens'),' · most support first');
@@ -658,6 +698,7 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
   const src=el('p','src');const pdU=(D.tokens.find(x=>/price desk/i.test(x.source||''))||{}).url;const deskSrc=/price desk/i.test(r.source||'');if(r.onchain&&r.onchain_asof_utc){src.append(r.onchain+' on ',pdU?link('TMF price desk (on-chain)',pdU):'TMF price desk (on-chain)',', '+local(r.onchain_asof_utc));if(!deskSrc&&r.source)src.append(' · also on ',link(r.source,r.url));}else src.append('Source: ',link(r.source,r.url));d.append(src);
   bt.addEventListener('click',()=>{const o=!row.classList.contains('open');row.classList.toggle('open',o);bt.setAttribute('aria-expanded',String(o));});
   row.append(bt,d);box.append(row);});}
+$$('#nchips .chip').forEach(c=>c.addEventListener('click',()=>{NG=c.dataset.g;$$('#nchips .chip').forEach(x=>x.setAttribute('aria-pressed',String(x===c)));drawNews();}));
 $$('#tchips .chip').forEach(c=>c.addEventListener('click',()=>{G=c.dataset.g;$$('#tchips .chip').forEach(x=>x.setAttribute('aria-pressed',String(x===c)));drawTok();}));
 
 (()=>{const h=$('#gHead');FUNDS.forEach(f=>{const th=el('th',null,f.name.slice(0,3));th.title=f.name;th.dataset.f=f.id;th.style.setProperty('--fh',(HOUSE[f.id]||['#453629'])[0]);h.append(th);});})();
@@ -779,6 +820,8 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
      const ch=[['24h',q.ch24],['7d',q.ch7],['30d',q.ch30]].filter(x=>x[1]!=null).map(x=>x[0]+' '+pc(x[1])).join(', ');
      t.price=px(q.price)+' (CMC, '+at(q.asof_utc)+')'+(t.token==='USDG'?'':'. '+ch)+(q.mcap?'. Market cap '+big(q.mcap):'');t.source='CoinMarketCap';t.url=q.url;});
    return d;}))
+ /* Latest news per token (written by the GitHub reader, 4 times a day) */
+ .then(d=>(window.__NEWS__?Promise.resolve(window.__NEWS__):fetch('news.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)).then(N=>{d.tokennews=N&&N.tokens?N:null;return d;}))
  .then(main).catch(e=>{console.error(e);const p=document.createElement('p');p.className='fine';p.textContent='Could not load the latest data. Please refresh the page.';document.getElementById('app').prepend(p);});
 
 </script>
