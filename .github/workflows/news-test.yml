@@ -1,6 +1,8 @@
 name: news-test
 on:
-  workflow_dispatch:
+  push:
+    branches: [news-preview]
+    paths: [".github/workflows/news-test.yml"]
 permissions: {contents: write}
 jobs:
   t:
