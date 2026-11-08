@@ -14,13 +14,13 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2324406e'/%3E%3Crect x='6' y='6' width='52' height='14' rx='3' fill='%234a6ea2'/%3E%3Ctext x='32' y='52' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='26' text-anchor='middle' fill='%23ffffff'%3ETI%3C/text%3E%3C/svg%3E">
 <style>
 /* Compact one-column app: sticky fund switcher, one summary card, four view tabs. Win95 window as the frame. */
-:root{--house:#9C5248;--house-ink:#fff;--wall:color-mix(in srgb,var(--house) 34%,#F6EFE3);--speck:color-mix(in srgb,var(--house) 50%,#F6EFE3);--panel:#fbf5ea;--fg:#2b2320;--muted:#57423c;--line:#e6cfc6;--pale:#ead6cf;--frame:#453629;--dash:#c99a8e;
+:root{--house:#9C5248;--house-ink:#fff;--wall:var(--wall-l,color-mix(in srgb,var(--house) 34%,#F6EFE3));--speck:var(--speck-l,color-mix(in srgb,var(--house) 50%,#F6EFE3));--panel:#fbf5ea;--fg:#2b2320;--muted:#57423c;--line:#e6cfc6;--pale:#ead6cf;--frame:#453629;--dash:#c99a8e;
 --good-t:#356039;--bad:#9e2f26;--weth:#4a6ea2;--tmf:#a35846;--tmfstripe:#c9917f;--pink:#a8235f;
 --card:#fff;--card2:#fff8ef;--hover:#f6ebe0;--edge:#e0c6bc;--title:#fbf5ea;
 --c1:#c08a2e;--c2:#4f8a5b;--c3:#8a64b5;--c4:#2f8580;--c5:#b85a75;--c6:#6b7b8f;
 --serif:"Source Serif 4",Georgia,"Times New Roman",serif;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--wall:color-mix(in srgb,var(--house) 26%,#1D1410);--speck:color-mix(in srgb,var(--house) 38%,#1D1410);--panel:#1d1613;--fg:#f0e5d8;--muted:#c2ab9d;--line:#3a2d27;--pale:#362923;--frame:#0e0a08;--dash:#5e483d;--good-t:#86c98a;--bad:#f08a7b;--weth:#6d93cb;--tmf:#c26d58;--tmfstripe:#7d4537;--pink:#c23d76;--card:#271d19;--card2:#2a201b;--hover:#2c221e;--edge:#4a3830;color-scheme:dark}}
-:root[data-theme="dark"]{--wall:color-mix(in srgb,var(--house) 26%,#1D1410);--speck:color-mix(in srgb,var(--house) 38%,#1D1410);--panel:#1d1613;--fg:#f0e5d8;--muted:#c2ab9d;--line:#3a2d27;--pale:#362923;--frame:#0e0a08;--dash:#5e483d;--good-t:#86c98a;--bad:#f08a7b;--weth:#6d93cb;--tmf:#c26d58;--tmfstripe:#7d4537;--pink:#c23d76;--card:#271d19;--card2:#2a201b;--hover:#2c221e;--edge:#4a3830;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--wall:color-mix(in srgb,var(--wall-l,var(--house)) 26%,#1D1410);--speck:color-mix(in srgb,var(--speck-l,var(--house)) 38%,#1D1410);--panel:#1d1613;--fg:#f0e5d8;--muted:#c2ab9d;--line:#3a2d27;--pale:#362923;--frame:#0e0a08;--dash:#5e483d;--good-t:#86c98a;--bad:#f08a7b;--weth:#6d93cb;--tmf:#c26d58;--tmfstripe:#7d4537;--pink:#c23d76;--card:#271d19;--card2:#2a201b;--hover:#2c221e;--edge:#4a3830;color-scheme:dark}}
+:root[data-theme="dark"]{--wall:color-mix(in srgb,var(--wall-l,var(--house)) 26%,#1D1410);--speck:color-mix(in srgb,var(--speck-l,var(--house)) 38%,#1D1410);--panel:#1d1613;--fg:#f0e5d8;--muted:#c2ab9d;--line:#3a2d27;--pale:#362923;--frame:#0e0a08;--dash:#5e483d;--good-t:#86c98a;--bad:#f08a7b;--weth:#6d93cb;--tmf:#c26d58;--tmfstripe:#7d4537;--pink:#c23d76;--card:#271d19;--card2:#2a201b;--hover:#2c221e;--edge:#4a3830;color-scheme:dark}
 .app *{box-sizing:border-box}
 .app{transition:border-color .25s ease;color:var(--fg);font:15px/1.45 var(--sans);background:var(--panel);border:3px solid var(--house);border-radius:12px;overflow:clip}
 .app a{color:inherit}
@@ -69,7 +69,13 @@
 .stat em{font-style:normal;font-size:11px;color:var(--good-t);font-weight:600}
 button.stbtn{font:inherit;color:inherit;text-align:left;cursor:pointer;appearance:none;-webkit-appearance:none}
 button.stbtn .car{font-style:normal;font-size:10px;display:inline-block;transition:transform .15s}
-button.stbtn[aria-expanded="true"]{outline:2px solid var(--house);outline-offset:-2px}
+button.stbtn{transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease}
+button.stbtn:hover{border-color:color-mix(in srgb,var(--house) 55%,var(--line))}
+button.stbtn[aria-expanded="true"]{border-color:var(--house);background:color-mix(in srgb,var(--house) 17%,var(--card2));box-shadow:0 0 0 2px color-mix(in srgb,var(--house) 40%,transparent),0 0 18px color-mix(in srgb,var(--house) 55%,transparent),0 3px 16px color-mix(in srgb,var(--house) 30%,transparent)}
+button.stbtn[aria-expanded="true"] .car{color:var(--house)}
+button.stbtn[aria-expanded="true"] b{text-shadow:0 0 14px color-mix(in srgb,var(--house) 45%,transparent)}
+.ct{border-top:3px solid color-mix(in srgb,var(--house) 70%,var(--line))}
+@media (prefers-reduced-motion:no-preference){.ct{animation:ctin .2s ease-out}@keyframes ctin{from{opacity:0;transform:translateY(-4px)}}}
 button.stbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
 .ct{margin-top:8px;padding:8px 10px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card2)}
 .ct-top{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;margin-bottom:6px}
@@ -179,6 +185,9 @@ table.g tr.sum td{font-size:11.5px;color:var(--muted)}
 .sup .sbar b{position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;background:var(--bad,#b8443a)}
 .sup ul.need{margin:4px 0 2px;padding-left:18px;font-size:12.5px}.sup ul.need li+li{margin-top:2px}
 .sup .sl{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted)}
+.ct.nv{padding:8px 10px}
+.nv .nvbig{margin:0 0 2px;font-size:19px;line-height:1.15}
+.nv .src{margin:0;font-size:11.5px}
 .sup .cal{border-left:3px solid var(--house);background:var(--card2);border-radius:0 8px 8px 0;padding:9px 11px;margin:9px 0 2px;display:flex;flex-direction:column;gap:5px}
 .sup .cal.ok{border-left-color:var(--good-t)}
 .sup .cal.no{border-left-color:var(--muted)}
@@ -340,11 +349,12 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="leg" id="fcLeg"></div>
 <div class="turn" id="fcTurn" hidden><div class="tu-top"><span class="tu-l">Turnout</span><b id="tuPct">—</b><span id="tuTxt">—</span></div><div class="tu-bar" role="img" id="tuBar"><i id="tuFill"></i><span id="tuFloor" title="25-seat floor"></span></div><div class="tu-src" id="tuSrc"></div></div>
 <div class="stats">
-<button class="stat stbtn" type="button" id="stChairsBtn" aria-expanded="false" aria-controls="ctBox"><span>Seats <i class="car" aria-hidden="true">▾</i></span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></button>
+<button class="stat stbtn" type="button" id="stChairsBtn" aria-expanded="false" aria-controls="ctBox"><span>Seats voted <i class="car" aria-hidden="true">▾</i></span><b><span id="stChairs">—</span> <em id="stFloor"></em></b></button>
 
-<button class="stat stbtn" type="button" id="stBackedBtn" aria-expanded="false" aria-controls="tkBox"><span>Backed <i class="car" aria-hidden="true">▾</i></span><b id="stBacked">—</b></button>
-<div class="stat" id="stNavBox" title="What the fund is worth in WETH (fund desk navInWeth, on-chain)"><span>Fund size (WETH)</span><b id="stNav">—</b></div>
+<button class="stat stbtn" type="button" id="stBackedBtn" aria-expanded="false" aria-controls="tkBox"><span>Tokens backed <i class="car" aria-hidden="true">▾</i></span><b id="stBacked">—</b></button>
+<button class="stat stbtn" type="button" id="stNavBtn" aria-expanded="false" aria-controls="navBox" title="What the fund is worth in WETH (fund desk navInWeth, on-chain)"><span>Fund size (WETH) <i class="car" aria-hidden="true">▾</i></span><b id="stNav">—</b></button>
 </div>
+<div class="ct nv" id="navBox" hidden><div id="nvBody"></div></div>
 <div class="ct tk" id="tkBox" hidden><div class="ct-top"><div class="ct-h" id="tkH"></div><span class="tk-act"><button class="ct-x tk-copy" type="button" id="tkCopy" aria-label="Copy a short summary to share">Copy</button><button class="ct-x" type="button" id="tkX" aria-label="Close">✕</button></span></div>
 <div class="chips" id="tchips"><button class="chip" type="button" data-g="" aria-pressed="true">All 19</button><button class="chip" type="button" data-g="Stock" aria-pressed="false">Stocks</button><button class="chip" type="button" data-g="Stable" aria-pressed="false">Stable</button><button class="chip" type="button" data-g="Meme" aria-pressed="false">Memes</button></div>
 <div class="tsbk" id="tsbKey" hidden><span class="tsb-b"><i style="width:40%"></i><em></em></span><span id="tsbKeyT"></span></div>
@@ -407,6 +417,8 @@ const PG=v=>nf(1).format(v*100).replace(/\.0$/,'')+'%';
 const F={usd:v=>'$'+nf(2).format(v),usd0:v=>'$'+nf(0).format(v),pct:v=>(v>0?'+':v<0?'−':'')+nf(1).format(Math.abs(v*100))+'%',usdM:v=>(v<0?'−':'+')+'$'+nf(1).format(Math.abs(v))+'M',usdB:v=>'$'+nf(1).format(v)+'B',int:v=>nf(0).format(v),txt:v=>String(v)};
 const FUNDS=D.funds,FI=Object.fromEntries(FUNDS.map(f=>[f.id,f])),COL=['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c6)'];
 const backed=f=>Object.entries(f.room_tokens).sort((a,b)=>b[1]-a[1]);
+/* wall and speck per fund, from the TMF room art (light theme); dark mixes the same colour into the dark ground */
+const WALL={argon:['#a3b6cf','#7188a6'],bogle:['#afc2a3','#7e9573'],smaug:['#cfa89e','#9d746d'],midas:['#dcc48d','#ae9259'],vladd:['#b0a1c2','#7f7193']};
 const HOUSE={argon:['#49698C','#fff','Noble, inert, and unmoved by the news.'],bogle:['#4E8A5A','#fff','Buys the whole haystack.'],smaug:['#9C5248','#fff','Sleeps on the pile and knows every coin in it.'],midas:['#B9902F','#211B14','Everything it touches, marked to gold.'],vladd:['#6E5D8C','#fff','Buys when there is blood in the streets.']};
 const PICS=window.__PICS__||{};
 /* every time is shown in the viewer's own time zone */
@@ -448,6 +460,9 @@ function select(id,dx){SEL=id;const f=FI[id];
  $$('.fbtn').forEach(b=>{const on=b.dataset.f===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
  const c=$('#fcard');if(dx){c.style.setProperty('--dx',dx+'px');c.classList.remove('slide');void c.offsetWidth;c.classList.add('slide');}
  const hc=HOUSE[id]||['#453629','#fff',''];document.documentElement.style.setProperty('--house',hc[0]);document.documentElement.style.setProperty('--house-ink',hc[1]);
+ {const w=WALL[id];const R0=document.documentElement.style;
+  if(w){R0.setProperty('--wall-l',w[0]);R0.setProperty('--speck-l',w[1]);}
+  else{R0.removeProperty('--wall-l');R0.removeProperty('--speck-l');}}
  $('#fcName').textContent=f.name;stamp($('#fcWhen'),f.asof_utc,f.asof);$('#fcSrc').textContent=f.room_src==='chain'?' · on-chain':'';
  
  /* turnout from the chain */
@@ -464,7 +479,7 @@ function select(id,dx){SEL=id;const f=FI[id];
  const st=$('#fcStack'),lg=$('#fcLeg');st.replaceChildren();lg.replaceChildren();
  parts.forEach(([l,v,fill])=>{const d=el('div');d.style.width=(v*100)+'%';d.style.background=fill;st.append(d);const s=el('span');const i=el('i');i.style.background=fill;s.append(i,l+' ');s.append(el('b',null,P(v)));lg.append(s);});
  st.setAttribute('aria-label',parts.map(([l,v])=>l+' '+P(v)).join(', '));
- const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-seat floor: the dials move at the bell':'Below the 25-seat floor';$('#stBacked').textContent=b.length+' of '+D.tokens.length;$('#stNav').textContent=f.nav_weth!=null?f.nav_weth.toFixed(2):'—';
+ const chairsNow=tw?T.voted:f.chairs;$('#stChairs').textContent=chairsNow;$('#stFloor').textContent=chairsNow>=f.floor?'✓':'of '+f.floor;$('#stFloor').title=chairsNow>=f.floor?'Over the 25-seat floor: the dials move at the bell':'Below the 25-seat floor';$('#stBacked').textContent=b.length+' of '+D.tokens.length;$('#stNav').textContent=f.nav_weth!=null?f.nav_weth.toFixed(2):'—';if(NV_OPEN)drawNavBox();
  try{localStorage.setItem('tfi-fund',id)}catch(e){}try{history.replaceState(null,'','#'+id)}catch(e){}
  drawWeek();drawTok();drawGrid();drawCardTimes();}
 
@@ -510,9 +525,21 @@ const HEAT_STOPS=['#fff1b3','#ffc95c','#f5844c','#d9455f','#8a2a7a','#3d2266'];
 const HEAT=t=>{if(t<=0)return['transparent',false];const x=Math.min(1,t)*(HEAT_STOPS.length-1),i=Math.min(HEAT_STOPS.length-2,Math.floor(x)),f=x-i;return['color-mix(in srgb,'+HEAT_STOPS[i+1]+' '+Math.round(f*100)+'%,'+HEAT_STOPS[i]+')',x>=2.6];};
 /* on wide screens the grid opens in the right column, larger; on phones it opens under the boxes */
 const WIDE=matchMedia('(min-width:900px)');
-function placeCT(){['#ctBox','#tkBox'].forEach(q=>{const box=$(q);if(WIDE.matches){const vt=document.querySelector('.body>.vtabs');if(box.parentElement!==vt.parentElement||box.nextElementSibling!==vt)vt.before(box);}else{const st=document.querySelector('#fcard .stats');if(box.previousElementSibling!==st)st.after(box);}});}
-let TK_OPEN=false;
+function placeCT(){['#ctBox','#tkBox','#navBox'].forEach(q=>{const box=$(q);if(WIDE.matches){const vt=document.querySelector('.body>.vtabs');if(box.parentElement!==vt.parentElement||box.nextElementSibling!==vt)vt.before(box);}else{const st=document.querySelector('#fcard .stats');if(box.previousElementSibling!==st)st.after(box);}});}
+let TK_OPEN=false,NV_OPEN=false;
 function drawTkBox(){placeCT();const box=$('#tkBox'),btn=$('#stBackedBtn');btn.setAttribute('aria-expanded',TK_OPEN?'true':'false');box.hidden=!TK_OPEN;}
+/* Fund size in dollars: the fund's WETH value at the on-chain ETH price, and the room split in both */
+function drawNavBox(){placeCT();const box=$('#navBox'),btn=$('#stNavBtn');btn.setAttribute('aria-expanded',NV_OPEN?'true':'false');box.hidden=!NV_OPEN;if(!NV_OPEN)return;
+ const f=FI[SEL],mk=D.mkt,nav=f.nav_weth,body=$('#nvBody');body.replaceChildren();
+ if(nav==null){body.append(el('p','m','Not read yet.'));return;}
+ const cm=D.ethusd,eth=cm?cm.price:(mk&&mk.eth_usd),M=v=>'$'+(v>=1000?Math.round(v).toLocaleString('en-US'):v.toFixed(2));
+ const head=el('p','nvbig');head.append(eth?el('b',null,'\u2248 '+M(nav*eth)):el('b',null,nav.toFixed(2)+' WETH'));body.append(head);
+ const short=iso=>new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(iso));
+ const src=el('p','src');
+ if(eth&&cm)src.append('ETH '+M(eth)+' \u00b7 ',link('CoinMarketCap',cm.url),' \u00b7 '+short(cm.asof_utc));
+ else if(eth&&mk&&mk.asof_utc)src.append('ETH '+M(eth)+' \u00b7 ',link('TMF price desk',mk.url),' \u00b7 '+short(mk.asof_utc));
+ else src.append('ETH price not read yet.');
+ body.append(src);}
 function drawCardTimes(){placeCT();const box=$('#ctBox'),btn=$('#stChairsBtn');btn.setAttribute('aria-expanded',CT_OPEN?'true':'false');box.hidden=!CT_OPEN;if(!CT_OPEN)return;
  const H=(D.ct||{})[SEL],f=FI[SEL],g=$('#ctG');g.replaceChildren();
  const end=D.closes_utc?new Date(D.closes_utc):null;if(!end){$('#ctH').textContent='Card times aren\'t available yet.';$('#ctF').textContent='';return;}
@@ -636,8 +663,9 @@ function drawGrid(){setVTH();const tb=$('#grid tbody');tb.replaceChildren();
  $$('#grid [data-f]').forEach(c=>c.classList.toggle('sel',c.dataset.f===SEL));
  $('#gToggle').textContent=ALL?'Show only backed tokens':'Show all '+D.tokens.length+' tokens';}
 $('#gToggle').addEventListener('click',()=>{ALL=!ALL;drawGrid();});
-$('#stChairsBtn').addEventListener('click',e=>{e.stopPropagation();CT_OPEN=!CT_OPEN;if(CT_OPEN){TK_OPEN=false;drawTkBox();}drawCardTimes();});
-$('#stBackedBtn').addEventListener('click',e=>{e.stopPropagation();TK_OPEN=!TK_OPEN;if(TK_OPEN){CT_OPEN=false;drawCardTimes();}drawTkBox();});
+$('#stChairsBtn').addEventListener('click',e=>{e.stopPropagation();CT_OPEN=!CT_OPEN;if(CT_OPEN){TK_OPEN=false;drawTkBox();NV_OPEN=false;drawNavBox();}drawCardTimes();});
+$('#stNavBtn').addEventListener('click',e=>{e.stopPropagation();NV_OPEN=!NV_OPEN;if(NV_OPEN){CT_OPEN=false;drawCardTimes();TK_OPEN=false;drawTkBox();}drawNavBox();});
+$('#stBackedBtn').addEventListener('click',e=>{e.stopPropagation();TK_OPEN=!TK_OPEN;if(TK_OPEN){CT_OPEN=false;drawCardTimes();NV_OPEN=false;drawNavBox();}drawTkBox();});
 /* Copy: a short, shareable summary of the open fund's room (facts only, with time and link) */
 function shareText(){const f=FI[SEL],rows=D.tokens.map(r=>[r.token,SUP(f,r.token)||0,f.status[r.token]]).sort((a,b)=>b[1]-a[1]);
  const b=rows.filter(x=>x[2]==='backed'),near=rows.filter(x=>x[2]!=='backed'&&x[1]>0).slice(0,3),g=v=>{const x=50-v*100;return(x<1?x.toFixed(1):String(Math.round(x)))+'%';};
@@ -651,7 +679,7 @@ $('#tkCopy').addEventListener('click',async()=>{const t=shareText(),btn=$('#tkCo
  btn.textContent=ok?'Copied ✓':'Copy failed';setTimeout(()=>{btn.textContent='Copy';},2000);});
 $('#tkX').addEventListener('click',()=>{TK_OPEN=false;drawTkBox();$('#stBackedBtn').focus();});
 $('#ctX').addEventListener('click',()=>{CT_OPEN=false;drawCardTimes();$('#stChairsBtn').focus();});
-WIDE.addEventListener&&WIDE.addEventListener('change',()=>{drawCardTimes();drawTkBox();});
+WIDE.addEventListener&&WIDE.addEventListener('change',()=>{drawCardTimes();drawTkBox();drawNavBox();});
 addEventListener('resize',setVTH);
 
 /* more */
@@ -684,7 +712,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    const mk=c.market;if(mk&&mk.eth_usd&&mk.asof_utc){const at=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(mk.asof_utc));
      const setT=(id,v,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=at;t.source=mk.source;t.url=mk.url;if(label)t.label=label;}};
      setT('eth',mk.eth_usd,'ETH price (on-chain)');const cq=(c.changes||{}).QQQ;{const t=(d.market||[]).find(r=>r.id==='nasdaq');if(t&&cq&&cq.h24!=null){t.value=cq.h24;t.fmt='pct';t.label='QQQ token, last 24h (on-chain)';t.asof=at+' · tracks the Nasdaq-100 fund';t.source=mk.source;t.url=mk.url;}}const ce=(c.changes||{}).ETH;if(ce&&ce.d7!=null)setT('eth_1w',ce.d7,'ETH, last 7 days (on-chain)');}
-   d.ct=Object.fromEntries(Object.entries(c.funds||{}).map(([k,x])=>[k,x.card_times||null]));d.ct_week=c.epoch;d.closes_utc=c.closes_utc;d.cprices=c.prices||{};d.tf=c.token_facts||{};d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
+   d.mkt=c.market||null;d.ct=Object.fromEntries(Object.entries(c.funds||{}).map(([k,x])=>[k,x.card_times||null]));d.ct_week=c.epoch;d.closes_utc=c.closes_utc;d.cprices=c.prices||{};d.tf=c.token_facts||{};d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
    if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
    if(c.prices)(d.tokens||[]).forEach(t=>{const p=c.prices[t.token];if(!p)return;const m=/per 1M/.test(t.onchain||'');
@@ -732,6 +760,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    const big=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v/1e3)+'K';
    const px=v=>'$'+(v>=100?v.toLocaleString(undefined,{maximumFractionDigits:0}):v>=1?v.toFixed(2):v.toPrecision(4));
    const setM=(id,v,asof,url,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=asof;t.source='CoinMarketCap';t.url=url;if(label)t.label=label;}};
+   const E=X.quotes.ETH;if(E&&E.price)d.ethusd={price:E.price,asof_utc:E.asof_utc,url:E.url,source:X.source||'CoinMarketCap'};
    const B=X.quotes.BTC;if(B)setM('btc',B.price,at(B.asof_utc),B.url,'BTC price');
    if(X.fng)setM('fng',X.fng.value,at(X.fng.asof_utc)+' · '+X.fng.label,X.fng.url,'Fear & Greed (CMC)');
    const G=X.quotes.PAXG;if(G){const t=(d.market||[]).find(r=>r.id==='gold');if(t){t.value=G.price;t.fmt='usd0';t.label='Gold (PAX Gold, 1 oz token)';t.asof=at(G.asof_utc)+(G.ch24!=null?' · 24h '+pc(G.ch24):'');t.source='CoinMarketCap';t.url=G.url;}}
