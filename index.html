@@ -547,7 +547,7 @@ const PS=v=>(v*100).toFixed(v>=.995||v<.1?1:0).replace(/\.0$/,'')+'%';
 const NEED=(f,t)=>{const W=f.voted_weight,v=SUP(f,t);if(!W||v==null||v>=.5||!f.chairs)return null;const w=Math.round(W*(1-2*v)),avg=W/f.chairs;return{w,n:Math.ceil(w/avg),avg:Math.round(avg)};};
 const WN=n=>n>=10000?(n/1000).toFixed(1).replace(/\.0$/,'')+'k':n.toLocaleString('en-US');
 function supBox(f,t,s){const v=SUP(f,t),a=f.avg_card&&f.avg_card[t],b=el('div','sup');
- const nc=CF(f,t);if(nc!=null){const q=el('p');q.append(el('b',null,nc+' of '+f.chairs+' chairs'),' that voted put something on '+t+' ('+PS(nc/f.chairs)+' of chairs voted).');b.append(q);}
+ const nc=CF(f,t);if(nc!=null){const q=el('p');q.append(el('b',null,nc+' of the '+f.chairs+' chairs'),' that have voted put something on '+t+(nc<f.chairs?' ('+PS(nc/f.chairs)+' of them).':'.'));b.append(q);}
  const p=el('p');p.append(el('b',null,PS(v)+' of chair weight'),(nc!=null?': ':' of '+f.name+'\'s chair weight put something on '+t+'. ')+(s==='backed'?'over 50%, so it\'s backed. ':'backing needs over 50%. ')+'Weight is what decides: chairs with more weight count for more.');b.append(p);
  const bar=el('div','sbar');const i=el('i',v>.5?'ok':null);i.style.width=Math.min(100,v*100)+'%';bar.append(i,el('b'));bar.setAttribute('role','img');bar.setAttribute('aria-label',PS(v)+' support; the 50% line is marked');b.append(bar);
  const sl=el('div','sl');sl.append(el('span',null,'0%'),el('span',null,'50%'),el('span',null,'100%'));b.append(sl);
@@ -574,11 +574,14 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
   sb.append(bar,lab);
   /* one plain line under the bar: how far from 50%, and the fewest chairs that already voted that could close it */
   const fm=f.flip_min?f.flip_min[r.token]:undefined,nt=el('span','tsb-n');
-  if(s==='backed'&&gpt<0)nt.append(el('b','ok','Passed by '+fmtp(-gpt)));
+  if(s==='backed'&&gpt<0)nt.append(el('b','ok',fmtp(-gpt)+' clear of the line'));
   else if(gpt>0){nt.append(el('b',null,fmtp(gpt)+' to go'));const nd=NEED(f,r.token);if(nd)nt.append(' · needs +'+WN(nd.w)+' weight · about '+nd.n+' '+(nd.n===1?'chair':'chairs'));}
   if(nt.childNodes.length)sb.append(nt);sb.title=(nc!=null?nc+' of '+f.chairs+' chairs voted ('+PS(nc/f.chairs)+') put something on '+r.token+'; ':'')+PS(v)+' of chair weight (over 50% backs it)';bt.append(sb);}
-  const d=el('div','tdet');if(r.price)d.append(el('p',null,r.price));if(SUP(f,r.token)!=null)d.append(supBox(f,r.token,s));if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token],fv=(D.fdv||{})[r.token];d.append(el('p','m','On-chain ≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3))+(()=>{const g=(D.chg||{})[r.token]||{},f=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%',x=[];if(g.h24!=null)x.push('24h '+f(g.h24));if(g.d7!=null)x.push('7d '+f(g.d7));return x.length?' ('+x.join(', ')+')':'';})()+' · on-chain, valued in USDG on TMF\u2019s price desk'));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
-  const fl=f.fills[r.token];const meta=el('p','m',(r.fee*100).toFixed(1).replace('.0','')+'% pool fee'+(fl?(fl.n<=1?' · a quarter of '+f.name+' fills in one Friday':' · ~'+fl.n+' Fridays to fill a quarter of '+f.name):f.not_in_capture.includes(r.token)?' · fill not in this capture':''));d.append(meta);
+  const d=el('div','tdet');if(r.price)d.append(el('p',null,r.price));if(SUP(f,r.token)!=null)d.append(supBox(f,r.token,s));const FACTS=[];if((D.usd||{})[r.token]&&r.token!=='USDG'){const u=D.usd[r.token];FACTS.push('≈ '+(u>=1?'$'+u.toLocaleString(undefined,{maximumFractionDigits:2}):'$'+u.toPrecision(3)));const g=(D.chg||{})[r.token]||{},gf=v=>(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%';if(g.h24!=null)FACTS.push('24h '+gf(g.h24));if(g.d7!=null)FACTS.push('7d '+gf(g.d7));}if(r.news&&r.news!=='—')d.append(el('p','m',r.news));
+  if(s==='backed'&&f.nav_weth&&f.room_tokens[r.token]!=null){const sh=f.room_tokens[r.token],amt=sh*f.nav_weth;
+   d.append(el('p','m',P(sh)+' of '+f.name+'\u2019s fund size ('+f.nav_weth.toFixed(2)+' WETH) \u2248 '+(amt>=1?amt.toFixed(2):amt.toPrecision(2))+' WETH.'));}
+  FACTS.push((r.fee*100).toFixed(1).replace('.0','')+'% pool fee');const fl=f.fills[r.token];if(fl)FACTS.push(fl.n<=1?'a quarter of '+f.name+' fills in one Friday':'~'+fl.n+' Fridays to fill a quarter of '+f.name);else if(f.not_in_capture.includes(r.token))FACTS.push('fill not in this capture');
+  if(FACTS.length)d.append(el('p','m',FACTS.join(' · ')));
   const dx=(D.dex||{})[r.token];if(dx){const mon=v=>v==null?'—':v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':v>=1e3?'$'+(v/1e3).toFixed(0)+'K':'$'+Math.round(v);
    const pr=dx.price_usd==null?'—':dx.price_usd>=1?'$'+dx.price_usd.toFixed(2):'$'+dx.price_usd.toPrecision(3);
    const ch=dx.change_24h==null?'':' ('+(dx.change_24h>0?'+':dx.change_24h<0?'−':'')+Math.abs(dx.change_24h).toFixed(1)+'% 24h)';
@@ -590,7 +593,7 @@ function drawTok(){const f=FI[SEL],box=$('#tokList');box.replaceChildren();
    let txt='Contract code (on-chain): '+(tf.minimal_clone?'a minimal copy of a shared token contract; ':'')+(yes.length?'has '+lstA(yes.map(x=>x==='mint'||x==='pause'||x==='blacklist'?'a '+x+' function':x)):'')+(yes.length&&no.length?'; ':'')+(no.length?'no '+lst(no)+' function'+(no.length>1?'s':''):'')+'.';
    if(tf.first_pool_utc)txt+=' First Uniswap pool opened '+new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',year:'numeric'}).format(new Date(tf.first_pool_utc))+' (DexScreener).';
    d.append(el('p','m',txt));}
-  if(r.onchain_asof_utc)d.append(el('p','m','On-chain price '+r.onchain+' as of '+local(r.onchain_asof_utc)+' (TMF price desk)'));const src=el('p','src');src.append('Source: ',link(r.source,r.url));d.append(src);
+  const src=el('p','src');const pdU=(D.tokens.find(x=>/price desk/i.test(x.source||''))||{}).url;const deskSrc=/price desk/i.test(r.source||'');if(r.onchain&&r.onchain_asof_utc){src.append(r.onchain+' on ',pdU?link('TMF price desk (on-chain)',pdU):'TMF price desk (on-chain)',', '+local(r.onchain_asof_utc));if(!deskSrc&&r.source)src.append(' · also on ',link(r.source,r.url));}else src.append('Source: ',link(r.source,r.url));d.append(src);
   bt.addEventListener('click',()=>{const o=!row.classList.contains('open');row.classList.toggle('open',o);bt.setAttribute('aria-expanded',String(o));});
   row.append(bt,d);box.append(row);});}
 $$('#tchips .chip').forEach(c=>c.addEventListener('click',()=>{G=c.dataset.g;$$('#tchips .chip').forEach(x=>x.setAttribute('aria-pressed',String(x===c)));drawTok();}));
