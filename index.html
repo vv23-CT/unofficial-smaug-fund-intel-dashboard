@@ -179,6 +179,16 @@ table.g tr.sum td{font-size:11.5px;color:var(--muted)}
 .sup .sbar b{position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;background:var(--bad,#b8443a)}
 .sup ul.need{margin:4px 0 2px;padding-left:18px;font-size:12.5px}.sup ul.need li+li{margin-top:2px}
 .sup .sl{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted)}
+.sup .ip{position:relative;display:flex;height:16px;border-radius:5px;overflow:hidden;margin:10px 0 5px;background:var(--pale)}
+.sup .ip i{display:block;height:100%}
+.sup .ip i.f{background:var(--fg)}
+.sup .ip i.a{background:var(--muted)}
+.sup .ip i.l{flex:1;background:repeating-linear-gradient(135deg,var(--line) 0 5px,transparent 5px 10px)}
+.sup .ipk{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:10.5px;color:var(--muted)}
+.sup .ipk em{display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:-1px;margin-right:4px}
+.sup .ipk em.f{background:var(--fg)}.sup .ipk em.a{background:var(--muted)}
+.sup .ipk em.l{background:repeating-linear-gradient(135deg,var(--line) 0 4px,transparent 4px 8px);box-shadow:inset 0 0 0 1px var(--line)}
+.sup .ipv{margin-top:4px;color:var(--fg)}
 .toggle{cursor:pointer;align-self:flex-start;font-size:12.5px;font-weight:700;background:none;border:0;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
 /* more */
 .acc{border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
@@ -551,6 +561,27 @@ function supBox(f,t,s){const v=SUP(f,t),a=f.avg_card&&f.avg_card[t],b=el('div','
  const p=el('p');p.append(el('b',null,PS(v)+' of chair weight'),(nc!=null?': ':' of '+f.name+'\'s chair weight put something on '+t+'. ')+(s==='backed'?'over 50%, so it\'s backed. ':'backing needs over 50%. ')+'Weight is what decides: chairs with more weight count for more.');b.append(p);
  const bar=el('div','sbar');const i=el('i',v>.5?'ok':null);i.style.width=Math.min(100,v*100)+'%';bar.append(i,el('b'));bar.setAttribute('role','img');bar.setAttribute('aria-label',PS(v)+' support; the 50% line is marked');b.append(bar);
  const sl=el('div','sl');sl.append(el('span',null,'0%'),el('span',null,'50%'),el('span',null,'100%'));b.append(sl);
+ /* How settled is this, counting the weight that has not voted yet? All on-chain, this reading only. */
+ {const VW=f.voted_weight,EW=f.enrolled_weight;
+  if(VW&&EW&&EW>=VW){const left=EW-VW,forW=Math.round(v*VW),agW=VW-forW,pc=x=>(100*x/EW).toFixed(2)+'%';
+   const ip=el('div','ip');const i1=el('i','f'),i2=el('i','a'),i3=el('i','l');i1.style.width=pc(forW);i2.style.width=pc(agW);
+   ip.append(i1,i2,i3);
+   ip.setAttribute('role','img');ip.setAttribute('aria-label',WN(forW)+' weight on '+t+', '+WN(agW)+' voted without it, '+WN(left)+' of '+WN(EW)+' not voted yet');
+   b.append(ip);
+   const k=el('div','ipk');
+   const key=(c,txt)=>{const sp=el('span');const em=el('em',c);em.setAttribute('aria-hidden','true');sp.append(em,txt);return sp;};
+   const N=x=>x.toLocaleString('en-US');
+   k.append(key('f','on '+t+' '+N(forW)),key('a','voted without it '+N(agW)),key('l','not voted yet '+N(left)));
+   b.append(k);
+   let vd;
+   if(left<=0)vd=s==='backed'?'Every enrolled chair has voted, so this is settled.':'Every enrolled chair has voted.';
+   else if(v>.5){const X=Math.round(2*forW-VW);
+    vd=X>left?'Settled for this week: even if every chair still to vote leaves '+t+' out, it stays over 50%.'
+             :'Not settled yet: it would take '+N(X)+' more weight voting without '+t+' to end its backing, and '+N(left)+' has yet to vote.';}
+   else{const w=Math.round(VW*(1-2*v));
+    vd=w>left?'Can\u2019t reach 50% this week: it would need +'+N(w)+' and only '+N(left)+' is left to vote.'
+             :'Still open: needs +'+N(w)+' of the '+N(left)+' weight yet to vote.';}
+   b.append(el('p','m ipv',vd));}}
  if(s!=='backed'&&v<=.5){const T=f.voted_weight,E=f.enrolled_weight,left=E&&T?E-T:null,gap=.5-v;
   const h=el('p','m');h.append(el('b',null,'What it would take to pass 50%:'));b.append(h);
   const u=el('ul','need');
