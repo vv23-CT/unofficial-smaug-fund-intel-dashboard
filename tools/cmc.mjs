@@ -1,5 +1,5 @@
 // CoinMarketCap figures for the page, on the free Basic plan (key in the repo secret CMC_API_KEY).
-// Two calls a reading (quotes for 11 coins + Fear & Greed) = about 3,000 of the 15,000 monthly credits.
+// Three calls a reading (quotes for 11 coins, Fear & Greed, global market cap) = about 4,500 of the 15,000 monthly credits.
 // Saves only the few numbers the page shows, each with its CoinMarketCap link (no bulk data).
 // Writes cmc.json. Without a key, or if CoinMarketCap fails, it leaves the last cmc.json as it is.
 import fs from 'node:fs';
@@ -24,8 +24,14 @@ try {
   try { const f = await (await fetch(`${B}/v3/fear-and-greed/latest`, { headers: H })).json();
     if (f.data) fng = { value: f.data.value, label: f.data.value_classification, asof_utc: iso(f.data.update_time), url: 'https://coinmarketcap.com/charts/fear-and-greed-index/' };
   } catch (e) { console.log('fear & greed failed', e.message); }
+  let global = null;
+  try { const g = await (await fetch(`${B}/v1/global-metrics/quotes/latest`, { headers: H })).json();
+    const u = g.data && g.data.quote && g.data.quote.USD;
+    if (u && u.total_market_cap) global = { mcap: Math.round(u.total_market_cap), ch24: r2(u.total_market_cap_yesterday_percentage_change), btc_dom: r2(g.data.btc_dominance, 1), asof_utc: iso(u.last_updated || g.data.last_updated), url: 'https://coinmarketcap.com/charts/' };
+    else console.log('global metrics: ' + (g.status?.error_message || 'no data'));
+  } catch (e) { console.log('global metrics failed', e.message); }
   const prev = fs.existsSync('cmc.json') ? JSON.parse(fs.readFileSync('cmc.json', 'utf8')) : {};
-  const out = { asof_utc: iso(Date.now()), source: 'CoinMarketCap', url: 'https://coinmarketcap.com/', quotes, fng: fng || prev.fng || null };
+  const out = { asof_utc: iso(Date.now()), source: 'CoinMarketCap', url: 'https://coinmarketcap.com/', quotes, fng: fng || prev.fng || null, global: global || prev.global || null };
   fs.writeFileSync('cmc.json', JSON.stringify(out, null, 1));
-  console.log('cmc.json:', Object.keys(quotes).join(' '), fng ? `F&G ${fng.value}` : '(F&G kept)', 'credits', q.status?.credit_count);
+  console.log('cmc.json:', Object.keys(quotes).join(' '), fng ? `F&G ${fng.value}` : '(F&G kept)', global ? `crypto mcap ${global.mcap}` : '(global kept)', 'credits', q.status?.credit_count);
 } catch (e) { console.log('CoinMarketCap step skipped:', e.message); }

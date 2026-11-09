@@ -440,7 +440,7 @@ const nf=d=>new Intl.NumberFormat('en-US',{maximumFractionDigits:d,minimumFracti
 const P=v=>nf(2).format(v*100).replace(/\.?0+$/,'')+'%';
 /* grid cells: one decimal, so all five funds fit on a phone (exact share is in the tooltip and the fund card) */
 const PG=v=>nf(1).format(v*100).replace(/\.0$/,'')+'%';
-const F={usd:v=>'$'+nf(2).format(v),usd0:v=>'$'+nf(0).format(v),pct:v=>(v>0?'+':v<0?'−':'')+nf(1).format(Math.abs(v*100))+'%',usdM:v=>(v<0?'−':'+')+'$'+nf(1).format(Math.abs(v))+'M',usdB:v=>'$'+nf(1).format(v)+'B',int:v=>nf(0).format(v),txt:v=>String(v)};
+const F={usd:v=>'$'+nf(2).format(v),usd0:v=>'$'+nf(0).format(v),pct:v=>(v>0?'+':v<0?'−':'')+nf(1).format(Math.abs(v*100))+'%',usdT:v=>'$'+nf(2).format(v/1e12)+'T',usdM:v=>(v<0?'−':'+')+'$'+nf(1).format(Math.abs(v))+'M',usdB:v=>'$'+nf(1).format(v)+'B',int:v=>nf(0).format(v),txt:v=>String(v)};
 const FUNDS=D.funds,FI=Object.fromEntries(FUNDS.map(f=>[f.id,f])),COL=['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c6)'];
 const backed=f=>Object.entries(f.room_tokens).sort((a,b)=>b[1]-a[1]);
 /* wall and speck per fund, from the TMF room art (light theme); dark mixes the same colour into the dark ground */
@@ -737,7 +737,7 @@ addEventListener('resize',setVTH);
 /* more */
 const u=D.updates[0];$('#chgDate').textContent=u.date;$('#chg').textContent=u.text;
 const M=id=>D.market.find(r=>r.id===id);
-$('#mktSum').textContent='ETH '+F.usd0(M('eth').value)+' · BTC '+F.usd0(M('btc').value);
+{const mc=M('mcap'),sk=M('stocks');$('#mktSum').textContent=[mc?'Crypto '+F.usdT(mc.value):'',sk?'Stocks '+F.pct(sk.value):''].filter(Boolean).join(' · ');}
 D.market.forEach(r=>{const t=el('div','tile');t.append(el('div','l',r.label));const v=el('div','v',r.fmt==='txt'?String(r.value):(F[r.fmt]||F.int)(Number(r.value)));if(r.fmt==='pct'||r.fmt==='usdM')v.classList.add(r.value<0?'down':'up');t.append(v);const s=el('div','s');s.append(r.asof+' · ',link(r.source,r.url));t.append(s);$('#tiles').append(t);});
 $('#newsSum').textContent=D.news.length+' items';
 D.news.forEach(n=>{$('#news').append(el('dt',null,n.head));const dd=el('dd',null,n.text+' ');const s=el('span','note');s.append('(',link(n.source,n.url),')');dd.append(s);$('#news').append(dd);});
@@ -762,8 +762,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    if(!d.updated_utc||c.asof_utc>d.updated_utc)d.updated_utc=c.asof_utc;d.chain_asof_utc=c.asof_utc;
    /* ETH in USD from the chain every reading: valued in USDG (a dollar token) on TMF's price desk */
    const mk=c.market;if(mk&&mk.eth_usd&&mk.asof_utc){const at=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(mk.asof_utc));
-     const setT=(id,v,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=at;t.source=mk.source;t.url=mk.url;if(label)t.label=label;}};
-     setT('eth',mk.eth_usd,'ETH price (on-chain)');const cq=(c.changes||{}).QQQ;{const t=(d.market||[]).find(r=>r.id==='nasdaq');if(t&&cq&&cq.h24!=null){t.value=cq.h24;t.fmt='pct';t.label='QQQ token, last 24h (on-chain)';t.asof=at+' · tracks the Nasdaq-100 fund';t.source=mk.source;t.url=mk.url;}}const ce=(c.changes||{}).ETH;if(ce&&ce.d7!=null)setT('eth_1w',ce.d7,'ETH, last 7 days (on-chain)');}
+          const cq=(c.changes||{}).QQQ;if(cq&&cq.h24!=null){(d.market=d.market||[]).unshift({id:'stocks',label:'Stock market · Nasdaq-100 (QQQ token), last 24h',value:cq.h24,fmt:'pct',asof:at+' · on-chain price of the token that tracks the Nasdaq-100',source:mk.source,url:mk.url});}}
    d.mkt=c.market||null;d.ct=Object.fromEntries(Object.entries(c.funds||{}).map(([k,x])=>[k,x.card_times||null]));d.ct_week=c.epoch;d.closes_utc=c.closes_utc;d.cprices=c.prices||{};d.tf=c.token_facts||{};d.tnames=c.token_names||{};d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
    if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
@@ -813,9 +812,8 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    const px=v=>'$'+(v>=100?v.toLocaleString(undefined,{maximumFractionDigits:0}):v>=1?v.toFixed(2):v.toPrecision(4));
    const setM=(id,v,asof,url,label)=>{const t=(d.market||[]).find(r=>r.id===id);if(t&&v!=null){t.value=v;t.asof=asof;t.source='CoinMarketCap';t.url=url;if(label)t.label=label;}};
    const E=X.quotes.ETH;if(E&&E.price)d.ethusd={price:E.price,asof_utc:E.asof_utc,url:E.url,source:X.source||'CoinMarketCap'};
-   const B=X.quotes.BTC;if(B)setM('btc',B.price,at(B.asof_utc),B.url,'BTC price');
    if(X.fng)setM('fng',X.fng.value,at(X.fng.asof_utc)+' · '+X.fng.label,X.fng.url,'Fear & Greed (CMC)');
-   const G=X.quotes.PAXG;if(G){const t=(d.market||[]).find(r=>r.id==='gold');if(t){t.value=G.price;t.fmt='usd0';t.label='Gold (PAX Gold, 1 oz token)';t.asof=at(G.asof_utc)+(G.ch24!=null?' · 24h '+pc(G.ch24):'');t.source='CoinMarketCap';t.url=G.url;}}
+   if(X.global&&X.global.mcap)(d.market=d.market||[]).unshift({id:'mcap',label:'Crypto market cap',value:X.global.mcap,fmt:'usdT',asof:at(X.global.asof_utc)+(X.global.ch24!=null?' · 24h '+pc(X.global.ch24):'')+(X.global.btc_dom!=null?' · BTC '+X.global.btc_dom.toFixed(1)+'%':''),source:'CoinMarketCap',url:X.global.url});
    (d.tokens||[]).forEach(t=>{const q=X.quotes[t.token];if(!q)return;
      const ch=[['24h',q.ch24],['7d',q.ch7],['30d',q.ch30]].filter(x=>x[1]!=null).map(x=>x[0]+' '+pc(x[1])).join(', ');
      t.price=px(q.price)+' (CMC, '+at(q.asof_utc)+')'+(t.token==='USDG'?'':'. '+ch)+(q.mcap?'. Market cap '+big(q.mcap):'');t.source='CoinMarketCap';t.url=q.url;});
