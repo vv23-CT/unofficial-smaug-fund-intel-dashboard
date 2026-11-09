@@ -243,6 +243,12 @@ table.g tr.sum td{font-size:11.5px;color:var(--muted)}
 .ev b{font-size:12.5px}.ev.key .what{font-weight:700}.ev small{display:block;color:var(--muted);font-size:11.5px}
 dl.dl{margin:0;display:flex;flex-direction:column;gap:7px}dl.dl dt{font-weight:700}dl.dl dd{margin:0;color:var(--fg)}
 .changed{font-size:13px;line-height:1.45}
+.changed .chp{margin:0 0 6px}
+.chh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:0 0 6px}.chh b{font-size:14px}.chw{font-size:12px;color:var(--muted)}
+.chr{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:8px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line)}
+.chf{font-size:12px;letter-spacing:.04em}.chb{font-weight:600}.chn{color:var(--muted)}.chc{display:block;margin-top:1px;color:var(--muted);font-size:11.5px}.chv{font-size:12px;color:var(--muted);white-space:nowrap}
+.changed .chn2{margin:6px 0 0;padding-top:6px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+
 /* bell results */
 .lastbell{margin:0 0 10px;padding:8px 10px;border:1px solid var(--line);border-left:4px solid var(--house);border-radius:8px;background:var(--card2);font-size:13px;line-height:1.45}
 .lastbell b{font-weight:700}.lastbell small{display:block;color:var(--muted);font-size:11px}
@@ -804,7 +810,13 @@ WIDE.addEventListener&&WIDE.addEventListener('change',()=>{drawCardTimes();drawT
 addEventListener('resize',setVTH);
 
 /* more */
-const u=D.updates[0];$('#chgDate').textContent=u.date;$('#chg').textContent=u.text;
+const u=D.updates[0];$('#chgDate').textContent=u.date;
+function drawChg(u){const box=$('#chg');box.textContent='';
+ if(!u.rows){String(u.text||'').split(/(?<=\.)\s+(?=[A-Z])/).forEach(t=>box.append(el('p','chp',t)));return;}
+ const hd=el('div','chh');hd.append(el('b',null,u.title||'Update'));if(u.when)hd.append(el('span','chw',u.when));box.append(hd);
+ u.rows.forEach(r=>{const row=el('div','chr');row.append(el('b','chf',r.fund));const mid=el('div','chm');mid.append(el('span',r.backed.length?'chb':'chn',r.backed.length?r.backed.join(', '):'Nothing backed'));if(r.change)mid.append(el('small','chc',r.change));row.append(mid);row.append(el('span','chv',r.voted==null?'':r.voted+'% voted'));box.append(row);});
+ if(u.note)box.append(el('p','chn2',u.note));}
+drawChg(u);
 const M=id=>D.market.find(r=>r.id===id);
 {const mc=M('mcap'),sk=M('stocks');$('#mktSum').textContent=[mc?'Crypto '+F.usdT(mc.value):'',sk?'Stocks '+F.pct(sk.value):''].filter(Boolean).join(' · ');}
 D.market.forEach(r=>{const t=el('div','tile');t.append(el('div','l',r.label));const v=el('div','v',r.fmt==='txt'?String(r.value):(F[r.fmt]||F.int)(Number(r.value)));if(r.fmt==='pct'||r.fmt==='usdM')v.classList.add(r.value<0?'down':'up');t.append(v);const s=el('div','s');s.append(r.asof+' · ',link(r.source,r.url));t.append(s);$('#tiles').append(t);});
