@@ -403,7 +403,7 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 <div class="acc">
 <details open><summary>What changed <span id="chgDate"></span></summary><div class="in changed" id="chg"></div></details>
 <details id="brBox" hidden><summary>Bell results <span id="brSum"></span></summary><div class="in" id="br"></div></details>
-<details><summary>ETH and the market <span id="mktSum"></span></summary><div class="in"><div class="tiles" id="tiles"></div></div></details>
+<details><summary>The Market <span id="mktSum"></span></summary><div class="in"><div class="tiles" id="tiles"></div></div></details>
 <details><summary>ETH news <span id="newsSum"></span></summary><div class="in"><dl class="dl" id="news"></dl></div></details>
 <details><summary>Next 14 days <span id="evSum"></span></summary><div class="in"><div class="evl" id="evs"></div></div></details>
 <details><summary>How the vote works <span>10 rules</span></summary><div class="in"><dl class="dl" id="rules"></dl></div></details>
@@ -737,7 +737,7 @@ addEventListener('resize',setVTH);
 /* more */
 const u=D.updates[0];$('#chgDate').textContent=u.date;$('#chg').textContent=u.text;
 const M=id=>D.market.find(r=>r.id===id);
-$('#mktSum').textContent='ETH '+F.usd0(M('eth').value)+' · '+F.pct(M('eth_1w').value)+' 7d';
+$('#mktSum').textContent='ETH '+F.usd0(M('eth').value)+' · BTC '+F.usd0(M('btc').value);
 D.market.forEach(r=>{const t=el('div','tile');t.append(el('div','l',r.label));const v=el('div','v',r.fmt==='txt'?String(r.value):(F[r.fmt]||F.int)(Number(r.value)));if(r.fmt==='pct'||r.fmt==='usdM')v.classList.add(r.value<0?'down':'up');t.append(v);const s=el('div','s');s.append(r.asof+' · ',link(r.source,r.url));t.append(s);$('#tiles').append(t);});
 $('#newsSum').textContent=D.news.length+' items';
 D.news.forEach(n=>{$('#news').append(el('dt',null,n.head));const dd=el('dd',null,n.text+' ');const s=el('span','note');s.append('(',link(n.source,n.url),')');dd.append(s);$('#news').append(dd);});
