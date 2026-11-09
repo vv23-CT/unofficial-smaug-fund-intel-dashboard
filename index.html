@@ -37,9 +37,9 @@
 .aboutpop[hidden]{display:none}
 .aboutpop.gpop{max-height:min(62vh,440px);overflow:auto;overscroll-behavior:contain}
 .winterm{font:700 11px/1 'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;letter-spacing:-1px}
-.aboutpop.tpop{background:#0b120c;color:#6df08a;border-color:#1c3a22;max-height:min(62vh,440px);overflow:auto;overscroll-behavior:contain;padding:12px 12px 14px;max-width:360px}
+.aboutpop.tpop{max-height:min(62vh,440px);overflow:auto;overscroll-behavior:contain;padding:12px 12px 14px;max-width:360px}
 .tpop pre{margin:0;font:400 11.5px/1.6 'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;white-space:pre;color:inherit}
-.tpop .td{color:#3f9a54}.tpop .tb{font-weight:700}.tpop .tr{color:#1f5a2c}
+.tpop .td{color:var(--muted)}.tpop .tb{font-weight:700}.tpop .tr{color:var(--line)}
 .aboutpop.gpop dl.dl{margin:0;gap:0}
 .aboutpop.gpop dt{margin:10px 0 0;font-weight:700;font-size:13px}
 .aboutpop.gpop dd{margin:2px 0 0;font-weight:400;font-size:12.5px;line-height:1.45;color:var(--muted)}
@@ -354,11 +354,39 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 }
 
 .vtabs{position:sticky;top:-12px;z-index:3;background:var(--panel);margin:0 -12px;padding:12px 12px 0}
+
+/* Terminal theme (easter egg): black and white with one accent; second tap adds CRT lines */
+:root[data-term]{--bg:#000;--fg:#f2f2f2;--dim:#8a8a8a;--hl:#161616;--acc:#6df08a;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;--sans:var(--mono);--serif:var(--mono);color-scheme:dark;
+--wall:#000;--speck:#000;--panel:#000;--card:#000;--card2:#000;--hover:var(--hl);--pale:var(--hl);--title:var(--fg);--frame:#000;--dash:var(--dim);--line:#3a3a3a;--edge:#3a3a3a;--muted:var(--dim);--weth:#f2f2f2;--tmf:var(--acc);--tmfstripe:#5a5a5a;--pink:var(--acc);--good-t:var(--acc);--bad:#ff6b5e}
+:root[data-term] body{background:#000}
+:root[data-term] .app{--house:var(--acc)!important;--house-ink:#000!important;background:#000;border:1px solid var(--acc);font-size:13px}
+:root[data-term] .app *{border-radius:0!important;box-shadow:none!important}
+:root[data-term] .tbar{background:#000;color:var(--acc);border-bottom:1px solid var(--line)}
+:root[data-term] .tbar .tname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+:root[data-term] .tbar .tname::before{content:"$ "}
+:root[data-term] .app .tbar .winq,:root[data-term] .app .tbar .modebtn{background:#000;color:var(--acc);border:1px solid var(--acc)}
+:root[data-term] .modebtn{display:none}
+:root[data-term] .hd h1{font:700 18px/1.2 var(--mono)}
+:root[data-term] .hd h1::before{content:"> ";color:var(--acc)}
+:root[data-term] .bell{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+:root[data-term] .fsw-row{background:transparent;gap:0;border:1px solid var(--line);padding:0}
+:root[data-term] .fbtn{border-right:1px solid var(--line)}
+:root[data-term] .fbtn:last-child{border-right:0}
+:root[data-term] .fbtn[aria-selected="true"]{background:var(--acc)!important;color:#000!important}
+:root[data-term] .fbtn[aria-selected="true"] small{color:#000!important}
+:root[data-term] .vtab[aria-selected="true"]{background:var(--acc);color:#000;border-bottom-color:var(--acc)}
+:root[data-term] .sbar{background:#000;color:var(--dim);border-top:1px solid var(--line)}
+:root[data-term] .sbar span{background:transparent;border:0;color:var(--dim)}
+:root[data-term] .aboutpop{background:#000;border-color:var(--acc)}
+:root[data-term] .aboutpop.tpop{color:var(--acc)}
+:root[data-term] .tpop .td{color:#3f9a54}:root[data-term] .tpop .tr{color:#1f5a2c}
+:root[data-term='2'] body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:98;background:repeating-linear-gradient(0deg,rgba(0,0,0,.3) 0 1px,transparent 1px 3px)}
+:root[data-term='2'] .app{text-shadow:0 0 5px rgba(109,240,138,.3)}
 </style>
 <script>try{var t=localStorage.getItem('sfi-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head><body><div class="page">
 <div class="app" id="app">
-<div class="tbar" style="position:relative"><span class="tname">Unofficial TMF Fund Intel Dashboard</span><span class="tbr"><button class="modebtn" id="modebtn" type="button" aria-label="Switch to dark mode">☾</button><span class="winb"><button class="winq" id="aboutBtn" type="button" aria-label="About this dashboard" aria-expanded="false" aria-controls="aboutPop">i</button><button class="winq" id="glossBtn" type="button" aria-label="Glossary" aria-expanded="false" aria-controls="glossPop"><svg width="16" height="9" viewBox="0 0 13 7" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><path d="M1 0h5v1H1zM7 0h5v1H7zM0 1h1v5H0zM6 1h1v5H6zM12 1h1v5h-1zM2 2h3v1H2zM2 4h3v1H2zM8 2h3v1H8zM8 4h3v1H8zM1 6h5v1H1zM7 6h5v1H7z"/></svg></button><button class="winq winterm" id="termBtn" type="button" aria-label="Bell results" aria-expanded="false" aria-controls="termPop">&gt;_</button></span></span><div class="aboutpop" id="aboutPop" role="region" aria-label="About" hidden><b>About</b><p>Vibe coded by <a href="https://x.com/vv23_CT" target="_blank" rel="noopener">vv23</a> on a Smauggy Night. Original prompt by Muz (<a href="https://x.com/viper_moons" target="_blank" rel="noopener">@viper_moons</a>).</p><p class="note">Unofficial community research, not affiliated with The Mutual Fun. Not financial advice.</p></div><div class="aboutpop gpop" id="glossPop" role="region" aria-label="Glossary" hidden><b>Glossary</b><dl class="dl" id="gloss"></dl></div><div class="aboutpop tpop" id="termPop" role="region" aria-label="Bell results" hidden><pre id="termOut"></pre></div></div>
+<div class="tbar" style="position:relative"><span class="tname">Unofficial TMF Fund Intel Dashboard</span><span class="tbr"><button class="modebtn" id="modebtn" type="button" aria-label="Switch to dark mode">☾</button><span class="winb"><button class="winq" id="aboutBtn" type="button" aria-label="About this dashboard" aria-expanded="false" aria-controls="aboutPop">i</button><button class="winq" id="glossBtn" type="button" aria-label="Glossary" aria-expanded="false" aria-controls="glossPop"><svg width="16" height="9" viewBox="0 0 13 7" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><path d="M1 0h5v1H1zM7 0h5v1H7zM0 1h1v5H0zM6 1h1v5H6zM12 1h1v5h-1zM2 2h3v1H2zM2 4h3v1H2zM8 2h3v1H8zM8 4h3v1H8zM1 6h5v1H1zM7 6h5v1H7z"/></svg></button><button class="winq" id="termBtn" type="button" aria-label="Bell results" aria-expanded="false" aria-controls="termPop"><svg width="12" height="12" viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><path d="M5 0h1v1H5zM4 1h3v1H4zM3 2h5v3H3zM2 5h7v2H2zM1 7h9v1H1zM0 8h11v1H0zM4 10h3v1H4z"/></svg></button><button class="winq winterm" id="crtBtn" type="button" aria-label="Terminal theme: off" aria-pressed="false">&gt;_</button></span></span><div class="aboutpop" id="aboutPop" role="region" aria-label="About" hidden><b>About</b><p>Vibe coded by <a href="https://x.com/vv23_CT" target="_blank" rel="noopener">vv23</a> on a Smauggy Night. Original prompt by Muz (<a href="https://x.com/viper_moons" target="_blank" rel="noopener">@viper_moons</a>).</p><p class="note">Unofficial community research, not affiliated with The Mutual Fun. Not financial advice.</p></div><div class="aboutpop gpop" id="glossPop" role="region" aria-label="Glossary" hidden><b>Glossary</b><dl class="dl" id="gloss"></dl></div><div class="aboutpop tpop" id="termPop" role="region" aria-label="Bell results" hidden><pre id="termOut"></pre></div></div>
 <nav class="fsw" aria-label="Choose a fund">
 <div class="fsw-l">Choose a fund</div>
 <div class="fsw-row" role="tablist" id="fsw"></div>
@@ -444,6 +472,11 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')P.forEach(([b,p])=>{
  const show=()=>{const d=cur()==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode');};
  b.addEventListener('click',()=>{const n=cur()==='dark'?'light':'dark';if(n===(mq.matches?'dark':'light')){delete root.dataset.theme;try{localStorage.removeItem('sfi-theme')}catch(e){}}else{root.dataset.theme=n;try{localStorage.setItem('sfi-theme',n)}catch(e){}}show();});
  mq.addEventListener&&mq.addEventListener('change',show);show();})();
+(()=>{const b=document.getElementById('crtBtn');if(!b)return;const root=document.documentElement;
+ const L=['off','black, white and green','with scan lines'];
+ const apply=n=>{if(n)root.setAttribute('data-term',String(n));else root.removeAttribute('data-term');b.setAttribute('aria-pressed',String(n>0));b.setAttribute('aria-label','Terminal theme: '+L[n]+'. Tap to change.');};
+ let n=0;try{n=Math.min(2,Math.max(0,parseInt(localStorage.getItem('sfi-term')||'0',10)||0));}catch(e){}apply(n);
+ b.addEventListener('click',()=>{n=(n+1)%3;apply(n);try{n?localStorage.setItem('sfi-term',String(n)):localStorage.removeItem('sfi-term');}catch(e){}});})();
 /* Each token wears its own colour, fixed by its place in the registry (hues spread so neighbours differ).
    Ours, not anyone's logo. The ink is dark enough on every hue to stay readable (5.5:1 or better). */
 let TCOL={};
