@@ -762,7 +762,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    if(!d.updated_utc||c.asof_utc>d.updated_utc)d.updated_utc=c.asof_utc;d.chain_asof_utc=c.asof_utc;
    /* ETH in USD from the chain every reading: valued in USDG (a dollar token) on TMF's price desk */
    const mk=c.market;if(mk&&mk.eth_usd&&mk.asof_utc){const at=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(mk.asof_utc));
-          const cq=(c.changes||{}).QQQ;if(cq&&cq.h24!=null){(d.market=d.market||[]).unshift({id:'stocks',label:'Stock market · Nasdaq-100 (QQQ token), last 24h',value:cq.h24,fmt:'pct',asof:at+' · on-chain price of the token that tracks the Nasdaq-100',source:mk.source,url:mk.url});}}
+          const cq=(c.changes||{}).QQQ;if(cq&&cq.h24!=null){(d.market=d.market||[]).unshift({id:'stocks',label:'Stock market (Nasdaq-100), 24h',value:cq.h24,fmt:'pct',asof:at+' · QQQ token, on-chain',source:'TMF price desk',url:mk.url});}}
    d.mkt=c.market||null;d.ct=Object.fromEntries(Object.entries(c.funds||{}).map(([k,x])=>[k,x.card_times||null]));d.ct_week=c.epoch;d.closes_utc=c.closes_utc;d.cprices=c.prices||{};d.tf=c.token_facts||{};d.tnames=c.token_names||{};d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
    if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
@@ -789,7 +789,6 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    const day=s=>s?new Date(s+'T12:00:00Z').toLocaleDateString(undefined,{month:'short',day:'numeric',timeZone:'UTC'}):'';
    const J=d.econ.jobs,C=d.econ.cpi,tiles=[];
    if(J)tiles.push({id:'bls_jobs',label:'Jobs added, '+mo(J.period)+(J.preliminary?' (prelim.)':''),value:sg(J.payrolls_change),fmt:'txt',asof:(J.release_date?'Released '+day(J.release_date)+' · ':'')+'unemployment '+J.unemployment_rate+'%',source:'BLS',url:J.url});
-   if(C)tiles.push({id:'bls_cpi',label:'CPI, '+mo(C.period),value:sg(C.cpi_mm)+'% m/m · '+C.cpi_yy+'% y/y',fmt:'txt',asof:(C.release_date?'Released '+day(C.release_date)+' · ':'')+(C.core_mm!=null?'core '+sg(C.core_mm)+'% m/m':''),source:'BLS',url:C.url});
    d.market=(d.market||[]).filter(r=>!/^bls_/.test(r.id)).concat(tiles);
    /* official release dates (BLS jobs and CPI, Fed decisions) added to "Next 14 days" unless already listed */
    const S=d.econ.schedule||{},t0=new Date(),iso=x=>x.toISOString().slice(0,10),end=iso(new Date(t0.getTime()+14*864e5)),td=iso(new Date(t0.getTime()-864e5));
