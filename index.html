@@ -245,8 +245,19 @@ dl.dl{margin:0;display:flex;flex-direction:column;gap:7px}dl.dl dt{font-weight:7
 .changed{font-size:13px;line-height:1.45}
 .changed .chp{margin:0 0 6px}
 .chh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:0 0 6px}.chh b{font-size:14px}.chw{font-size:12px;color:var(--muted)}
-.chr{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:8px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line)}
-.chf{font-size:12px;letter-spacing:.04em}.chb{font-weight:600}.chn{color:var(--muted)}.chc{display:block;margin-top:1px;color:var(--muted);font-size:11.5px}.chv{font-size:12px;color:var(--muted);white-space:nowrap}
+.chr{--fh:#453629;--fhi:#fff;margin:0 0 7px;padding:9px 11px 9px 12px;border:1px solid var(--line);border-left:5px solid var(--fh);border-radius:9px;background:var(--card2)}
+.cht{display:flex;align-items:center;gap:10px;min-width:0}
+.chf{flex:0 0 auto;min-width:58px;text-align:center;padding:3px 8px;border-radius:99px;background:var(--fh);color:var(--fhi);font-size:11.5px;font-weight:800;letter-spacing:.06em}
+.chk{display:flex;flex-wrap:wrap;gap:4px 10px;min-width:0}
+.chg{display:inline-flex;align-items:center;gap:6px}.cht2{padding:2px 8px;border-radius:6px;font-size:12.5px;font-weight:800;letter-spacing:.02em}.chp2{font-weight:700;font-size:13px}
+.chn{color:var(--muted);font-size:13px}
+.chv{display:flex;align-items:center;gap:9px;margin-top:8px}
+.chbar{flex:1 1 auto;height:6px;border-radius:99px;background:var(--pale);overflow:hidden}.chbar i{display:block;height:100%;background:var(--fh);border-radius:99px}
+.chvt{flex:0 0 auto;font-size:11.5px;color:var(--muted);font-weight:600;min-width:62px;text-align:right}
+.chc{display:block;margin-top:6px;color:var(--muted);font-size:11.5px}
+:root[data-term] .chf{background:transparent!important;color:var(--acc)!important;border:1px solid var(--acc)}
+:root[data-term] .cht2{background:transparent!important;color:var(--fg)!important;border:1px solid var(--fg)}
+:root[data-term] .chr{border-left-color:var(--acc)}:root[data-term] .chbar i{background:var(--acc)}
 .changed .chn2{margin:6px 0 0;padding-top:6px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
 
 /* bell results */
@@ -811,10 +822,19 @@ addEventListener('resize',setVTH);
 
 /* more */
 const u=D.updates[0];$('#chgDate').textContent=u.date;
-function drawChg(u){const box=$('#chg');box.textContent='';
+function drawChg(u){const box=$('#chg');box.textContent='';const dt=box.closest('details');if(dt)dt.open=true;
  if(!u.rows){String(u.text||'').split(/(?<=\.)\s+(?=[A-Z])/).forEach(t=>box.append(el('p','chp',t)));return;}
  const hd=el('div','chh');hd.append(el('b',null,u.title||'Update'));if(u.when)hd.append(el('span','chw',u.when));box.append(hd);
- u.rows.forEach(r=>{const row=el('div','chr');row.append(el('b','chf',r.fund));const mid=el('div','chm');mid.append(el('span',r.backed.length?'chb':'chn',r.backed.length?r.backed.join(', '):'Nothing backed'));if(r.change)mid.append(el('small','chc',r.change));row.append(mid);row.append(el('span','chv',r.voted==null?'':r.voted+'% voted'));box.append(row);});
+ u.rows.forEach(r=>{const id=String(r.fund||'').toLowerCase(),hc=HOUSE[id]||['#453629','#fff'];
+  const row=el('div','chr');row.style.setProperty('--fh',hc[0]);row.style.setProperty('--fhi',hc[1]);
+  const top=el('div','cht');top.append(el('b','chf',r.fund));
+  const tk=el('span','chk');
+  if(r.backed.length)r.backed.forEach(x=>{const [t,...p]=x.split(' ');const c=tcol(t),g=el('span','chg');const tg=el('span','cht2',t);tg.style.background=c.bg;tg.style.color=c.ink;g.append(tg,el('span','chp2',p.join(' ')));tk.append(g);});
+  else tk.append(el('span','chn','Nothing backed'));
+  top.append(tk);row.append(top);
+  if(r.voted!=null){const v=el('div','chv');const bar=el('span','chbar');const fill=el('i');fill.style.width=Math.min(100,r.voted)+'%';bar.append(fill);v.append(bar,el('span','chvt',r.voted+'% voted'));row.append(v);}
+  if(r.change)row.append(el('small','chc',r.change));
+  box.append(row);});
  if(u.note)box.append(el('p','chn2',u.note));}
 drawChg(u);
 const M=id=>D.market.find(r=>r.id===id);
