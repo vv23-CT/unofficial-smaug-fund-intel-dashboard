@@ -1,10 +1,10 @@
 {
- "asof_utc": "2026-11-10T23:57:27Z",
- "block": 111279596,
+ "asof_utc": "2026-11-11T00:26:40Z",
+ "block": 111295936,
  "epoch": 3,
  "closes_utc": "2026-11-13T20:00:00.000Z",
  "week_start_block": 107844469,
- "card_times_block": 111279596,
+ "card_times_block": 111295936,
  "source": "Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth",
  "url": "https://robinhoodchain.blockscout.com/address/0xa1de85247d30eb67c83d010f9240ae81a8d744fe",
  "ballot": "0xa1de85247d30eb67c83d010f9240ae81a8d744fe",
@@ -14,101 +14,101 @@
  "cards_read": 240,
  "cards_undecoded": 0,
  "prices": {
-  "COIN": 0.0643986,
+  "COIN": 0.0644373,
   "MSTR": 0.0591157,
-  "META": 0.314603,
+  "META": 0.314887,
   "SGOV": 0.0496702,
   "GOOGL": 0.140858,
   "QQQ": 0.330237,
-  "NVDA": 0.082854,
+  "NVDA": 0.0829949,
   "GLD": 0.181008,
-  "TSLA": 0.185423,
-  "RDDT": 0.0477323,
-  "STONKBROKER": 0.00000231511,
-  "MANCER": 4.27348e-7,
+  "TSLA": 0.185553,
+  "RDDT": 0.0477705,
+  "STONKBROKER": 0.00000231558,
+  "MANCER": 4.2594e-7,
   "DERP": 7.81464e-9,
   "APE": 0.000047847,
-  "PONS": 0.0000712068,
-  "CASHCAT": 0.0000296106,
-  "USDG": 0.00048872,
-  "AI": 0.0000143417,
-  "VIRTUAL": 0.000258094
+  "PONS": 0.0000715279,
+  "CASHCAT": 0.0000295692,
+  "USDG": 0.000488622,
+  "AI": 0.0000141819,
+  "VIRTUAL": 0.000258818
  },
  "depth": {
-  "COIN": 6.64,
+  "COIN": 6.642,
   "MSTR": 9.674,
-  "META": 3.324,
+  "META": 3.625,
   "SGOV": 0.03487,
   "GOOGL": 2.879,
   "QQQ": 1.245,
-  "NVDA": 6.487,
+  "NVDA": 6.547,
   "GLD": 0.3904,
   "TSLA": 1.289,
   "RDDT": 0.1336,
   "STONKBROKER": 0.3665,
-  "MANCER": 0.2163,
+  "MANCER": 0.2159,
   "DERP": 0.00442,
   "APE": 0.000001529,
-  "PONS": 0.8656,
-  "CASHCAT": 2.811,
+  "PONS": 0.468,
+  "CASHCAT": 2.817,
   "USDG": 4.463,
-  "AI": 0.31,
-  "VIRTUAL": 2.756
+  "AI": 0.3107,
+  "VIRTUAL": 2.768
  },
  "market": {
-  "eth_usd": 2046.16,
+  "eth_usd": 2046.57,
   "source": "TMF price desk (ETH valued in USDG)",
   "url": "https://robinhoodchain.blockscout.com/address/0x5607336c73553edc65176f2256686b69e787ca0f",
-  "asof_utc": "2026-11-10T23:57:25Z"
+  "asof_utc": "2026-11-11T00:26:39Z"
  },
  "usd": {
-  "COIN": 131.77,
-  "MSTR": 120.96,
-  "META": 643.73,
-  "SGOV": 101.63,
-  "GOOGL": 288.22,
-  "QQQ": 675.72,
-  "NVDA": 169.53,
-  "GLD": 370.37,
-  "TSLA": 379.41,
-  "RDDT": 97.668,
-  "STONKBROKER": 0.0047371,
-  "MANCER": 0.00087442,
-  "DERP": 0.00001599,
-  "APE": 0.097903,
-  "PONS": 0.1457,
-  "CASHCAT": 0.060588,
+  "COIN": 131.88,
+  "MSTR": 120.98,
+  "META": 644.44,
+  "SGOV": 101.65,
+  "GOOGL": 288.28,
+  "QQQ": 675.85,
+  "NVDA": 169.85,
+  "GLD": 370.45,
+  "TSLA": 379.75,
+  "RDDT": 97.766,
+  "STONKBROKER": 0.004739,
+  "MANCER": 0.00087172,
+  "DERP": 0.000015993,
+  "APE": 0.097922,
+  "PONS": 0.14639,
+  "CASHCAT": 0.060515,
   "USDG": 1,
-  "AI": 0.029345,
-  "VIRTUAL": 0.5281
+  "AI": 0.029024,
+  "VIRTUAL": 0.52969
  },
  "fdv": {
-  "STONKBROKER": 11205139,
-  "MANCER": 2186050,
-  "DERP": 71060,
-  "PONS": 145700000,
-  "CASHCAT": 60588000,
-  "AI": 29073153
+  "STONKBROKER": 11209633,
+  "MANCER": 2179300,
+  "DERP": 71073,
+  "PONS": 146390000,
+  "CASHCAT": 60515000,
+  "AI": 28754656
  },
  "dex": {
   "STONKBROKER": {
    "price_usd": 0.00474,
    "change_24h": -11.62,
-   "volume_24h": 96009,
-   "liquidity_usd": 1598334,
-   "market_cap": 11207401,
-   "fdv": 11207401,
+   "volume_24h": 96011,
+   "liquidity_usd": 1598299,
+   "market_cap": 11207140,
+   "fdv": 11207140,
    "pools": 1,
    "url": "https://dexscreener.com/robinhood/0xd33c8fd38b06e989cdbd4dffdefab71c4bdd415b24964c8d69e38ff35b068f92",
    "first_pool_utc": "2026-07-18T03:50:03Z"
   },
   "MANCER": {
-   "price_usd": 0.000876,
-   "change_24h": -10.61,
-   "volume_24h": 13284,
-   "liquidity_usd": 242943,
-   "market_cap": 857687,
-   "fdv": 1872106,
+   "price_usd": 0.0008716,
+   "change_24h": -10.75,
+   "volume_24h": 13673,
+   "liquidity_usd": 242082,
+   "market_cap": 853376,
+   "fdv": 1862697,
    "pools": 1,
    "url": "https://dexscreener.com/robinhood/0x543127d6a1932689faacc1afad4a81146d9ccf54",
    "first_pool_utc": "2026-08-07T00:37:17Z"
@@ -126,8 +126,8 @@
   },
   "APE": {
    "price_usd": 0.09839,
-   "change_24h": -4.61,
-   "volume_24h": 1828,
+   "change_24h": 1.54,
+   "volume_24h": 1827,
    "liquidity_usd": 25512,
    "market_cap": 74056038,
    "fdv": 62310,
@@ -137,44 +137,44 @@
   },
   "PONS": {
    "price_usd": 0.1464,
-   "change_24h": -4.71,
-   "volume_24h": 365692,
-   "liquidity_usd": 1607050,
-   "market_cap": 98125144,
-   "fdv": 98125144,
+   "change_24h": -4.12,
+   "volume_24h": 364275,
+   "liquidity_usd": 1607316,
+   "market_cap": 98179931,
+   "fdv": 98179931,
    "pools": 1,
    "url": "https://dexscreener.com/robinhood/0x10cc6bd38112cac182db90b6a71d8bb5939526ba",
    "first_pool_utc": "2026-07-13T20:42:21Z"
   },
   "CASHCAT": {
-   "price_usd": 0.06073,
-   "change_24h": -14.88,
-   "volume_24h": 418503,
-   "liquidity_usd": 1396528,
-   "market_cap": 59983455,
-   "fdv": 59983455,
+   "price_usd": 0.06066,
+   "change_24h": -14.28,
+   "volume_24h": 417975,
+   "liquidity_usd": 1395212,
+   "market_cap": 59913569,
+   "fdv": 59913569,
    "pools": 1,
    "url": "https://dexscreener.com/robinhood/0xa70fc67c9f69da90b63a0e4c05d229954574e313",
    "first_pool_utc": "2026-06-18T20:01:25Z"
   },
   "AI": {
-   "price_usd": 0.02925,
-   "change_24h": -12.8,
-   "volume_24h": 133572,
-   "liquidity_usd": 165498,
-   "market_cap": 28922308,
-   "fdv": 28922308,
+   "price_usd": 0.02888,
+   "change_24h": -13.56,
+   "volume_24h": 133027,
+   "liquidity_usd": 164143,
+   "market_cap": 28558800,
+   "fdv": 28558800,
    "pools": 1,
    "url": "https://dexscreener.com/robinhood/0xc4a21f9d6485fc5893dd4a491b320a83daf4da1d",
    "first_pool_utc": "2026-07-22T16:37:33Z"
   },
   "VIRTUAL": {
-   "price_usd": 0.5306,
-   "change_24h": -3.11,
-   "volume_24h": 576895,
-   "liquidity_usd": 269534,
-   "market_cap": 349397076,
-   "fdv": 3939418,
+   "price_usd": 0.5319,
+   "change_24h": -2.58,
+   "volume_24h": 572547,
+   "liquidity_usd": 269997,
+   "market_cap": 350203203,
+   "fdv": 3948507,
    "pools": 1,
    "url": "https://dexscreener.com/robinhood/0x9cc8c4f6118419a27f113723f1dea646685be55f",
    "first_pool_utc": "2026-07-04T08:50:36Z"
@@ -193,7 +193,7 @@
    "upgradeable_proxy": false,
    "minimal_clone": false,
    "first_pool_utc": "2026-07-18T03:50:03Z",
-   "asof_utc": "2026-11-10T23:57:25Z"
+   "asof_utc": "2026-11-11T00:26:40Z"
   },
   "MANCER": {
    "has": {
@@ -207,7 +207,7 @@
    "upgradeable_proxy": false,
    "minimal_clone": false,
    "first_pool_utc": "2026-08-07T00:37:17Z",
-   "asof_utc": "2026-11-10T23:57:26Z"
+   "asof_utc": "2026-11-11T00:26:40Z"
   },
   "DERP": {
    "has": {
@@ -221,7 +221,7 @@
    "upgradeable_proxy": false,
    "minimal_clone": false,
    "first_pool_utc": "2026-07-29T02:26:10Z",
-   "asof_utc": "2026-11-10T23:57:26Z"
+   "asof_utc": "2026-11-11T00:26:40Z"
   },
   "APE": {
    "has": {
@@ -235,7 +235,7 @@
    "upgradeable_proxy": false,
    "minimal_clone": false,
    "first_pool_utc": "2026-07-24T01:50:44Z",
-   "asof_utc": "2026-11-10T23:57:26Z"
+   "asof_utc": "2026-11-11T00:26:40Z"
   },
   "PONS": {
    "has": {
@@ -249,7 +249,7 @@
    "upgradeable_proxy": false,
    "minimal_clone": false,
    "first_pool_utc": "2026-07-13T20:42:21Z",
-   "asof_utc": "2026-11-10T23:57:26Z"
+   "asof_utc": "2026-11-11T00:26:40Z"
   },
   "CASHCAT": {
    "has": {
@@ -263,7 +263,7 @@
    "upgradeable_proxy": false,
    "minimal_clone": false,
    "first_pool_utc": "2026-06-18T20:01:25Z",
-   "asof_utc": "2026-11-10T23:57:26Z"
+   "asof_utc": "2026-11-11T00:26:40Z"
   },
   "AI": {
    "has": {
@@ -277,7 +277,7 @@
    "upgradeable_proxy": false,
    "minimal_clone": true,
    "first_pool_utc": "2026-07-22T16:37:33Z",
-   "asof_utc": "2026-11-10T23:57:27Z"
+   "asof_utc": "2026-11-11T00:26:40Z"
   },
   "VIRTUAL": {
    "has": {
@@ -291,7 +291,7 @@
    "upgradeable_proxy": false,
    "minimal_clone": false,
    "first_pool_utc": "2026-07-04T08:50:36Z",
-   "asof_utc": "2026-11-10T23:57:27Z"
+   "asof_utc": "2026-11-11T00:26:40Z"
   }
  },
  "token_names": {
@@ -319,84 +319,84 @@
  },
  "changes": {
   "ETH": {
-   "h24": -0.0387,
-   "d7": -0.1044
+   "h24": -0.0385,
+   "d7": -0.1043
   },
   "COIN": {
-   "h24": -0.0346,
-   "d7": -0.0987
+   "h24": -0.0338,
+   "d7": -0.098
   },
   "MSTR": {
-   "h24": -0.045,
-   "d7": -0.1107
+   "h24": -0.0448,
+   "d7": -0.1105
   },
   "META": {
-   "h24": -0.0011,
-   "d7": 0.0325
+   "h24": 0,
+   "d7": 0.0337
   },
   "SGOV": {
-   "h24": -0.003,
-   "d7": 0.0012
+   "h24": -0.0028,
+   "d7": 0.0014
   },
   "GOOGL": {
-   "h24": -0.0103,
-   "d7": 0.033
+   "h24": -0.0101,
+   "d7": 0.0332
   },
   "QQQ": {
-   "h24": -0.0067,
-   "d7": -0.0173
+   "h24": -0.0065,
+   "d7": -0.0172
   },
   "NVDA": {
-   "h24": -0.0532,
-   "d7": -0.1892
+   "h24": -0.0514,
+   "d7": -0.1877
   },
   "GLD": {
-   "h24": -0.0194,
-   "d7": 0.0249
+   "h24": -0.0192,
+   "d7": 0.0251
   },
   "TSLA": {
-   "h24": 0.0018,
-   "d7": -0.0449
+   "h24": 0.0027,
+   "d7": -0.044
   },
   "RDDT": {
-   "h24": -0.0282,
-   "d7": 0.0223
+   "h24": -0.0272,
+   "d7": 0.0234
   },
   "STONKBROKER": {
-   "h24": -0.1274,
-   "d7": -0.307
+   "h24": -0.1271,
+   "d7": -0.3067
   },
   "MANCER": {
-   "h24": -0.1068,
-   "d7": -0.4264
+   "h24": -0.1095,
+   "d7": -0.4282
   },
   "DERP": {
-   "h24": -0.0418,
-   "d7": -0.2345
+   "h24": -0.0416,
+   "d7": -0.2344
   },
   "APE": {
-   "h24": -0.0387,
-   "d7": -0.1962
+   "h24": -0.0385,
+   "d7": -0.196
   },
   "PONS": {
-   "h24": -0.0476,
-   "d7": -0.2895
+   "h24": -0.0431,
+   "d7": -0.2862
   },
   "CASHCAT": {
-   "h24": -0.1496,
-   "d7": -0.4408
+   "h24": -0.1506,
+   "d7": -0.4415
   },
   "USDG": {
    "h24": 0,
    "d7": 0
   },
   "AI": {
-   "h24": -0.1331,
-   "d7": -0.4904
+   "h24": -0.1426,
+   "d7": -0.496
   },
   "VIRTUAL": {
-   "h24": -0.0378,
-   "d7": -0.108
+   "h24": -0.0349,
+   "d7": -0.1053
   }
  },
  "price_hist": [
@@ -5174,6 +5174,31 @@
     "AI": 0.0000144583,
     "VIRTUAL": 0.000257965
    }
+  },
+  {
+   "t": "2026-11-11T00:26:40Z",
+   "eth": 2046.57,
+   "w": {
+    "COIN": 0.0644373,
+    "MSTR": 0.0591157,
+    "META": 0.314887,
+    "SGOV": 0.0496702,
+    "GOOGL": 0.140858,
+    "QQQ": 0.330237,
+    "NVDA": 0.0829949,
+    "GLD": 0.181008,
+    "TSLA": 0.185553,
+    "RDDT": 0.0477705,
+    "STONKBROKER": 0.00000231558,
+    "MANCER": 4.2594e-7,
+    "DERP": 7.81464e-9,
+    "APE": 0.000047847,
+    "PONS": 0.0000715279,
+    "CASHCAT": 0.0000295692,
+    "USDG": 0.000488622,
+    "AI": 0.0000141819,
+    "VIRTUAL": 0.000258818
+   }
   }
  ],
  "funds": {
@@ -5215,16 +5240,16 @@
      "MSTR": 0.0364,
      "META": 0.0399,
      "SGOV": 0.0219,
-     "GOOGL": 0.0994,
+     "GOOGL": 0.0993,
      "QQQ": 0.2839,
      "NVDA": 0.8739,
      "GLD": 0.5474,
      "TSLA": 0.0688,
      "RDDT": 0.0218,
-     "STONKBROKER": 0.4041,
-     "MANCER": 0.1341,
+     "STONKBROKER": 0.4042,
+     "MANCER": 0.134,
      "DERP": 0.0219,
-     "APE": 0.211,
+     "APE": 0.2111,
      "PONS": 0.0291,
      "CASHCAT": 0.0218,
      "USDG": 0.203,
@@ -5273,7 +5298,7 @@
      "AI": 2,
      "VIRTUAL": 1
     },
-    "voted_weight": 13860,
+    "voted_weight": 13861,
     "flip_min": {
      "COIN": 25,
      "MSTR": 25,
@@ -5293,7 +5318,7 @@
      "AI": 26,
      "VIRTUAL": 27
     },
-    "nav_weth": 8.6144,
+    "nav_weth": 8.615,
     "fills": {
      "COIN": 1,
      "MSTR": 1,
@@ -5308,8 +5333,8 @@
      "STONKBROKER": 6,
      "MANCER": 10,
      "DERP": 488,
-     "APE": 1408504,
-     "PONS": 3,
+     "APE": 1408606,
+     "PONS": 5,
      "CASHCAT": 1,
      "USDG": 1,
      "AI": 7,
@@ -5426,7 +5451,7 @@
      }
     },
     {
-     "asof_utc": "2026-11-10T23:57:27Z",
+     "asof_utc": "2026-11-11T00:26:40Z",
      "chairs": 88,
      "tmf_held": 0.3455,
      "backs": {
@@ -5528,13 +5553,13 @@
      "SGOV": 0.0463,
      "GOOGL": 0.1308,
      "QQQ": 0.0708,
-     "NVDA": 0.2975,
-     "GLD": 0.602,
-     "TSLA": 0.1815,
+     "NVDA": 0.2974,
+     "GLD": 0.6019,
+     "TSLA": 0.1814,
      "RDDT": 0.0592,
      "STONKBROKER": 0.9366,
      "MANCER": 0.0942,
-     "APE": 0.151,
+     "APE": 0.1509,
      "PONS": 0.0168,
      "CASHCAT": 0.0084,
      "USDG": 0.0546,
@@ -5578,7 +5603,7 @@
      "USDG": 5,
      "AI": 2
     },
-    "voted_weight": 11931,
+    "voted_weight": 11932,
     "flip_min": {
      "COIN": 18,
      "MSTR": 16,
@@ -5598,7 +5623,7 @@
      "AI": 17,
      "VIRTUAL": 19
     },
-    "nav_weth": 8.3103,
+    "nav_weth": 8.31,
     "fills": {
      "COIN": 1,
      "MSTR": 1,
@@ -5613,8 +5638,8 @@
      "STONKBROKER": 6,
      "MANCER": 10,
      "DERP": 471,
-     "APE": 1358785,
-     "PONS": 3,
+     "APE": 1358726,
+     "PONS": 5,
      "CASHCAT": 1,
      "USDG": 1,
      "AI": 7,
@@ -5711,7 +5736,7 @@
      }
     },
     {
-     "asof_utc": "2026-11-10T23:57:27Z",
+     "asof_utc": "2026-11-11T00:26:40Z",
      "chairs": 67,
      "tmf_held": 0.2931,
      "backs": {
@@ -5762,8 +5787,8 @@
    "enrolled_weight": 45180,
    "room": {
     "chairs": 49,
-    "tmf_held": 0.352,
-    "room_weth": 0.5369,
+    "tmf_held": 0.3519,
+    "room_weth": 0.537,
     "room_tokens": {
      "QQQ": 0.1111
     },
@@ -5795,15 +5820,15 @@
      "SGOV": 0.0642,
      "GOOGL": 0.0832,
      "QQQ": 0.9614,
-     "NVDA": 0.1846,
+     "NVDA": 0.1845,
      "GLD": 0.2272,
      "TSLA": 0.0474,
-     "STONKBROKER": 0.3009,
+     "STONKBROKER": 0.301,
      "MANCER": 0.0832,
      "DERP": 0.0129,
      "APE": 0.1374,
      "CASHCAT": 0.0192,
-     "USDG": 0.1029,
+     "USDG": 0.1028,
      "AI": 0.0257,
      "VIRTUAL": 0.0257
     },
@@ -5845,7 +5870,7 @@
      "AI": 1,
      "VIRTUAL": 1
     },
-    "voted_weight": 7846,
+    "voted_weight": 7847,
     "flip_min": {
      "COIN": 13,
      "MSTR": 14,
@@ -5866,7 +5891,7 @@
      "AI": 14,
      "VIRTUAL": 14
     },
-    "nav_weth": 8.6602,
+    "nav_weth": 8.6598,
     "fills": {
      "COIN": 1,
      "MSTR": 1,
@@ -5881,8 +5906,8 @@
      "STONKBROKER": 6,
      "MANCER": 11,
      "DERP": 490,
-     "APE": 1415994,
-     "PONS": 3,
+     "APE": 1415918,
+     "PONS": 5,
      "CASHCAT": 1,
      "USDG": 1,
      "AI": 7,
@@ -5948,9 +5973,9 @@
      }
     },
     {
-     "asof_utc": "2026-11-10T23:57:27Z",
+     "asof_utc": "2026-11-11T00:26:40Z",
      "chairs": 49,
-     "tmf_held": 0.352,
+     "tmf_held": 0.3519,
      "backs": {
       "QQQ": 0.1111
      }
@@ -5999,8 +6024,8 @@
    "enrolled_weight": 40475,
    "room": {
     "chairs": 82,
-    "tmf_held": 0.2526,
-    "room_weth": 0.6664,
+    "tmf_held": 0.2525,
+    "room_weth": 0.6665,
     "room_tokens": {
      "STONKBROKER": 0.081
     },
@@ -6100,7 +6125,7 @@
      "AI": 18,
      "VIRTUAL": 22
     },
-    "nav_weth": 8.4137,
+    "nav_weth": 8.4132,
     "fills": {
      "COIN": 1,
      "MSTR": 1,
@@ -6115,8 +6140,8 @@
      "STONKBROKER": 6,
      "MANCER": 10,
      "DERP": 476,
-     "APE": 1375679,
-     "PONS": 3,
+     "APE": 1375610,
+     "PONS": 5,
      "CASHCAT": 1,
      "USDG": 1,
      "AI": 7,
@@ -6219,9 +6244,9 @@
      }
     },
     {
-     "asof_utc": "2026-11-10T23:57:27Z",
+     "asof_utc": "2026-11-11T00:26:40Z",
      "chairs": 82,
-     "tmf_held": 0.2526,
+     "tmf_held": 0.2525,
      "backs": {
       "STONKBROKER": 0.081
      }
@@ -6275,8 +6300,8 @@
    "enrolled_weight": 54257,
    "room": {
     "chairs": 93,
-    "tmf_held": 0.3237,
-    "room_weth": 0.6047,
+    "tmf_held": 0.3236,
+    "room_weth": 0.6048,
     "room_tokens": {
      "GLD": 0.0716
     },
@@ -6385,7 +6410,7 @@
      "AI": 25,
      "VIRTUAL": 25
     },
-    "nav_weth": 9.2984,
+    "nav_weth": 9.2978,
     "fills": {
      "COIN": 1,
      "MSTR": 1,
@@ -6400,8 +6425,8 @@
      "STONKBROKER": 7,
      "MANCER": 11,
      "DERP": 526,
-     "APE": 1520348,
-     "PONS": 3,
+     "APE": 1520249,
+     "PONS": 5,
      "CASHCAT": 1,
      "USDG": 1,
      "AI": 8,
@@ -6511,9 +6536,9 @@
      }
     },
     {
-     "asof_utc": "2026-11-10T23:57:27Z",
+     "asof_utc": "2026-11-11T00:26:40Z",
      "chairs": 93,
-     "tmf_held": 0.3237,
+     "tmf_held": 0.3236,
      "backs": {
       "GLD": 0.0716
      }
