@@ -1,7 +1,7 @@
 {
  "version": 2,
- "week": 3,
- "bell_utc": "2026-11-13T20:00:00Z",
+ "week": 4,
+ "bell_utc": "2026-11-20T20:00:00Z",
  "updated_utc": "2026-11-02T11:50:00Z",
  "funds": [
   {
@@ -967,6 +967,55 @@
   }
  ],
  "updates": [
+  {
+   "date": "Nov 13",
+   "title": "Week 3 bell",
+   "when": "Fri, Nov 13, 3:00 PM ET",
+   "rows": [
+    {
+     "fund": "ARGON",
+     "backed": [
+      "NVDA 10.45%",
+      "GLD 6.91%"
+     ],
+     "voted": 46,
+     "change": "now backs GLD"
+    },
+    {
+     "fund": "BOGLE",
+     "backed": [
+      "STONKBROKER 14.6%",
+      "GLD 6.56%"
+     ],
+     "voted": 49,
+     "change": "now backs GLD"
+    },
+    {
+     "fund": "SMAUG",
+     "backed": [
+      "QQQ 13.18%"
+     ],
+     "voted": 49,
+     "change": "same as Week 2"
+    },
+    {
+     "fund": "MIDAS",
+     "backed": [
+      "STONKBROKER 7.56%"
+     ],
+     "voted": 51,
+     "change": "now backs STONKBROKER"
+    },
+    {
+     "fund": "VLADD",
+     "backed": [],
+     "voted": 56,
+     "change": "same as Week 2"
+    }
+   ],
+   "note": "Rebuilt from on-chain cards.",
+   "text": "Week 3 bell (Fri, Nov 13, 3:00 PM ET): ARGON backed NVDA 10.45% (fills in one Friday), GLD 6.91% (~10 Fridays to fill a quarter of the fund) · 127 of 275 enrolled seats (46%) · $TMF held 34.25% · since Week 2: newly backed GLD; NVDA 7.91% → 10.45%. BOGLE backed STONKBROKER 14.6% (~6 Fridays to fill a quarter of the fund), GLD 6.56% (~9 Fridays to fill a quarter of the fund) · 122 of 249 enrolled seats (49%) · $TMF held 28.75% · since Week 2: newly backed GLD; STONKBROKER 8.22% → 14.6%. SMAUG backed QQQ 13.18% (fills in one Friday) · 161 of 329 enrolled seats (49%) · $TMF held 35.01% · since Week 2: QQQ 8.17% → 13.18%. MIDAS backed STONKBROKER 7.56% (~6 Fridays to fill a quarter of the fund) · 133 of 259 enrolled seats (51%) · $TMF held 24.75% · since Week 2: newly backed STONKBROKER. VLADD backed nothing: all to WETH · 180 of 324 enrolled seats (56%) · $TMF held 34.41% · since Week 2: no change. Rebuilt from on-chain cards (Robinhood Chain, Ballot contract)."
+  },
   {
    "date": "Nov 6",
    "title": "Week 2 bell",
