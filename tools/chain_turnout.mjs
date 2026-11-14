@@ -147,7 +147,8 @@ if (market.eth_usd) { const a = near(864e5, 90 * 6e4), b = near(7 * 864e5, 3 * 3
 const DEX_TOKENS = ['PONS', 'CASHCAT', 'AI', 'MANCER', 'STONKBROKER', 'APE', 'DERP', 'VIRTUAL'];
 const dex = {};
 try {
-  const addrs = reg.filter(r => DEX_TOKENS.includes(r.symbol));
+  // $TMF too: registry slot 0 is the real token (many look-alike "TMF" tokens exist, so the address always comes from the desk's own registry)
+  const addrs = reg.filter((r, i) => i === 0 || DEX_TOKENS.includes(r.symbol));
   const r = await fetch('https://api.dexscreener.com/tokens/v1/robinhood/' + addrs.map(a => a.address).join(','), { headers: { accept: 'application/json', 'user-agent': 'tmf-fund-intel-dashboard' } });
   const pairs = r.ok ? await r.json() : [];
   for (const a of addrs) {
@@ -250,7 +251,7 @@ const out = {
   source: 'Robinhood Chain (public RPC): Ballot cards and chairsVoted; DividendOffice enrolledCount and votingWeight; fund desk navInWeth and bookOf; price desk priceInWeth',
   url: 'https://robinhoodchain.blockscout.com/address/' + BALLOT, ballot: BALLOT, dividend_office: OFFICE, desk: DESK,
   method: 'Backed = more than half of chair weight put something on the token; share = chair-weighted average of all cards; $TMF held = (fund value - fund WETH) / fund value.',
-  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, dex, token_facts, token_names, changes, price_hist: hist, funds, archive,
+  cards_read: cards.filter(c => c.epoch === epoch).length, cards_undecoded: undecoded, prices, depth, market, usd, fdv, dex, tmf: dex.TMF ? { address: reg[0].address, ...dex.TMF, asof_utc: new Date().toISOString().replace(/\.\d+Z$/, 'Z') } : (prev?.tmf || null), token_facts, token_names, changes, price_hist: hist, funds, archive,
 };
 // Always save the reading (even if no count moved) so the page's "Updated" time shows the latest check.
 fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');

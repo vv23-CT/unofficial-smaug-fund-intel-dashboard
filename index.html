@@ -400,11 +400,28 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 :root[data-term] body::after{content:"";opacity:0;transition:opacity .4s ease;position:fixed;inset:0;pointer-events:none;z-index:98;background:repeating-linear-gradient(0deg,rgba(0,0,0,.3) 0 1px,transparent 1px 3px)}
 :root[data-term='2'] body::after{opacity:1}
 :root[data-term='2'] .app{text-shadow:0 0 5px rgba(109,240,138,.3)}
+
+/* price ticker: $TMF stays put, the rest of the tape rolls by */
+.tpk{display:flex;align-items:center;gap:0;height:28px;border-bottom:1px solid var(--line);background:var(--card2);font-size:12px;overflow:hidden}
+.tpk[hidden]{display:none}
+.tpf{flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:0 10px;height:100%;border-right:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+.tpf b.l{letter-spacing:.04em}.tpf .p{font-weight:700}.tpf .c{color:var(--muted)}
+.tpr{flex:1 1 auto;min-width:0;overflow:hidden;position:relative;height:100%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 14px),transparent)}
+.tpt{display:inline-flex;align-items:center;height:100%;white-space:nowrap;animation:tpmove var(--tpd,90s) linear infinite;will-change:transform}
+.tpr:hover .tpt,.tpr:focus-within .tpt{animation-play-state:paused}
+.tpi{display:inline-flex;gap:5px;align-items:baseline;padding:0 12px;font-variant-numeric:tabular-nums}.tpi b{font-weight:700;font-size:11.5px;letter-spacing:.03em}
+.tpk .up{color:#2f7d46}.tpk .down{color:#b3402f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tpk .up{color:#6fd08a}:root:not([data-theme="light"]) .tpk .down{color:#ff8a78}}
+:root[data-theme="dark"] .tpk .up{color:#6fd08a}:root[data-theme="dark"] .tpk .down{color:#ff8a78}
+@keyframes tpmove{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.tpt{animation:none}.tpr{overflow-x:auto}}
+:root[data-term] .tpk{background:#000;border-bottom-color:var(--line)}:root[data-term] .tpk .up{color:var(--acc)}:root[data-term] .tpk .down{color:#ff6b5e}
 </style>
 <script>try{var t=localStorage.getItem('sfi-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head><body><div class="page">
 <div class="app" id="app">
 <div class="tbar" style="position:relative"><span class="tname">Unofficial TMF Fund Intel Dashboard</span><span class="tbr"><button class="modebtn" id="modebtn" type="button" aria-label="Switch to dark mode">☾</button><span class="winb"><button class="winq" id="aboutBtn" type="button" aria-label="About this dashboard" aria-expanded="false" aria-controls="aboutPop">i</button><button class="winq" id="glossBtn" type="button" aria-label="Glossary" aria-expanded="false" aria-controls="glossPop"><svg width="16" height="9" viewBox="0 0 13 7" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><path d="M1 0h5v1H1zM7 0h5v1H7zM0 1h1v5H0zM6 1h1v5H6zM12 1h1v5h-1zM2 2h3v1H2zM2 4h3v1H2zM8 2h3v1H8zM8 4h3v1H8zM1 6h5v1H1zM7 6h5v1H7z"/></svg></button><button class="winq" id="termBtn" type="button" aria-label="Bell results" aria-expanded="false" aria-controls="termPop"><svg width="12" height="12" viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><path d="M5 0h1v1H5zM4 1h3v1H4zM3 2h5v3H3zM2 5h7v2H2zM1 7h9v1H1zM0 8h11v1H0zM4 10h3v1H4z"/></svg></button><button class="winq winterm" id="crtBtn" type="button" aria-label="Terminal theme: off" aria-pressed="false">&gt;_</button></span></span><div class="aboutpop" id="aboutPop" role="region" aria-label="About" hidden><b>About</b><p>Vibe coded by <a href="https://x.com/vv23_CT" target="_blank" rel="noopener">vv23</a> on a Smauggy Night. Original prompt by Muz (<a href="https://x.com/viper_moons" target="_blank" rel="noopener">@viper_moons</a>).</p><p class="note">Unofficial community research, not affiliated with The Mutual Fun. Not financial advice.</p></div><div class="aboutpop gpop" id="glossPop" role="region" aria-label="Glossary" hidden><b>Glossary</b><dl class="dl" id="gloss"></dl></div><div class="aboutpop tpop" id="termPop" role="region" aria-label="Bell results" hidden><pre id="termOut"></pre></div></div>
+<div class="tpk" id="tpk" role="region" aria-label="Token prices" hidden><div class="tpf" id="tpFix"></div><div class="tpr" id="tpRoll"><div class="tpt" id="tpTrk"></div></div></div>
 <nav class="fsw" aria-label="Choose a fund">
 <div class="fsw-l">Choose a fund</div>
 <div class="fsw-row" role="tablist" id="fsw"></div>
@@ -820,6 +837,21 @@ $('#ctX').addEventListener('click',()=>{CT_OPEN=false;drawCardTimes();$('#stChai
 WIDE.addEventListener&&WIDE.addEventListener('change',()=>{drawCardTimes();drawTkBox();drawNavBox();});
 addEventListener('resize',setVTH);
 
+/* price ticker */
+function drawTicker(){const box=$('#tpk');if(!box)return;
+ const px=v=>v==null||!isFinite(v)?'—':v>=1000?'$'+v.toLocaleString(undefined,{maximumFractionDigits:0}):v>=1?'$'+v.toFixed(2):v>=0.01?'$'+v.toFixed(4):'$'+Number(v.toPrecision(3));
+ const chg=f=>{if(f==null||!isFinite(f))return null;return el('span',f<0?'down':'up',(f<0?'▼ ':'▲ ')+Math.abs(f*100).toFixed(1)+'%');};
+ const T=D.tmf,fx=$('#tpFix');fx.textContent='';fx.append(el('b','l','$TMF'));
+ if(T&&T.price_usd){fx.append(el('span','p',px(T.price_usd)));const c=chg(T.change_24h==null?null:T.change_24h/100);if(c)fx.append(c);
+  fx.title='$TMF price from its DEX pool (DexScreener), as of '+new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(T.asof_utc||D.chain_asof_utc))+(T.liquidity_usd?' · pool liquidity $'+T.liquidity_usd.toLocaleString():'');}
+ else fx.append(el('span','c','no price yet'));
+ const items=[];const eth=(D.mkt||{}).eth_usd;if(eth)items.push(['ETH',eth,(D.chg.ETH||{}).h24]);
+ Object.keys(D.usd||{}).forEach(t=>{items.push([t,D.usd[t],(D.chg[t]||{}).h24]);});
+ const trk=$('#tpTrk');trk.textContent='';
+ const mk=hide=>{const g=el('span');if(hide)g.setAttribute('aria-hidden','true');g.style.display='inline-flex';items.forEach(([t,v,c])=>{const i=el('span','tpi');i.append(el('b',null,t),el('span',null,px(v)));const cc=chg(c);if(cc)i.append(cc);g.append(i);});return g;};
+ if(items.length){trk.append(mk(false),mk(true));trk.style.setProperty('--tpd',Math.max(40,items.length*4.5)+'s');}
+ box.hidden=false;}
+drawTicker();
 /* more */
 const u=D.updates[0];$('#chgDate').textContent=u.date;
 function drawChg(u){const box=$('#chg');box.textContent='';const dt=box.closest('details');if(dt)dt.open=true;
@@ -864,7 +896,7 @@ addEventListener('hashchange',()=>{const h=location.hash.slice(1).toLowerCase();
    /* ETH in USD from the chain every reading: valued in USDG (a dollar token) on TMF's price desk */
    const mk=c.market;if(mk&&mk.eth_usd&&mk.asof_utc){const at=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(mk.asof_utc));
           const cq=(c.changes||{}).QQQ;if(cq&&cq.h24!=null){(d.market=d.market||[]).unshift({id:'stocks',label:'Stock market (Nasdaq-100), 24h',value:cq.h24,fmt:'pct',asof:at+' · QQQ token, on-chain',source:'TMF price desk',url:mk.url});}}
-   d.mkt=c.market||null;d.ct=Object.fromEntries(Object.entries(c.funds||{}).map(([k,x])=>[k,x.card_times||null]));d.ct_week=c.epoch;d.closes_utc=c.closes_utc;d.cprices=c.prices||{};d.tf=c.token_facts||{};d.tnames=c.token_names||{};d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.archive=c.archive||[];
+   d.mkt=c.market||null;d.ct=Object.fromEntries(Object.entries(c.funds||{}).map(([k,x])=>[k,x.card_times||null]));d.ct_week=c.epoch;d.closes_utc=c.closes_utc;d.cprices=c.prices||{};d.tf=c.token_facts||{};d.tnames=c.token_names||{};d.usd=c.usd||{};d.fdv=c.fdv||{};d.dex=c.dex||{};d.chg=c.changes||{};d.dex_asof=c.asof_utc;d.tmf=c.tmf||null;d.archive=c.archive||[];
    if(c.closes_utc&&c.epoch===d.week)d.bell_utc=c.closes_utc;
    /* token prices in WETH from TMF's price desk, in the same units the ballot uses */
    if(c.prices)(d.tokens||[]).forEach(t=>{const p=c.prices[t.token];if(!p)return;const m=/per 1M/.test(t.onchain||'');
