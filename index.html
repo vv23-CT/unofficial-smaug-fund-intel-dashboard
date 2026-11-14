@@ -416,6 +416,18 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 @keyframes tpmove{to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.tpt{animation:none}.tpr{overflow-x:auto}}
 :root[data-term] .tpk{background:#000;border-bottom-color:var(--line)}:root[data-term] .tpk .up{color:var(--acc)}:root[data-term] .tpk .down{color:#ff6b5e}
+
+/* collapse the fund card on phones: tap the heading */
+.hdtog{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin:0;padding:0;background:none;border:0;text-align:left;cursor:pointer;font:inherit;color:inherit;line-height:inherit;text-wrap:balance}
+.hdtog .chev{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid var(--line);border-radius:7px;background:var(--card2);font:700 14px/1 var(--sans);font-style:normal;color:var(--muted);transition:transform .2s ease}
+.hdtog[aria-expanded="false"] .chev{transform:rotate(-90deg)}
+.hdtog:focus-visible{outline:2px solid var(--house);outline-offset:3px;border-radius:6px}
+.fcmini{margin-top:6px;padding:7px 10px;border:1px solid var(--line);border-left:4px solid var(--house);border-radius:8px;background:var(--card2);font-size:13px;font-weight:600}
+.fcmini{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.fcmini[hidden]{display:none}
+@media (max-width:899px){.app[data-fcc="1"] .fcard,.app[data-fcc="1"] .swipehint{display:none}}
+@media (min-width:900px){.hdtog .chev{display:none}.hdtog{cursor:default}.fcmini{display:none!important}}
+:root[data-term] .hdtog .chev{border-color:var(--acc);color:var(--acc);background:#000}
 </style>
 <script>try{var t=localStorage.getItem('sfi-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head><body><div class="page">
@@ -428,8 +440,9 @@ table.g tr.sum td.tu{font-weight:700;color:var(--fg)}
 </nav>
 <div class="scroll" id="scroll" tabindex="0" aria-label="Dashboard content">
 <header class="hd">
-<h1>What each room is backing</h1>
+<h1><button class="hdtog" id="fcTog" type="button" aria-expanded="true" aria-controls="fcard"><span>What each room is backing</span><i class="chev" aria-hidden="true">▾</i></button></h1>
 <div class="sub"><span id="wk">Week 2</span><span class="nxt" id="nxtWrap" hidden><span aria-hidden="true">·</span> <span id="nxt"></span></span></div>
+<div class="fcmini" id="fcMini" hidden></div>
 </header>
 <main class="body">
 <section class="fcard" id="fcard" aria-live="polite">
@@ -837,6 +850,14 @@ $('#ctX').addEventListener('click',()=>{CT_OPEN=false;drawCardTimes();$('#stChai
 WIDE.addEventListener&&WIDE.addEventListener('change',()=>{drawCardTimes();drawTkBox();drawNavBox();});
 addEventListener('resize',setVTH);
 
+/* fund card collapse (phones) */
+(()=>{const b=$('#fcTog'),app=$('#app');if(!b||!app)return;
+ const set=c=>{app.dataset.fcc=c?'1':'0';b.setAttribute('aria-expanded',String(!c));b.setAttribute('aria-label',(c?'Show':'Hide')+' the fund card');window.fcMini&&window.fcMini();};
+ let c=false; /* always starts open: it only collapses when you tap */
+ window.fcMini=()=>{const m=$('#fcMini');if(!m)return;const on=app.dataset.fcc==='1';m.hidden=!on;if(on)m.textContent=($('#fcName').textContent||'')+' · '+($('#fcBacks').textContent||'');};
+ set(c);try{const ob=new MutationObserver(()=>window.fcMini());['#fcName','#fcBacks'].forEach(s=>ob.observe($(s),{childList:true,characterData:true,subtree:true}));}catch(e){}
+ b.addEventListener('click',()=>{if(WIDE.matches)return;c=!c;set(c);});
+})();
 /* price ticker */
 function drawTicker(){const box=$('#tpk');if(!box)return;
  const px=v=>v==null||!isFinite(v)?'—':v>=1000?'$'+v.toLocaleString(undefined,{maximumFractionDigits:0}):v>=1?'$'+v.toFixed(2):v>=0.01?'$'+v.toFixed(4):'$'+Number(v.toPrecision(3));
